@@ -72,7 +72,7 @@ export default {
         "(key, )?",
         `track number ${vid},`,
         ".* timecode ([\\d.]+)s",
-        ".* at (\\d+)$",
+        ".* at (\\d+)",
       ].join(""));
       let frames = [];
       out.split(/\r?\n/).forEach(line => {
