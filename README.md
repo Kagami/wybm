@@ -2,6 +2,8 @@
 
 wybm is a GUI application which can download videos from YouTube in WebM format and interactively cut them without reencoding. It's available for all major platforms. [Click here](https://raw.githubusercontent.com/Kagami/wybm/assets/demo.webm) to watch the demo.
 
+![](https://raw.githubusercontent.com/Kagami/wybm/assets/player.png)
+
 ## Install
 
 For the first time you will need to download `.7z` archive corresponding to your platform. If you want to update to newer version of wybm, you may however download only corresponding `.nw` file and replace `app.nw` in unpacked directory of full build. (`.nw` files contain the actual application, but you need NW.js environment in order to run it.)
