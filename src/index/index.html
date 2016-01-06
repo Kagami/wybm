@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>wybm | extract and cut youtube webms</title>
+  <style>
+    html,body,#index{height:100%;margin:0}
+    body{background-color:#eee}
+    input[type=button]:focus{outline:none}
+    input[type=range]:focus{outline:none}
+    progress::-webkit-progress-bar {
+      background-color: #ddd;
+      border-radius: 2px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.25) inset;
+    }
+    progress::-webkit-progress-value {
+      background-color: #0bb;
+      background-image: -webkit-linear-gradient(top,rgba(255,255,255,.25),rgba(0,0,0,.25));
+      border-radius: 2px;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      background-color: #eee;
+      cursor: pointer;
+      width: 20px;
+      height: 20px;
+      margin-top: -8px;
+      border-radius: 50%;
+      border: 2px solid #999;
+    }
+    input[type=range]:hover::-webkit-slider-thumb {
+      background-color: #ccc;
+    }
+    input[type=range]::-webkit-slider-runnable-track {
+      height: 3px;
+      background-color: #ccc;
+      border-radius: 3px;
+    }
+    .wybm-view-player-control:hover {
+      background-color: #ddd !important;
+    }
+    .wybm-view-player-control:disabled {
+      background-color: #fff !important;
+      cursor: auto !important;
+    }
+    .wybm-view-player-time:focus {
+      outline: none !important;
+      border-color: #999 !important;
+    }
+  </style>
+</head>
+<body>
+  <div id="index"></div>
+  <script src="index.js"></script>
+</body>
+</html>

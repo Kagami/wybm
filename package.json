@@ -1,0 +1,55 @@
+{
+  "name": "wybm",
+  "version": "0.0.0",
+  "description": "Extract and cut youtube webms",
+  "scripts": {
+    "start": "webpack --watch",
+    "dev": "nw dist/app",
+    "lint": "eslint .",
+    "clean": "rm -rf dist",
+    "clean-app": "rm -rf dist/app",
+    "build-app": "npm run clean-app && NODE_ENV=production webpack",
+    "zip": "npm run build-app && cd dist/app && zip -r ../app.nw *",
+    "release-lin64": "PLATFORM=lin64 npm run zip && make lin64",
+    "release-win32": "PLATFORM=win32 npm run zip && make win32",
+    "release": "npm run clean && npm run release-lin64 && npm run release-win32"
+  },
+  "babel": {
+    "presets": [
+      "es2015",
+      "react"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kagami/wybm.git"
+  },
+  "keywords": [
+    "webm",
+    "youtube",
+    "gui"
+  ],
+  "author": "Kagami Hiiragi",
+  "license": "CC0-1.0",
+  "bugs": {
+    "url": "https://github.com/Kagami/wybm/issues"
+  },
+  "homepage": "https://github.com/Kagami/wybm#readme",
+  "dependencies": {
+    "react": "^0.14.5",
+    "react-dom": "^0.14.5",
+    "tmp": "0.0.28"
+  },
+  "devDependencies": {
+    "babel-core": "^6.3.26",
+    "babel-eslint": "^4.1.6",
+    "babel-loader": "^6.2.0",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "eslint": "^1.10.3",
+    "eslint-plugin-react": "^3.14.0",
+    "file-loader": "^0.8.5",
+    "nw": "^0.13.0-beta2sdk",
+    "webpack": "^1.12.9"
+  }
+}
