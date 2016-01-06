@@ -38,19 +38,17 @@ export default React.createClass({
     },
   },
   compareVideo(a, b) {
+    // Make it easier to access better quality formats.
     return a.width != b.width
       ? b.width - a.width
       : b.fps - a.fps;
-  },
-  isFormatCombined(f) {
-    return f.acodec === "vp8.0";
   },
   getVideoText(f) {
     if (f.vcodec === "vp8" || f.vcodec === "vp9") {
       return `${f.vcodec.toUpperCase()}
               ${f.width}x${f.height} ${f.fps}fps
               (${showSize(f.filesize)})`;
-    } else if (this.isFormatCombined(f)) {
+    } else if (f.acodec === "vp8.0") {
       return `VP8+Vorbis ${f.width}x${f.height}`;
     }
   },
@@ -59,9 +57,8 @@ export default React.createClass({
       .filter(f =>
         f.vcodec === "vp8" ||
         f.vcodec === "vp9" ||
-        this.isFormatCombined(f)
+        f.acodec === "vp8.0"
       )
-      // Make it easier to access better quality formats.
       .sort(this.compareVideo)
       .map(f => ({
         key: f.format_id,
@@ -78,8 +75,9 @@ export default React.createClass({
     return video && video.key;
   },
   compareAudio(a, b) {
-    // Opus at lower bitrates are better than Vorbis but we almost
-    // always want highest audio bitrate so that doesn't matter.
+    // Opus at low bitrates is better than Vorbis but we almost always
+    // want highest audio quality (it doesn't affect resulting size
+    // much) so that doesn't matter.
     return b.abr - a.abr;
   },
   getAudioFormats() {

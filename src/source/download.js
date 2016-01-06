@@ -73,6 +73,7 @@ export default React.createClass({
     this.setState({vdata: 0, adata: 0, downloadingError: null});
     const format = this.props.format;
 
+    // TODO(Kagami): How to handle file write errors?
     let vstream = fs.createWriteStream(this.vpath);
     let vpromise = new Promise((resolve, reject) => {
       // NOTE(Kagami): Standard http module is rather dumb and won't
