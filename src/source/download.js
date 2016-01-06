@@ -8,6 +8,7 @@ import path from "path";
 import http from "http";
 import https from "https";
 import assert from "assert";
+import {parse as parseUrl} from "url";
 import tmp from "tmp";
 import React from "react";
 import FFmpeg from "../ffmpeg";
@@ -50,14 +51,16 @@ export default React.createClass({
       cursor: "pointer",
     },
   },
-  get(url, ...args) {
+  get({url, http_headers}, cb) {
+    // Seems like headers are not requried but it's better to be safe.
+    const reqOpts = Object.assign(parseUrl(url), {headers: http_headers});
     // NOTE(Kagami): This is kinda vulnerable to SSRF attacks but
     // seems like emitting GET requests to local URLs is not that
     // dangerous.
     if (url.startsWith("https://")) {
-      return https.get(url, ...args);
+      return https.get(reqOpts, cb);
     } else if (url.startsWith("http://")) {
-      return http.get(url, ...args);
+      return http.get(reqOpts, cb);
     } else {
       assert(false, "Bad protocol");
     }
@@ -68,7 +71,7 @@ export default React.createClass({
 
     let vstream = fs.createWriteStream(this.vpath);
     let vpromise = new Promise((resolve, reject) => {
-      this.vreq = this.get(format.video.url, res => {
+      this.vreq = this.get(format.video, res => {
         if (res.statusCode >= 400) {
           return reject(new Error(
             `Got ${res.statusCode} error while downloading video`
@@ -92,7 +95,7 @@ export default React.createClass({
 
     let astream = fs.createWriteStream(this.apath);
     let apromise = new Promise((resolve, reject) => {
-      this.areq = this.get(format.audio.url, res => {
+      this.areq = this.get(format.audio, res => {
         if (res.statusCode >= 400) {
           return reject(new Error(
             `Got ${res.statusCode} error while downloading audio`
