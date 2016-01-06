@@ -9,9 +9,8 @@
     "clean": "rm -rf dist",
     "clean-app": "rm -rf dist/app",
     "build-app": "npm run clean-app && NODE_ENV=production webpack",
-    "zip": "npm run build-app && cd dist/app && zip -r ../app.nw *",
-    "release-lin64": "PLATFORM=lin64 npm run zip && make lin64",
-    "release-win32": "PLATFORM=win32 npm run zip && make win32",
+    "release-lin64": "PLATFORM=lin64 npm run build-app && make lin64",
+    "release-win32": "PLATFORM=win32 npm run build-app && make win32",
     "release": "npm run clean && npm run release-lin64 && npm run release-win32"
   },
   "babel": {
