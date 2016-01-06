@@ -1,6 +1,6 @@
 {
   "name": "wybm",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Extract and cut youtube webms",
   "scripts": {
     "start": "webpack --watch",
