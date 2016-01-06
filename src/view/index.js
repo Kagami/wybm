@@ -54,9 +54,11 @@ export default React.createClass({
       this.state.stats.frames[this.state.mstart].pos
     );
   },
-  getFileDefaultName() {
+  getDefaultName() {
     if (!this.checkMarks()) return;
-    let name = basename(this.props.source.path, ".webm");
+    let name = this.props.source.title;
+    name = name || basename(this.props.source.path, ".webm");
+    name = name.slice(0, 40);
     if (!this.isMarkStartAtStart() || !this.isMarkEndAtEnd()) {
       name += "_";
       name += showTime(this.getStartTime(), ".");
@@ -128,7 +130,7 @@ export default React.createClass({
                 <SaveAs
                   value="Cut"
                   onLoad={this.handleCutClick}
-                  defaultName={this.getFileDefaultName()}
+                  defaultName={this.getDefaultName()}
                 />
               </Text>
             </VPaned>

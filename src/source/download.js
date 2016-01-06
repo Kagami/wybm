@@ -141,7 +141,12 @@ export default React.createClass({
         title: this.props.info.title,
       });
     }).then(() => {
-      this.props.onLoad({path: this.fpath});
+      // Finally provide source to the main component.
+      this.props.onLoad({
+        path: this.fpath,
+        // Will be useful later.
+        title: this.props.info.title,
+      });
     }, err => {
       this.abort();
       this.setState({downloadingError: err});
