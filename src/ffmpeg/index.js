@@ -26,7 +26,7 @@ export default {
       p.on("error", err => {
         reject(new Error(`Failed to run ffmpeg: ${err.message}`));
       });
-      p.on("exit", (code, signal) => {
+      p.on("close", (code, signal) => {
         if (code || code == null || stderr) {
           return reject(new Error(
             `ffmpeg exited with code ${code} (${stderr})`

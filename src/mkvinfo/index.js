@@ -27,7 +27,7 @@ export default {
       p.on("error", err => {
         reject(new Error(`Failed to run mkvinfo: ${err.message}`));
       });
-      p.on("exit", (code, signal) => {
+      p.on("close", (code, signal) => {
         // rc=1 means warning for mkvtoolnix.
         // Note that mkvtoolnix tools write all info to stdout.
         if (code > 1 || code == null || stderr) {
