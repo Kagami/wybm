@@ -3,10 +3,12 @@
 NAME = wybm
 VERSION := $(shell npm -j version | awk -F '"' '/"wybm"/{print $$4}')
 DIST_DIR = dist
+LIN64_NW_DIR = bin/nwjs-v0.13.0-beta2-linux-x64
 LIN64_APP = app-lin64-v$(VERSION).nw
 LIN64_RELEASE = $(NAME)-lin64-v$(VERSION)
 LIN64_RELEASE_DIR = $(DIST_DIR)/$(LIN64_RELEASE)
 LIN64_ZIP = $(NAME)-lin64-v$(VERSION).7z
+WIN32_NW_DIR = bin/nwjs-v0.13.0-beta2-win-ia32
 WIN32_APP = app-win32-v$(VERSION).nw
 WIN32_RELEASE = $(NAME)-win32-v$(VERSION)
 WIN32_RELEASE_DIR = $(DIST_DIR)/$(WIN32_RELEASE)
@@ -18,9 +20,6 @@ WINDOWS_RUNNER = wybm.bat
 all:
 
 lin64:
-ifndef LIN64_NW_DIR
-	$(error LIN64_NW_DIR is not set)
-endif
 	cd "$(DIST_DIR)/app" && zip -r "../$(LIN64_APP)" *
 	rm -rf "$(LIN64_RELEASE_DIR)"
 	mkdir -p "$(LIN64_RELEASE_DIR)"
@@ -32,9 +31,6 @@ endif
 	cd "$(DIST_DIR)" && 7z a "$(LIN64_ZIP)" "$(LIN64_RELEASE)"
 
 win32:
-ifndef WIN32_NW_DIR
-	$(error WIN32_NW_DIR is not set)
-endif
 	cd "$(DIST_DIR)/app" && zip -r "../$(WIN32_APP)" *
 	rm -rf "$(WIN32_RELEASE_DIR)"
 	mkdir -p "$(WIN32_RELEASE_DIR)"

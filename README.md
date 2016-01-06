@@ -1,4 +1,4 @@
-# wybm ![](./src/index/icon.png)
+# wybm ![](src/index/icon.png)
 
 wybm is a GUI application which can download videos from YouTube in WebM format and interactively cut them without reencoding. It's available for all major platforms. [Click here](https://raw.githubusercontent.com/Kagami/wybm/assets/demo.webm) to watch the demo.
 
