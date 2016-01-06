@@ -165,8 +165,9 @@ export default React.createClass({
       <div>
         <div style={this.styles.br} />
         <div style={this.styles.text}>
-          <span>Saving audio ({showSize(this.state.adata)} </span>
-          <span>of {showSize(format.audio.filesize)}):</span>
+          <span>Saving audio (</span>
+          <span style={this.styles.size}>{showSize(this.state.adata)}</span>
+          <span> of {showSize(format.audio.filesize)}):</span>
         </div>
         <progress
           value={this.state.adata}

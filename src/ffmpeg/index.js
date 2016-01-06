@@ -41,7 +41,12 @@ export default {
     // If audio is not provided it's basically no-op, except the
     // metadata update.
     if (opts.audio) {
-      args.push("-i", opts.audio);
+      args.push(
+        "-i", opts.audio,
+        // In case if video is in combined format (vp8.0).
+        "-map", "0:v",
+        "-map", "1:a"
+      );
     }
     args.push(
       "-c", "copy",
