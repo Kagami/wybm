@@ -59,9 +59,9 @@ export default React.createClass({
     let name = basename(this.props.source.path, ".webm");
     if (!this.isMarkStartAtStart() || !this.isMarkEndAtEnd()) {
       name += "_";
-      name += showTime(this.getStartTime(), ".")
+      name += showTime(this.getStartTime(), ".");
       name += "-";
-      name += showTime(this.getEndTime(), ".")
+      name += showTime(this.getEndTime(), ".");
     }
     name += "_cut.webm";
     return name;

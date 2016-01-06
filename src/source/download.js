@@ -20,10 +20,11 @@ export default React.createClass({
   },
   componentDidMount() {
     const tmpdir = tmp.dirSync({unsafeCleanup: true}).name;
-    // TODO(Kagami): Keep title and original filename.
+    const format = this.props.format;
     this.fpath = path.join(tmpdir, "out.webm");
     this.vpath = path.join(tmpdir, "v.webm");
-    this.apath = path.join(tmpdir, "a.webm");
+    // Audio is optional.
+    this.apath = format.audio ? path.join(tmpdir, "a.webm") : null;
     this.download();
   },
   // FIXME(Kagami): Use header, button, text theme components.
@@ -36,6 +37,9 @@ export default React.createClass({
     },
     text: {
       fontSize: "25px",
+    },
+    size: {
+      color: "#999",
     },
     progress: {
       WebkitAppearance: "none",
@@ -71,11 +75,18 @@ export default React.createClass({
 
     let vstream = fs.createWriteStream(this.vpath);
     let vpromise = new Promise((resolve, reject) => {
+      // NOTE(Kagami): Standard http module is rather dumb and won't
+      // follow redirects for example.
       this.vreq = this.get(format.video, res => {
         if (res.statusCode >= 400) {
           return reject(new Error(
             `Got ${res.statusCode} error while downloading video`
           ));
+        }
+        // vp8.0 format lacks file size info.
+        if (!format.video.filesize) {
+          // DOM will be updated on next "data" event.
+          format.video.filesize = +res.headers["content-length"];
         }
         res.on("data", chunk => {
           this.setState({vdata: this.state.vdata + chunk.length});
@@ -93,29 +104,34 @@ export default React.createClass({
       });
     });
 
-    let astream = fs.createWriteStream(this.apath);
-    let apromise = new Promise((resolve, reject) => {
-      this.areq = this.get(format.audio, res => {
-        if (res.statusCode >= 400) {
-          return reject(new Error(
-            `Got ${res.statusCode} error while downloading audio`
-          ));
-        }
-        res.on("data", chunk => {
-          this.setState({adata: this.state.adata + chunk.length});
-        }).on("end", () => {
-          if (this.state.adata !== format.audio.filesize) {
-            return reject(new Error("Got wrong audio data"));
+    let apromise;
+    if (this.apath) {
+      let astream = fs.createWriteStream(this.apath);
+      apromise = new Promise((resolve, reject) => {
+        this.areq = this.get(format.audio, res => {
+          if (res.statusCode >= 400) {
+            return reject(new Error(
+              `Got ${res.statusCode} error while downloading audio`
+            ));
           }
-          resolve();
+          res.on("data", chunk => {
+            this.setState({adata: this.state.adata + chunk.length});
+          }).on("end", () => {
+            if (this.state.adata !== format.audio.filesize) {
+              return reject(new Error("Got wrong audio data"));
+            }
+            resolve();
+          }).on("error", err => {
+            reject(err);
+          });
+          res.pipe(astream);
         }).on("error", err => {
           reject(err);
         });
-        res.pipe(astream);
-      }).on("error", err => {
-        reject(err);
       });
-    });
+    } else {
+      apromise = Promise.resolve();
+    }
 
     Promise.all([vpromise, apromise]).then(() => {
       return FFmpeg.merge({
@@ -135,37 +151,46 @@ export default React.createClass({
     if (this.vreq) this.vreq.abort();
     if (this.areq) this.areq.abort();
   },
+  getVideoSize() {
+    const format = this.props.format;
+    return format.video.filesize ? showSize(format.video.filesize) : "unknown";
+  },
   handleCancelClick() {
-    // TODO(Kagami): Confirmation.
     this.abort();
     this.props.onCancel();
   },
   render() {
     const format = this.props.format;
+    const audioNode = format.audio ? (
+      <div>
+        <div style={this.styles.br} />
+        <div style={this.styles.text}>
+          <span>Saving audio ({showSize(this.state.adata)} </span>
+          <span>of {showSize(format.audio.filesize)}):</span>
+        </div>
+        <progress
+          value={this.state.adata}
+          max={format.audio.filesize}
+          style={this.styles.progress}
+        />
+      </div>
+    ) : null;
     return (
       <div>
         <h2 style={this.styles.header}>{this.props.info.title}</h2>
 
         <ShowHide show={!this.state.downloadingError}>
           <div style={this.styles.text}>
-            <span>Saving video ({showSize(this.state.vdata)} </span>
-            <span>of {showSize(format.video.filesize)}):</span>
+            <span>Saving video (</span>
+            <span style={this.styles.size}>{showSize(this.state.vdata)}</span>
+            <span> of {this.getVideoSize()}):</span>
           </div>
           <progress
             value={this.state.vdata}
             max={format.video.filesize}
             style={this.styles.progress}
           />
-          <div style={this.styles.br} />
-          <div style={this.styles.text}>
-            <span>Saving audio ({showSize(this.state.adata)} </span>
-            <span>of {showSize(format.audio.filesize)}):</span>
-          </div>
-          <progress
-            value={this.state.adata}
-            max={format.audio.filesize}
-            style={this.styles.progress}
-          />
+          {audioNode}
         </ShowHide>
 
         <div style={this.styles.text}>

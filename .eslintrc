@@ -20,6 +20,7 @@
     "no-trailing-spaces": 2,
     "max-len": [2, 80],
     "curly": [2, "multi-line"],
+    "semi": [2, "always"],
 
     // React.
     "jsx-quotes": 1,

@@ -37,17 +37,25 @@ export default {
     });
   },
   merge(opts) {
-    const args = [
-      "-i", opts.video,
-      "-i", opts.audio,
+    let args = ["-i", opts.video];
+    // If audio is not provided it's basically no-op, except the
+    // metadata update.
+    if (opts.audio) {
+      args.push("-i", opts.audio);
+    }
+    args.push(
       "-c", "copy",
       "-metadata", "title=" + opts.title,
-      opts.output,
-    ];
+      opts.output
+    );
     return this._run(RUNPATH, args);
   },
   cut(opts) {
     let args = ["-i", opts.input, "-c", "copy"];
+    // NOTE(Kagami): Basically no-op if both start and end timestamps
+    // are not provided. It shouldn't cause any issues though and will
+    // also remux & update SegmentUID of input which sometimes might be
+    // useful.
     if (opts.start) {
       args.push("-ss", opts.start);
     }

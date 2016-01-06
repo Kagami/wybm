@@ -209,7 +209,7 @@ export default React.createClass({
     e.nativeEvent.stopImmediatePropagation();
     switch (e.keyCode) {
     case this.KEY_ENTER:
-      if (this.state.validTime) this.seek(parseTime(this.state.prettyTime))
+      if (this.state.validTime) this.seek(parseTime(this.state.prettyTime));
       break;
     }
   },

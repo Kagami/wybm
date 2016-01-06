@@ -6,8 +6,11 @@
   <style>
     html,body,#index{height:100%;margin:0}
     body{background-color:#eee}
+    select:focus{outline:none}
     input[type=button]:focus{outline:none}
     input[type=range]:focus{outline:none}
+    input[type=button]:disabled{cursor:auto!important}
+    select:disabled{opacity:0.5;cursor:not-allowed}
     progress::-webkit-progress-bar {
       background-color: #ddd;
       border-radius: 2px;
@@ -41,7 +44,6 @@
     }
     .wybm-view-player-control:disabled {
       background-color: #fff !important;
-      cursor: auto !important;
     }
     .wybm-view-player-time:focus {
       outline: none;

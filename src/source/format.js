@@ -42,20 +42,32 @@ export default React.createClass({
       ? b.width - a.width
       : b.fps - a.fps;
   },
+  isFormatCombined(f) {
+    return f.acodec === "vp8.0";
+  },
+  getVideoText(f) {
+    if (f.vcodec === "vp8" || f.vcodec === "vp9") {
+      return `${f.vcodec.toUpperCase()}
+              ${f.width}x${f.height} ${f.fps}fps
+              (${showSize(f.filesize)})`;
+    } else if (this.isFormatCombined(f)) {
+      return `VP8+Vorbis ${f.width}x${f.height}`;
+    }
+  },
   getVideoFormats() {
-    // TODO(Kagami): Support for formats with both video and audio (only
-    // "vp8.0" currently).
     return this.props.info.formats
-      .filter(f => f.vcodec === "vp8" || f.vcodec === "vp9")
+      .filter(f =>
+        f.vcodec === "vp8" ||
+        f.vcodec === "vp9" ||
+        this.isFormatCombined(f)
+      )
       // Make it easier to access better quality formats.
       .sort(this.compareVideo)
       .map(f => ({
         key: f.format_id,
         width: f.width,
         height: f.height,
-        text: `${f.vcodec.toUpperCase()}
-               ${f.width}x${f.height} ${f.fps}fps
-               (${showSize(f.filesize)})`,
+        text: this.getVideoText(f),
       }));
   },
   getDefaultVideoFormat() {
@@ -71,6 +83,7 @@ export default React.createClass({
     return b.abr - a.abr;
   },
   getAudioFormats() {
+    // TODO(Kagami): Allow to skip audio?
     return this.props.info.formats
       .filter(f => f.acodec === "vorbis" || f.acodec === "opus")
       .sort(this.compareAudio)
@@ -80,19 +93,33 @@ export default React.createClass({
                (${showSize(f.filesize)})`,
       }));
   },
-  handleDownloadClick() {
-    // FIXME(Kagami): Show error if video/audio is not available in webm
-    // format.
-    const formats = this.props.info.formats;
+  getCurrentVideo() {
     const vid = this.refs.video.value;
-    assert(vid);
-    const video = formats.find(f => f.format_id === vid);
+    if (!vid) return;
+    const formats = this.props.info.formats;
+    return formats.find(f => f.format_id === vid);
+  },
+  getCurrentAudio() {
     const aid = this.refs.audio.value;
-    assert(aid);
-    const audio = formats.find(f => f.format_id === aid);
+    if (!aid) return;
+    const formats = this.props.info.formats;
+    return formats.find(f => f.format_id === aid);
+  },
+  isVideoNotAvailable() {
+    // This normally shouldn't happen. At least "vp8.0" should be
+    // available for all videos.
+    return !this.getVideoFormats().length;
+  },
+  isAudioNotAvailable() {
+    return !this.getAudioFormats().length;
+  },
+  handleDownloadClick() {
+    const video = this.getCurrentVideo();
+    assert(video);
+    const audio = this.getCurrentAudio();
     this.props.onLoad({
       video: Object.assign({}, video),
-      audio: Object.assign({}, audio),
+      audio: audio ? Object.assign({}, audio) : null,
     });
   },
   handleCancelClick() {
@@ -106,6 +133,7 @@ export default React.createClass({
         <select
           ref="video"
           style={this.styles.select}
+          disabled={this.isVideoNotAvailable()}
           defaultValue={this.getDefaultVideoFormat()}
         >
           {this.getVideoFormats().map(f =>
@@ -114,7 +142,11 @@ export default React.createClass({
         </select>
         <div style={this.styles.br} />
         <div style={this.styles.text}>Audio format:</div>
-        <select ref="audio" style={this.styles.select}>
+        <select
+          ref="audio"
+          style={this.styles.select}
+          disabled={this.isAudioNotAvailable()}
+        >
           {this.getAudioFormats().map(f =>
             <option key={f.key} value={f.key}>{f.text}</option>
           )}
@@ -125,6 +157,7 @@ export default React.createClass({
           type="button"
           style={this.styles.bigButton}
           onClick={this.handleDownloadClick}
+          disabled={this.isVideoNotAvailable()}
         />
         <span> </span>
         <input
