@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import MKVToolNix from "../mkvtoolnix";
+import MKVInfo from "../mkvinfo";
 import {Center} from "../theme";
 import {ShowHide, showErr} from "../util";
 
@@ -13,7 +13,7 @@ export default React.createClass({
     return {};
   },
   componentDidMount() {
-    MKVToolNix.getStats(this.props.source.path).then(stats => {
+    MKVInfo.getStats(this.props.source.path).then(stats => {
       this.props.onLoad(stats);
     }, error => {
       this.setState({error});

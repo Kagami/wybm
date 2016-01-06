@@ -1,6 +1,6 @@
 /**
- * mkvtoolnix utils wrapper. Provides platform-independent Promise API.
- * @module wybm/mkvtoolnix
+ * mkvinfo wrapper. Provides platform-independent Promise API.
+ * @module wybm/mkvinfo
  */
 
 import assert from "assert";
@@ -10,6 +10,7 @@ if (WIN_BUILD) {
   // TODO(Kagami): Allow to use system mkvinfo.
   require("file?name=[name].[ext]!./mkvinfo.exe");
 }
+const RUNPATH = WIN_BUILD ? "mkvinfo.exe" : "mkvinfo";
 
 export default {
   _run(runpath, args) {
@@ -24,14 +25,14 @@ export default {
         stderr += data;
       });
       p.on("error", err => {
-        reject(new Error(`Failed to run ${runpath}: ${err.message}`));
+        reject(new Error(`Failed to run mkvinfo: ${err.message}`));
       });
       p.on("exit", (code, signal) => {
-        // rc=1 means warning for mkvinfo/mkvmerge.
+        // rc=1 means warning for mkvtoolnix.
         // Note that mkvtoolnix tools write all info to stdout.
         if (code > 1 || code == null || stderr) {
           return reject(new Error(
-            `${runpath} exited with code ${code} (${stdout})`
+            `mkvinfo exited with code ${code} (${stdout})`
           ));
         }
         resolve(stdout);
@@ -39,8 +40,7 @@ export default {
     });
   },
   getStats(fpath) {
-    const runpath = WIN_BUILD ? "mkvinfo.exe" : "mkvinfo";
-    return this._run(runpath, ["-v", "-v", fpath]).then(out => {
+    return this._run(RUNPATH, ["-v", "-v", fpath]).then(out => {
       // Track segment is at level 0.
       const trstart = out.indexOf("\n|+ Segment tracks at ");
       assert(trstart >= 0);
