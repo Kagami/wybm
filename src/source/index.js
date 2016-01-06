@@ -9,24 +9,35 @@ import Info from "./info";
 import Format from "./format";
 import Download from "./download";
 import {Center} from "../theme";
-import {ShowHide} from "../util";
+import {ShowHide, setTitle} from "../util";
 
 export default React.createClass({
   getInitialState() {
+    return {};
+  },
+  componentWillMount() {
     let info = process.env.WYBM_DEBUG_INFO;
+    let source = process.env.WYBM_DEBUG_SOURCE;
     if (info) {
       info = fs.readFileSync(info, {encoding: "utf-8"});
-      info = JSON.parse(info);
+      this.handleInfoLoad(JSON.parse(info));
+    } else if (source) {
+      this.handleSourceLoad({path: source});
     }
-    return {info};
   },
   handleInfoLoad(info) {
+    setTitle(info.title);
     this.setState({info});
+  },
+  handleSourceLoad(source) {
+    setTitle(source.path);
+    this.props.onLoad(source);
   },
   handleFormatLoad(format) {
     this.setState({format});
   },
   handleCancel() {
+    setTitle();
     this.setState({info: null, format: null});
   },
   render() {
@@ -35,7 +46,7 @@ export default React.createClass({
         <ShowHide show={!this.state.info}>
           <Info
             onInfo={this.handleInfoLoad}
-            onSource={this.props.onLoad}
+            onSource={this.handleSourceLoad}
           />
         </ShowHide>
         <ShowHide show={!!this.state.info && !this.state.format}>

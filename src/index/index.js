@@ -7,16 +7,14 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Source from "../source";
 import View from "../view";
-import {ShowHide} from "../util";
+import {ShowHide, setTitle} from "../util";
 import "file?name=[name].[ext]!./package.json";
 import "file?name=[name].[ext]!./index.html";
 import "file?name=[name].[ext]!./icon.png";
 
 const Index = React.createClass({
   getInitialState() {
-    let source = process.env.WYBM_DEBUG_SOURCE;
-    if (source) source = {path: source};
-    return {source};
+    return {};
   },
   styles: {
     main: {
@@ -28,6 +26,7 @@ const Index = React.createClass({
     this.setState({source});
   },
   handleSourceClear() {
+    setTitle();
     this.setState({source: null});
   },
   render() {
