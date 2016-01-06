@@ -8,7 +8,7 @@ import {spawn} from "child_process";
 import {flatten} from "../util";
 if (WIN_BUILD) {
   // TODO(Kagami): Allow to use system mkvinfo.
-  require("file?name=[name].[ext]!./mkvinfo.exe");
+  require("file?name=[name].[ext]!../../bin/mkvinfo.exe");
 }
 const RUNPATH = WIN_BUILD ? "mkvinfo.exe" : "mkvinfo";
 

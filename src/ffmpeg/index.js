@@ -6,7 +6,7 @@
 import {spawn} from "child_process";
 if (WIN_BUILD) {
   // TODO(Kagami): Allow to use system ffmpeg.
-  require("file?name=[name].[ext]!./ffmpeg.exe");
+  require("file?name=[name].[ext]!../../bin/ffmpeg.exe");
 }
 const RUNPATH = WIN_BUILD ? "ffmpeg.exe" : "ffmpeg";
 

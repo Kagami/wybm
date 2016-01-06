@@ -6,7 +6,7 @@
 import {spawn} from "child_process";
 // TODO(Kagami): Allow to use system youtube-dl.
 const YTDL_BASENAME = require(
-  "file?name=[name].[ext]!./youtube-dl." + (WIN_BUILD ? "exe" : "zip")
+  "file?name=[name].[ext]!../../bin/youtube-dl." + (WIN_BUILD ? "exe" : "zip")
 );
 const RUNPATH = WIN_BUILD ? YTDL_BASENAME : "python";
 
