@@ -6,7 +6,7 @@ wybm is a GUI application which can download videos from YouTube in WebM format 
 
 ## Install
 
-For the first time you will need to download `.7z` archive corresponding to your platform. If you want to update to newer version of wybm, you may however download only corresponding `.nw` file and replace `app.nw` in unpacked directory of full build. (`.nw` files contain the actual application, but you need NW.js environment in order to run it.)
+For the first time you will need to download `.7z` archive corresponding to your platform. If you want to update to newer version of wybm, you may however get only appropriate `.nw` file and replace `app.nw` in unpacked directory of full build. (`.nw` files contain the actual application, but you need NW.js environment in order to run them.)
 
 ### Linux
 
