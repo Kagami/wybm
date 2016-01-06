@@ -75,7 +75,7 @@ export default {
         ".* at (\\d+)$",
       ].join(""));
       let frames = [];
-      out.split("\n").forEach(line => {
+      out.split(/\r?\n/).forEach(line => {
         const framem = line.match(framere);
         if (framem) {
           const frame = {
