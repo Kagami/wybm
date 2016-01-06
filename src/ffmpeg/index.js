@@ -41,6 +41,7 @@ export default {
       "-i", opts.video,
       "-i", opts.audio,
       "-c", "copy",
+      "-metadata", "title=" + opts.title,
       opts.output,
     ];
     return this._run(RUNPATH, args);

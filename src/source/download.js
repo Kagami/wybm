@@ -119,6 +119,7 @@ export default React.createClass({
         video: this.vpath,
         audio: this.apath,
         output: this.fpath,
+        title: this.props.info.title,
       });
     }).then(() => {
       this.props.onLoad({path: this.fpath});
