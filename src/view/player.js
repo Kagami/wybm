@@ -45,19 +45,13 @@ export default React.createClass({
   componentDidMount() {
     document.addEventListener("keydown", this.handleDocumentKey, false);
     this.getVideoNode().addEventListener(
-      "playing", this.handlePlayEvent, false
-    );
-    this.getVideoNode().addEventListener(
-      "pause", this.handlePauseEvent, false
-    );
-    this.getVideoNode().addEventListener(
-      "timeupdate", this.handleSeekEvent, false
-    );
-    this.getVideoNode().addEventListener(
       "webkitfullscreenchange", this.handleFullscreenEvent, false
     );
   },
   componentWillUnmount() {
+    this.getVideoNode().removeEventListener(
+      "webkitfullscreenchange", this.handleFullscreenEvent, false
+    );
     document.removeEventListener("keydown", this.handleDocumentKey, false);
   },
   KEY_ESC: 27,
@@ -253,6 +247,9 @@ export default React.createClass({
           ref="video"
           src={this.getVideoURL()}
           onClick={this.togglePlay}
+          onPlaying={this.handlePlayEvent}
+          onPause={this.handlePauseEvent}
+          onTimeUpdate={this.handleSeekEvent}
           onDoubleClick={this.toggleFullscreen}
         />
         <Controls>
