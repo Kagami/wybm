@@ -2,25 +2,25 @@
 
 wybm is a GUI application which can download videos from YouTube in WebM format and interactively cut them without reencoding. It's available for all major platforms. [Click here](https://raw.githubusercontent.com/Kagami/wybm/assets/demo.webm) to watch the demo.
 
-### Install
+## Install
 
-##### Linux
+### Linux
 
 You will need python, ffmpeg, mkvtoolnix and common desktop deps such as X11, gtk, gconf installed. Download [latest release](https://github.com/Kagami/wybm/releases), unpack it and run `./wybm`.
 
-##### Windows
+### Windows
 
 Everything is included to the build, just download [latest release](https://github.com/Kagami/wybm/releases), unpack and run `wybm.bat`.
 
-##### Mac
+### Mac
 
 *TODO*
 
-### Manual build
+## Manual build
 
 *TODO*
 
-### License
+## License
 
 wybm own code, documentation and icon licensed under CC0, but the resulting build also includes the following libraries and assets:
 
