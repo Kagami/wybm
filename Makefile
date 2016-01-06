@@ -4,12 +4,12 @@ APP_NAME = wybm
 VERSION := $(shell npm -j version | awk -F '"' '/"wybm"/{print $$4}')
 DIST_DIR = dist
 APP = $(DIST_DIR)/app.nw
-LIN64_RELEASE = $(APP_NAME)-lin64-$(VERSION)
+LIN64_RELEASE = $(APP_NAME)-lin64-v$(VERSION)
 LIN64_RELEASE_DIR = $(DIST_DIR)/$(LIN64_RELEASE)
-LIN64_ZIP = $(APP_NAME)-lin64-$(VERSION).7z
-WIN32_RELEASE = $(APP_NAME)-win32-$(VERSION)
+LIN64_ZIP = $(APP_NAME)-lin64-v$(VERSION).7z
+WIN32_RELEASE = $(APP_NAME)-win32-v$(VERSION)
 WIN32_RELEASE_DIR = $(DIST_DIR)/$(WIN32_RELEASE)
-WIN32_ZIP = $(APP_NAME)-win32-$(VERSION).7z
+WIN32_ZIP = $(APP_NAME)-win32-v$(VERSION).7z
 # Appending zip to the executable is not supported in beta2.
 LINUX_RUNNER = wybm.sh
 WINDOWS_RUNNER = wybm.bat
