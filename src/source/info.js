@@ -73,12 +73,17 @@ export default React.createClass({
   },
   handleClearClick() {
     this.setState({loadingError: null, url: null});
+    // We can't focus disabled input and state updates will be flushed
+    // only on a next tick. This is a bit hacky.
+    this.refs.url.disabled = false;
+    this.refs.url.focus();
   },
   render() {
     return (
       <form onSubmit={this.handleInfoGet}>
         <input
           autoFocus
+          ref="url"
           type="text"
           style={this.styles.input}
           placeholder="Enter YouTube URL"
@@ -105,7 +110,7 @@ export default React.createClass({
           accept="video/webm"
         />
 
-        <ShowHide show={!!this.state.url && !this.state.loadingError}>
+        <ShowHide show={this.state.url && !this.state.loadingError}>
           <input
             type="submit"
             style={this.styles.bigButton}
@@ -113,7 +118,7 @@ export default React.createClass({
             disabled={this.state.loadingInfo}
           />
         </ShowHide>
-        <ShowHide show={!!this.state.url && !!this.state.loadingError}>
+        <ShowHide show={this.state.url && this.state.loadingError}>
           <input
             value="Clear"
             type="button"

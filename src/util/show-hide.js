@@ -7,10 +7,6 @@ import React from "react";
 
 // Taken from webm.js
 export default React.createClass({
-  propTypes: {
-    show: React.PropTypes.bool,
-    viaCSS: React.PropTypes.bool,
-  },
   render() {
     if (this.props.viaCSS) {
       let style = this.props.show ? {} : {display: "none"};
