@@ -1,5 +1,5 @@
 /**
- * Download source from given youtube url or use local file.
+ * Download source from given YouTube URL or return local file.
  * @module wybm/source
  */
 

@@ -1,5 +1,5 @@
 /**
- * Info form.
+ * Source info form. Returns either YouTube JSON or local file.
  * @module wybm/source/info
  */
 

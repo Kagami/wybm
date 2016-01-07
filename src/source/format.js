@@ -1,5 +1,5 @@
 /**
- * Format form.
+ * Format form. Returns selected video/audio format info.
  * @module wybm/source/format
  */
 

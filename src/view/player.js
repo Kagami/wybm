@@ -7,7 +7,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import {parseTime, showTime, tryRun} from "../util";
 
-// TODO(Kagami): Show filename in window's title.
 export default React.createClass({
   getInitialState() {
     this.frames = this.props.stats.frames;
