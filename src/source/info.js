@@ -11,8 +11,13 @@ import {ShowHide} from "../util";
 export default React.createClass({
   getInitialState() {
     let clipboard = nw.Clipboard.get();
-    let text = clipboard.get("text");
-    return {url: this.checkURL(text) ? text : ""};
+    const text = clipboard.get("text");
+    // Try to auto-paste only link-like text, there is high chance of
+    // false-positiveness with bare IDs.
+    const url = (this.fixURL(text).startsWith("http") && this.checkURL(text))
+      ? text
+      : "";
+    return {url};
   },
   componentDidMount() {
     let url = this.refs.url;
