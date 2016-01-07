@@ -36,7 +36,7 @@ export default {
     });
   },
   getInfo(url) {
-    let args = ["-j", url];
+    let args = ["--no-playlist", "-j", url];
     if (!WIN_BUILD) {
       args = [YTDL_BASENAME].concat(args);
     }

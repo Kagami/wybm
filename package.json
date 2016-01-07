@@ -37,7 +37,8 @@
   "dependencies": {
     "react": "^0.14.5",
     "react-dom": "^0.14.5",
-    "tmp": "0.0.28"
+    "tmp": "0.0.28",
+    "xregexp": "^3.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.3.26",
