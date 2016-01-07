@@ -3,7 +3,7 @@
  * @module wybm/view
  */
 
-import {basename} from "path";
+import {basename, extname} from "path";
 import React from "react";
 import Stats from "./stats";
 import Player from "./player";
@@ -64,8 +64,8 @@ export default React.createClass({
   },
   getDefaultName() {
     if (!this.checkMarks()) return;
-    let name = this.props.source.title;
-    name = name || basename(this.props.source.path, ".webm");
+    let name = this.props.source.saveAs || this.props.source.path;
+    name = basename(name, extname(name));
     name = name.slice(0, 40);
     if (!this.isMarkStartAtStart() || !this.isMarkEndAtEnd()) {
       name += "_";

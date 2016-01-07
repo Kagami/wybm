@@ -149,6 +149,9 @@ export default React.createClass({
         path: this.fpath,
         // Will be useful later.
         title: this.props.info.title,
+        // Private but useful (we hope ytdl guys did a good job to
+        // escape all awkward characters).
+        saveAs: this.props.info._filename,
       });
     }, err => {
       this.abort();

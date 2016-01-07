@@ -79,7 +79,7 @@ export default {
         // not provided. It shouldn't cause any issues though and will
         // also remux & update SegmentUID of input which sometimes might
         // be useful.
-        "-c", "copy"
+        "-c", "copy",
       ];
       if (opts.start) {
         args.push("-ss", opts.start);
