@@ -44,8 +44,8 @@ export default {
       args.push(
         "-i", opts.audio,
         // In case if video is in combined format (vp8.0).
-        "-map", "0:v",
-        "-map", "1:a"
+        "-map", "0:v:0",
+        "-map", "1:a:0"
       );
     }
     args.push(
@@ -56,7 +56,14 @@ export default {
     return this._run(RUNPATH, args);
   },
   cut(opts) {
-    let args = ["-i", opts.input, "-c", "copy"];
+    let args = [
+      "-i", opts.input,
+      // We always want first video since it's what browsers display.
+      "-map", "0:v:0",
+      // We also want audio but it might be omitted.
+      "-map", "0:a:0?",
+      "-c", "copy",
+    ];
     // NOTE(Kagami): Basically no-op if both start and end timestamps
     // are not provided. It shouldn't cause any issues though and will
     // also remux & update SegmentUID of input which sometimes might be

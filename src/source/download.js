@@ -19,7 +19,7 @@ export default React.createClass({
     return {vdata: 0, adata: 0};
   },
   componentDidMount() {
-    const tmpdir = tmp.dirSync({unsafeCleanup: true}).name;
+    const tmpdir = tmp.dirSync({prefix: "wybm-", unsafeCleanup: true}).name;
     const format = this.props.format;
     this.fpath = path.join(tmpdir, "out.webm");
     this.vpath = path.join(tmpdir, "v.webm");
