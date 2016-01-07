@@ -32,7 +32,7 @@ export default React.createClass({
     },
   },
   handleOpen() {
-    nw.Shell.openItem(this.props.target.path);
+    global.nw.Shell.openItem(this.props.target.path);
   },
   render() {
     return (

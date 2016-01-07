@@ -22,7 +22,7 @@ export default React.createClass({
     // Speedup search.
     let prev = 0;
     const nsec = Math.floor(this.lastFrame.time) + 1;
-    this.framesBySec = Array(nsec).fill().map(_ => []);
+    this.framesBySec = Array(nsec).fill().map(() => []);
     this.frames.forEach(f => {
       const sec = Math.floor(f.time);
       this.framesBySec[sec].push(f);
@@ -69,14 +69,14 @@ export default React.createClass({
   },
   isMarkStartDisabled() {
     return (
-      this.state.framen == this.state.mstart ||
+      this.state.framen === this.state.mstart ||
       this.state.framen >= this.state.mend ||
       !this.frames[this.state.framen].key
     );
   },
   isMarkEndDisabled() {
     return (
-      this.state.framen == this.state.mend ||
+      this.state.framen === this.state.mend ||
       this.state.framen <= this.state.mstart
     );
   },

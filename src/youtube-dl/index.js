@@ -25,7 +25,7 @@ export default {
       p.on("error", err => {
         reject(new Error(`Failed to run ytdl: ${err.message}`));
       });
-      p.on("close", (code, signal) => {
+      p.on("close", (code/*, signal*/) => {
         if (code || code == null || stderr) {
           return reject(new Error(
             `ytdl exited with code ${code} (${stderr})`

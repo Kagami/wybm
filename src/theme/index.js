@@ -53,7 +53,7 @@ export const VPaned = React.createClass({
     // XXX(Kagami): This widget is used only in one place so it's ok to
     // have such hacks. Currently we need to vertically center all
     // columns except the first one so we make it as small as possible.
-    const style = i == 0 ? {height: 1} : {};
+    const style = i === 0 ? {height: 1} : {};
     return Object.assign(style, this.styles.inner);
   },
   render() {
@@ -161,7 +161,7 @@ export const SaveAs = React.createClass({
   handleFileButtonClick() {
     this.refs.file.click();
   },
-  handleFileLoad(e) {
+  handleFileLoad() {
     // TODO(Kagami): For some reason there is noticeable delay between
     // "save" click inside file dialog and "onchange" event. NW issue?
     const file = this.refs.file.files[0];

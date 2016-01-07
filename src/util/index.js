@@ -20,10 +20,6 @@ export function toCapitalCase(s) {
   return s[0].toUpperCase() + s.slice(1);
 }
 
-export function flatten(arr) {
-  return Array.prototype.concat.apply([], arr);
-}
-
 export function showSize(size) {
   if (size < 1024) {
     return size + "B";

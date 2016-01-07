@@ -55,6 +55,7 @@ export default React.createClass({
       cursor: "pointer",
     },
   },
+  /* eslint-disable camelcase */
   get({url, http_headers}, cb) {
     // Seems like headers are not requried but it's better to be safe.
     const reqOpts = Object.assign(parseUrl(url), {headers: http_headers});
@@ -69,6 +70,7 @@ export default React.createClass({
       assert(false, "Bad protocol");
     }
   },
+  /* eslint-enable camelcase */
   download() {
     this.setState({vdata: 0, adata: 0, downloadingError: null});
     const format = this.props.format;

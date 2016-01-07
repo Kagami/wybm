@@ -5,7 +5,6 @@
 
 import assert from "assert";
 import {spawn} from "child_process";
-import {flatten} from "../util";
 if (WIN_BUILD) {
   // TODO(Kagami): Allow to use system mkvinfo.
   require("file?name=[name].[ext]!../../bin/mkvinfo.exe");
@@ -27,7 +26,7 @@ export default {
       p.on("error", err => {
         reject(new Error(`Failed to run mkvinfo: ${err.message}`));
       });
-      p.on("close", (code, signal) => {
+      p.on("close", (code/*, signal*/) => {
         // rc=1 means warning for mkvtoolnix.
         // Note that mkvtoolnix tools write all info to stdout.
         if (code > 1 || code == null || stderr) {

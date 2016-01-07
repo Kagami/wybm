@@ -8,7 +8,7 @@ import React from "react";
 import Stats from "./stats";
 import Player from "./player";
 import Cut from "./cut";
-import {VPaned, Table, Text, Br, BigButton, SaveAs} from "../theme";
+import {VPaned, Table, Text, Br, SaveAs} from "../theme";
 import {ShowHide, showSize, showTime} from "../util";
 
 export default React.createClass({
@@ -50,7 +50,7 @@ export default React.createClass({
   getEstimatedSize() {
     if (!this.checkMarks()) return;
     return (
-      this.state.stats.frames[this.state.mend  ].pos -
+      this.state.stats.frames[this.state.mend].pos -
       this.state.stats.frames[this.state.mstart].pos
     );
   },

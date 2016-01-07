@@ -39,7 +39,7 @@ export default React.createClass({
   },
   compareVideo(a, b) {
     // Make it easier to access better quality formats.
-    return a.width != b.width
+    return a.width !== b.width
       ? b.width - a.width
       : b.fps - a.fps;
   },

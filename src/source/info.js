@@ -10,7 +10,7 @@ import {ShowHide} from "../util";
 
 export default React.createClass({
   getInitialState() {
-    let clipboard = nw.Clipboard.get();
+    let clipboard = global.nw.Clipboard.get();
     const text = clipboard.get("text");
     // Try to auto-paste only link-like text, there is high chance of
     // false-positiveness with bare IDs.
