@@ -102,8 +102,9 @@ export default {
         return this._run(RUNPATH, [
           "-i", fragment,
           "-i", opts.preview,
-          "-map", "0",
-          "-map", "1",
+          "-map", "0:v:0",
+          "-map", "0:a:0?",
+          "-map", "1:v:0",
           "-c", "copy",
           "-f", "webm",
           opts.output,
