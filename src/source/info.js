@@ -10,7 +10,14 @@ import {ShowHide} from "../util";
 
 export default React.createClass({
   getInitialState() {
-    return {url: ""};
+    let clipboard = nw.Clipboard.get();
+    let text = clipboard.get("text");
+    return {url: this.checkURL(text) ? text : ""};
+  },
+  componentDidMount() {
+    let url = this.refs.url;
+    url.setSelectionRange(url.value.length, url.value.length);
+    url.scrollLeft = url.scrollWidth;
   },
   NBSP: "\u00a0",
   styles: {
