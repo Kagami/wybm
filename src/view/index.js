@@ -7,8 +7,8 @@ import {basename} from "path";
 import React from "react";
 import Stats from "./stats";
 import Player from "./player";
-import Cut from "./cut";
-import {VPaned, Table, Text, Br, SaveAs} from "../theme";
+import Save from "./save";
+import {VPaned, HPaned, Table, Text, Br, BigButton, FileButton} from "../theme";
 import {ShowHide, showSize, showTime} from "../util";
 
 export default React.createClass({
@@ -20,11 +20,19 @@ export default React.createClass({
       height: "100%",
     },
     left: {
-      width: 220,
+      boxSizing: "border-box",
+      width: 350,
+      paddingLeft: 100,
     },
     right: {
-      width: 150,
+      padding: 0,
       color: "#999",
+    },
+    preview: {
+      width: 250,
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      cursor: "pointer",
     },
   },
   checkMarks() {
@@ -68,6 +76,16 @@ export default React.createClass({
     name += "_cut.webm";
     return name;
   },
+  getPreviewText() {
+    const preview = this.state.preview;
+    if (Number.isFinite(preview)) {
+      return showTime(preview);
+    } else if (preview != null) {
+      return basename(preview);
+    } else {
+      return "none";
+    }
+  },
   handleStatsLoad(stats) {
     this.setState({stats});
   },
@@ -77,7 +95,16 @@ export default React.createClass({
   handleMarkEnd(mend) {
     this.setState({mend});
   },
-  handleCutClick(file) {
+  handleImagePreview(file) {
+    this.setState({preview: file.path});
+  },
+  handleFramePreview() {
+    this.setState({preview: this.refs.player.getTimeOf()});
+  },
+  handlePreviewClear() {
+    this.setState({preview: null});
+  },
+  handleSaveClick(file) {
     this.refs.player.pause();
     this.setState({target: file});
   },
@@ -105,43 +132,74 @@ export default React.createClass({
                 onMarkEnd={this.handleMarkEnd}
                 onClear={this.props.onClear}
               />
-              <Text>
-                <Table>
-                <tr>
-                  <td style={this.styles.left}>Start position:</td>
-                  <td style={this.styles.right}>
-                    {showTime(this.getStartTime())}
-                  </td>
-                </tr>
-                <tr>
-                  <td style={this.styles.left}>End position:</td>
-                  <td style={this.styles.right}>
-                    {showTime(this.getEndTime())}
-                  </td>
-                </tr>
-                <tr>
-                  <td style={this.styles.left}>Estimated size:</td>
-                  <td style={this.styles.right}>
-                    {showSize(this.getEstimatedSize())}
-                  </td>
-                </tr>
-                </Table>
-                <Br/>
-                <SaveAs
-                  value="Cut"
-                  onLoad={this.handleCutClick}
-                  defaultName={this.getDefaultName()}
-                />
-              </Text>
+              <HPaned>
+                <Text>
+                  <Table>
+                  <tr>
+                    <td style={this.styles.left}>Start position:</td>
+                    <td style={this.styles.right}>
+                      {showTime(this.getStartTime())}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={this.styles.left}>End position:</td>
+                    <td style={this.styles.right}>
+                      {showTime(this.getEndTime())}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={this.styles.left}>Estimated size:</td>
+                    <td style={this.styles.right}>
+                      {showSize(this.getEstimatedSize())}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={this.styles.left}>Preview:</td>
+                    <td style={this.styles.right}>
+                      <div
+                        style={this.styles.preview}
+                        title="Clear"
+                        onClick={this.handlePreviewClear}
+                      >
+                        {this.getPreviewText()}
+                      </div>
+                    </td>
+                  </tr>
+                  </Table>
+                </Text>
+                <div>
+                  <FileButton
+                    value="Image prev."
+                    title="Load image preview"
+                    accept="image/*"
+                    onChange={this.handleImagePreview}
+                  />
+                  <Br height={10} />
+                  <BigButton
+                    value="Frame prev."
+                    title="Use current video frame as a preview"
+                    onClick={this.handleFramePreview}
+                  />
+                  <Br height={10} />
+                  <FileButton
+                    value="Save"
+                    title="Save selected fragment to disk"
+                    saveAs={this.getDefaultName()}
+                    onChange={this.handleSaveClick}
+                  />
+                </div>
+              </HPaned>
             </VPaned>
           </ShowHide>
         </ShowHide>
         <ShowHide show={!!this.state.target}>
-          <Cut
+          <Save
             source={this.props.source}
             target={this.state.target}
+            stats={this.state.stats}
             start={this.isMarkStartAtStart() ? null : this.getStartTime()}
             end={this.isMarkEndAtEnd() ? null : this.getEndTime()}
+            preview={this.state.preview}
             onAgain={this.handleViewAgain}
             onClear={this.props.onClear}
           />

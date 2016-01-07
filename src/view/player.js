@@ -67,6 +67,10 @@ export default React.createClass({
   getVideoURL() {
     return "file://" + this.props.source.path;
   },
+  getTimeOf(framen) {
+    if (framen == null) framen = this.state.framen;
+    return this.frames[framen].time;
+  },
   isMarkStartDisabled() {
     return (
       this.state.framen === this.state.mstart ||

@@ -69,15 +69,38 @@ export const VPaned = React.createClass({
   },
 });
 
-/** Simple helper. */
-export const Br = React.createClass({
+/** Horizontally aligned pane widget similar to gtk's. */
+export const HPaned = React.createClass({
   styles: {
-    main: {
-      height: 20,
+    outer: {
+      width: "100%",
+      height: "100%",
+      borderSpacing: 0,
+    },
+    inner: {
+      padding: 0,
     },
   },
   render() {
-    return <div style={this.styles.main} />;
+    return (
+      <table style={this.styles.outer}>
+        <tbody>
+          <tr>
+          {React.Children.map(this.props.children, row =>
+            <td style={this.styles.inner}>{row}</td>
+          )}
+          </tr>
+        </tbody>
+      </table>
+    );
+  },
+});
+
+/** Simple helper. */
+export const Br = React.createClass({
+  render() {
+    const style = {height: this.props.height || 20};
+    return <div style={style} />;
   },
 });
 
@@ -145,13 +168,17 @@ export const Header = React.createClass({
   },
 });
 
-/** Non-standard save file dialog provided by NW.js. */
-export const SaveAs = React.createClass({
+export const FileButton = React.createClass({
   componentDidMount() {
-    this.refs.file.setAttribute("nwsaveas", this.props.defaultName);
+    // Non-standard dialog provided by NW.js.
+    if (this.props.saveAs) {
+      this.refs.file.setAttribute("nwsaveas", this.props.saveAs);
+    }
   },
   componentDidUpdate() {
-    this.refs.file.setAttribute("nwsaveas", this.props.defaultName);
+    if (this.props.saveAs) {
+      this.refs.file.setAttribute("nwsaveas", this.props.saveAs);
+    }
   },
   styles: {
     file: {
@@ -161,12 +188,12 @@ export const SaveAs = React.createClass({
   handleFileButtonClick() {
     this.refs.file.click();
   },
-  handleFileLoad() {
+  handleFileChange() {
     // TODO(Kagami): For some reason there is noticeable delay between
     // "save" click inside file dialog and "onchange" event. NW issue?
     const file = this.refs.file.files[0];
     this.refs.file.value = null;
-    this.props.onLoad(file);
+    this.props.onChange(file);
   },
   render() {
     return (
@@ -178,8 +205,9 @@ export const SaveAs = React.createClass({
         <input
           ref="file"
           type="file"
-          onChange={this.handleFileLoad}
+          onChange={this.handleFileChange}
           style={this.styles.file}
+          accept={this.props.accept}
         />
       </div>
     );

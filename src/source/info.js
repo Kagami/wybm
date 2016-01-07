@@ -19,11 +19,6 @@ export default React.createClass({
       : "";
     return {url};
   },
-  componentDidMount() {
-    let url = this.refs.url;
-    url.setSelectionRange(url.value.length, url.value.length);
-    url.scrollLeft = url.scrollWidth;
-  },
   NBSP: "\u00a0",
   styles: {
     input: {

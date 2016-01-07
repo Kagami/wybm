@@ -51,18 +51,21 @@ export default {
         .split("+ A track at ")
         // Skip first useless chunk.
         .slice(1);
-      // We need only number of the first video track since it's what
-      // browsers display in <video> tag.
-      let vid;
+      let vid, width, height;
       for (let i = 0; i < tracks.length; i++) {
         const track = tracks[i];
         if (track.indexOf("+ Track type: video") >= 0) {
           vid = track.match(/\+ Track number: (\d+)/)[1];
+          width = +track.match(/\+ Display width: (\d+)/)[1];
+          height = +track.match(/\+ Display height: (\d+)/)[1];
+          // We need only first video track since it's what browsers
+          // display in <video> tag.
           break;
         }
       }
       assert(vid);
-      // We only need frames info currently.
+      assert(width);
+      assert(height);
       // TODO(Kagami): This can't detect keyframes contained inside
       // BlockGroup. "mkvinfo -v -v -v" + "[I frame]" matching is needed
       // for that.
@@ -103,7 +106,7 @@ export default {
       });
       frames.forEach((f, i) => f.index = i);
       assert(frames.length, "No frames");
-      return {frames};
+      return {width, height, frames};
     });
   },
 };

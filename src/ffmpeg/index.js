@@ -4,6 +4,7 @@
  */
 
 import {spawn} from "child_process";
+import tmp from "tmp";
 if (WIN_BUILD) {
   // TODO(Kagami): Allow to use system ffmpeg.
   require("file?name=[name].[ext]!../../bin/ffmpeg.exe");
@@ -51,30 +52,85 @@ export default {
     args.push(
       "-c", "copy",
       "-metadata", "title=" + opts.title,
+      "-f", "webm",
       opts.output
     );
     return this._run(RUNPATH, args);
   },
   cut(opts) {
-    let args = [
+    // TODO(Kagami): Do we want to save input's basename in metadata?
+    // It might be useful if proper title is omitted (video was provided
+    // via "choose file") and input has some meaningful name.
+    // It may however overwrite original title/be undesirable in some
+    // cases so it would be better to ask the user first.
+    return Promise.resolve().then(() => {
+      if (!opts.start && !opts.end && opts.preview) {
+        // Short-circuit to avoid double remux.
+        return opts.input;
+      }
+      // Cut fragment of provided input at first.
+      let args = [
+        "-i", opts.input,
+        // We always want first video since it's what browsers display.
+        "-map", "0:v:0",
+        // We also want audio but it might be omitted.
+        "-map", "0:a:0?",
+        // NOTE(Kagami): Basically no-op if timestamps and preview are
+        // not provided. It shouldn't cause any issues though and will
+        // also remux & update SegmentUID of input which sometimes might
+        // be useful.
+        "-c", "copy"
+      ];
+      if (opts.start) {
+        args.push("-ss", opts.start);
+      }
+      if (opts.end) {
+        args.push("-to", opts.end);
+      }
+      const fragment = opts.preview
+        ? tmp.fileSync({prefix: "wybm-", postfix: ".webm"}).name
+        : opts.output;
+      args.push("-f", "webm", fragment);
+      return this._run(RUNPATH, args).then(() => fragment);
+    }).then(fragment => {
+      // Then add preview if needed.
+      // NOTE(Kagami): ffmpeg can't seek exactly only single file when
+      // two input files are provided (see
+      // <https://ffmpeg.org/pipermail/ffmpeg-user/2013-June/015687.html>
+      // for details) so we need one extra step.
+      if (opts.preview) {
+        return this._run(RUNPATH, [
+          "-i", fragment,
+          "-i", opts.preview,
+          "-map", "0",
+          "-map", "1",
+          "-c", "copy",
+          "-f", "webm",
+          opts.output,
+        ]);
+      }
+    });
+  },
+  preview(opts) {
+    let args = opts.time != null ? ["-ss", opts.time.toString()] : [];
+    const scale = [
+      opts.width,
+      opts.height,
+      "force_original_aspect_ratio=increase",
+    ].join(":");
+    args.push(
       "-i", opts.input,
-      // We always want first video since it's what browsers display.
       "-map", "0:v:0",
-      // We also want audio but it might be omitted.
-      "-map", "0:a:0?",
-      "-c", "copy",
-    ];
-    // NOTE(Kagami): Basically no-op if both start and end timestamps
-    // are not provided. It shouldn't cause any issues though and will
-    // also remux & update SegmentUID of input which sometimes might be
-    // useful.
-    if (opts.start) {
-      args.push("-ss", opts.start);
-    }
-    if (opts.end) {
-      args.push("-to", opts.end);
-    }
-    args.push(opts.output);
+      "-frames:v", "1",
+      // Not so high-quality but should be enough for thumbnail.
+      "-c:v", "libvpx", "-threads", "8", "-b:v", "0", "-crf", "30",
+      // Note that target video will have BT.601 colormatrix if input
+      // uses RGB color model. It's ok since most imageboard software
+      // use 601 when generating thumbnails.
+      "-vf", "scale=" + scale,
+      "-f", "webm",
+      opts.output
+    );
     return this._run(RUNPATH, args);
   },
 };

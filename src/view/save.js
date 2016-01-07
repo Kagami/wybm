@@ -1,9 +1,10 @@
 /**
- * Cut/merge resulting WebM.
- * @module wybm/view/cut
+ * Generate resulting WebM.
+ * @module wybm/view/save
  */
 
 import fs from "fs";
+import tmp from "tmp";
 import React from "react";
 import FFmpeg from "../ffmpeg";
 import {Center, Header, Text, Br, BigButton} from "../theme";
@@ -14,11 +15,30 @@ export default React.createClass({
     return {};
   },
   componentDidMount() {
-    FFmpeg.cut({
-      input: this.props.source.path,
-      output: this.props.target.path,
-      start: this.props.start,
-      end: this.props.end,
+    let previewVideo;
+    Promise.resolve().then(() => {
+      const preview = this.props.preview;
+      if (preview != null) {
+        const isVideoInput = Number.isFinite(preview);
+        const time = isVideoInput ? preview : null;
+        const input = isVideoInput ? this.props.source.path : preview;
+        previewVideo = tmp.fileSync({prefix: "wybm-", postfix: ".webm"}).name;
+        return FFmpeg.preview({
+          time,
+          input,
+          output: previewVideo,
+          width: this.props.stats.width + 1,
+          height: this.props.stats.height + 1,
+        });
+      }
+    }).then(() => {
+      return FFmpeg.cut({
+        input: this.props.source.path,
+        output: this.props.target.path,
+        start: this.props.start,
+        end: this.props.end,
+        preview: previewVideo,
+      });
     }).then(() => {
       const size = fs.statSync(this.props.target.path).size;
       this.setState({size, done: true});
@@ -39,7 +59,7 @@ export default React.createClass({
       <Center>
         <Header>{this.props.target.path}</Header>
         <ShowHide show={!this.state.error && !this.state.done}>
-          <Text>Cutting…</Text>
+          <Text>Saving…</Text>
           <Br/>
           <BigButton value="Cancel" onClick={this.props.onAgain} />
         </ShowHide>
