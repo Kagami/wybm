@@ -86,19 +86,23 @@ export default {
             pos: +framem[3],
           };
           if (!frames.length) return frames.push(frame);
-          // Ignore altref in splitted packed[AltRef, P-frame] pair. See
+          const last = frames.length - 1;
+          // NOTE(Kagami): Seems like this should always be true for
+          // WebM since it doesn't have visible B-frames.
+          assert(frame.time >= frames[last].time, "Non-monotonic PTS");
+          // Ignore altref in splitted packed[AltRef, P] pair. See
           // <http://permalink.gmane.org/gmane.comp.multimedia.webm.devel/2425>
           // for details.
           // NOTE(Kagami): On the test files I tried such P-frames
           // sometimes have 1ms shift in PTS compared to their
           // accompanied AltRef pair. It's not clear whether this shift
           // might be bigger.
-          const last = frames.length - 1;
-          // NOTE(Kagami): Seems like this should always be true for
-          // WebM since it doesn't have visible B-frames.
-          assert(frame.time >= frames[last].time, "Non-monotonic PTS");
           if (frame.time - frames[last].time < 0.002) {
-            frames[last] = frame;
+            if (!frames[last].key) {
+              frames[last] = frame;
+            }
+            // It seems like splitted packed[I, AltRef] and we need to
+            // drop second frame in that case.
           } else {
             frames.push(frame);
           }
