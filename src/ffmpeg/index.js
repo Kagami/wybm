@@ -124,7 +124,7 @@ export default {
       "-map", "0:v:0",
       "-frames:v", "1",
       // Not so high-quality but should be enough for thumbnail.
-      "-c:v", "libvpx", "-threads", "8", "-b:v", "0", "-crf", "30",
+      "-c:v", "libvpx", "-b:v", "0", "-crf", "30",
       // Note that target video will have BT.601 colormatrix if input
       // uses RGB color model. It's ok since most imageboard software
       // use 601 when generating thumbnails.
