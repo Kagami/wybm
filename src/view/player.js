@@ -82,25 +82,8 @@ export default React.createClass({
       this.state.framen <= this.props.mstart
     );
   },
-  setTimeOf(framen) {
-    const time = this.frames[framen].time;
-    const prettyTime = showTime(time);
-    const validTime = true;
-    this.setState({prettyTime, validTime});
-  },
-  togglePlay() {
-    const action = this.state.playing ? "pause" : "play";
-    this.getVideoNode()[action]();
-  },
-  toggleFullscreen() {
-    if (this.state.fullscreen) {
-      document.webkitExitFullscreen();
-    } else {
-      this.getVideoNode().webkitRequestFullscreen();
-    }
-  },
-  toggleKeySeek() {
-    this.setState({keySeek: !this.state.keySeek});
+  play() {
+    this.getVideoNode().play();
   },
   pause() {
     this.getVideoNode().pause();
@@ -115,6 +98,33 @@ export default React.createClass({
     // Chrome doesn't have "fastSeek" unfortunately. Is there some
     // better way to quickly change video position?
     this.getVideoNode().currentTime = time;
+  },
+  setTimeOf(framen) {
+    const time = this.frames[framen].time;
+    const prettyTime = showTime(time);
+    const validTime = true;
+    this.setState({prettyTime, validTime});
+  },
+  togglePlay() {
+    const time = this.getVideoNode().currentTime;
+    const action = this.state.playing ? "pause" : "play";
+    if (action === "play" &&
+        this.state.loopCut &&
+        (time < this.frames[this.props.mstart].time ||
+         time >= this.frames[this.props.mend].time)) {
+      this.seek(this.frames[this.props.mstart]);
+    }
+    this[action]();
+  },
+  toggleFullscreen() {
+    if (this.state.fullscreen) {
+      document.webkitExitFullscreen();
+    } else {
+      this.getVideoNode().webkitRequestFullscreen();
+    }
+  },
+  toggleLoopCut() {
+    this.setState({loopCut: !this.state.loopCut});
   },
   handleDocumentKey(e) {
     switch (e.keyCode) {
@@ -170,6 +180,13 @@ export default React.createClass({
     // (doesn't correspond to the frame PTS). So we're trying to find
     // best fit in order to pass those values to mkvmerge later.
     const time = this.getVideoNode().currentTime;
+    if (this.state.playing &&
+        this.state.loopCut &&
+        time >= this.frames[this.props.mend].time) {
+      this.seek(this.frames[this.props.mstart]);
+      this.play();
+      return;
+    }
     const sec = Math.floor(time);
     const secframes = this.framesBySec[sec] || [];
     for (let i = 0; i < secframes.length; i++) {
@@ -218,22 +235,11 @@ export default React.createClass({
   handleSeekChange(e) {
     const framen = e.target.value;
     const frame = this.frames[framen];
-    if (frame.key || !this.state.keySeek) {
-      this.setTimeOf(framen);
-      this.seek(frame);
-    }
+    this.setTimeOf(framen);
+    this.seek(frame);
   },
   handleSeekMouseUp() {
     this.seekDrag = false;
-    if (this.state.keySeek && !this.frames[this.state.framen].key) {
-      for (let i = this.state.framen; i >= 0; i--) {
-        const frame = this.frames[i];
-        if (frame.key) {
-          this.seek(frame);
-          break;
-        }
-      }
-    }
   },
   handleSeekKey(e) {
     e.preventDefault();
@@ -275,10 +281,10 @@ export default React.createClass({
             onClick={this.handleMarkEnd}
           />
           <Control
-            value="⚷"
-            title="Toggle keyframe seeking"
-            onClick={this.toggleKeySeek}
-            pressed={this.state.keySeek}
+            value="⟳"
+            title="Toggle cut fragment looping"
+            onClick={this.toggleLoopCut}
+            pressed={this.state.loopCut}
           />
           <Control
             right
