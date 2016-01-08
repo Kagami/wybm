@@ -113,12 +113,15 @@ export default {
     });
   },
   preview(opts) {
-    let args = opts.time != null ? ["-ss", opts.time.toString()] : [];
     const scale = [
       opts.width,
       opts.height,
       "force_original_aspect_ratio=increase",
     ].join(":");
+    let args = [];
+    if (opts.time != null) {
+      args.push("-ss", opts.time.toString());
+    }
     args.push(
       "-i", opts.input,
       "-map", "0:v:0",

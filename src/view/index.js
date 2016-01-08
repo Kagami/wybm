@@ -78,6 +78,20 @@ export default React.createClass({
     name += ".webm";
     return name;
   },
+  getStartText() {
+    if (this.isMarkStartAtStart()) {
+      return "not set";
+    } else {
+      return showTime(this.getStartTime());
+    }
+  },
+  getEndText() {
+    if (this.isMarkEndAtEnd()) {
+      return "not set";
+    } else {
+      return showTime(this.getEndTime());
+    }
+  },
   getPreviewText() {
     const preview = this.state.preview;
     if (Number.isFinite(preview)) {
@@ -85,7 +99,7 @@ export default React.createClass({
     } else if (preview != null) {
       return basename(preview);
     } else {
-      return "none";
+      return "not set";
     }
   },
   handleStatsLoad(stats) {
@@ -155,7 +169,7 @@ export default React.createClass({
                         style={this.styles.clickable}
                         onClick={this.handleMarkStartClear}
                       >
-                        {showTime(this.getStartTime())}
+                        {this.getStartText()}
                       </span>
                     </td>
                   </tr>
@@ -167,7 +181,7 @@ export default React.createClass({
                         style={this.styles.clickable}
                         onClick={this.handleMarkEndClear}
                       >
-                        {showTime(this.getEndTime())}
+                        {this.getEndText()}
                       </span>
                     </td>
                   </tr>
