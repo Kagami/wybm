@@ -337,6 +337,7 @@ const Controls = React.createClass({
 });
 
 const Control = React.createClass({
+  cid: "wybm-view-player-control",
   styles: {
     main: {
       cursor: "pointer",
@@ -348,10 +349,11 @@ const Control = React.createClass({
       border: 0,
     },
   },
-  getStyles() {
-    const float = this.props.right ? "right" : "left";
-    const backgroundColor = this.props.pressed ? "#ccc" : "#fff";
-    return Object.assign({float, backgroundColor}, this.styles.main);
+  getClassName() {
+    let name = this.cid;
+    if (this.props.right) name += ` ${this.cid}_right`;
+    if (this.props.pressed) name += ` ${this.cid}_pressed`;
+    return name;
   },
   handleKey(e) {
     e.preventDefault();
@@ -360,8 +362,8 @@ const Control = React.createClass({
     return (
       <input
         type="button"
-        style={this.getStyles()}
-        className="wybm-view-player-control"
+        style={this.styles.main}
+        className={this.getClassName()}
         onKeyDown={this.handleKey}
         {...this.props}
       />
@@ -370,6 +372,7 @@ const Control = React.createClass({
 });
 
 const Time = React.createClass({
+  cid: "wybm-view-player-time",
   styles: {
     main: {
       width: 120,
@@ -383,12 +386,9 @@ const Time = React.createClass({
       color: "#444",
     },
   },
-  cid: "wybm-view-player-time",
-  getClassname() {
+  getClassName() {
     let name = this.cid;
-    if (this.props.invalid) {
-      name += ` ${this.cid}_invalid`;
-    }
+    if (this.props.invalid) name += ` ${this.cid}_invalid`;
     return name;
   },
   render() {
@@ -397,7 +397,7 @@ const Time = React.createClass({
         type="text"
         maxLength={9}
         style={this.styles.main}
-        className={this.getClassname()}
+        className={this.getClassName()}
         {...this.props}
       />
     );

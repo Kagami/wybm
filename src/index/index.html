@@ -34,13 +34,29 @@
     input[type=range]:hover::-webkit-slider-thumb {
       background-color: #ccc;
     }
+    input[type=range]:active::-webkit-slider-thumb {
+      background-color: #ccc;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.25) inset;
+    }
     input[type=range]::-webkit-slider-runnable-track {
       height: 3px;
       background-color: #ccc;
       border-radius: 3px;
     }
-    .wybm-view-player-control:hover {
-      background-color: #ddd !important;
+    /* FIXME(Kagami): Refactor this shit with Radium. */
+    .wybm-view-player-control {
+      float: left;
+      background-color: #fff;
+    }
+    .wybm-view-player-control_right {
+      float: right;
+    }
+    .wybm-view-player-control:hover:not(.wybm-view-player-control_pressed) {
+      background-color: #ddd;
+    }
+    .wybm-view-player-control_pressed, .wybm-view-player-control:active {
+      background-color: #ddd;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.25) inset;
     }
     .wybm-view-player-control:disabled {
       background-color: #fff !important;
