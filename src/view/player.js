@@ -82,6 +82,7 @@ export default React.createClass({
       this.state.framen <= this.props.mstart
     );
   },
+  // "Stupid" play/pause actions.
   play() {
     this.getVideoNode().play();
   },
@@ -105,6 +106,7 @@ export default React.createClass({
     const validTime = true;
     this.setState({prettyTime, validTime});
   },
+  // "Smart" play/pause action.
   togglePlay() {
     const time = this.getVideoNode().currentTime;
     const action = this.state.playing ? "pause" : "play";
@@ -113,6 +115,12 @@ export default React.createClass({
         (time < this.frames[this.props.mstart].time ||
          time >= this.frames[this.props.mend].time)) {
       this.seek(this.frames[this.props.mstart]);
+    } else if (action === "play" && time >= this.frames[this.lastFramen].time) {
+      // If we have video with duration = 3s which consists of 3 frames
+      // with timestamps [0s, 1s, 2s] then if currentTime is at 2s and
+      // playing is false, play() call will set currentTime to 3s and
+      // playing to false again. This is not what we probably want.
+      this.seek(this.frames[0]);
     }
     this[action]();
   },
@@ -175,10 +183,6 @@ export default React.createClass({
   },
   handleSeekEvent() {
     if (this.seekDrag) return;
-    // NOTE(Kagami): We're not relying on reported timestamps by
-    // <video> because time in timeupdate events is not accurate
-    // (doesn't correspond to the frame PTS). So we're trying to find
-    // best fit in order to pass those values to mkvmerge later.
     const time = this.getVideoNode().currentTime;
     if (this.state.playing &&
         this.state.loopCut &&
@@ -188,6 +192,10 @@ export default React.createClass({
       this.play();
       return;
     }
+    // NOTE(Kagami): We're not relying on reported timestamps by
+    // <video> because time in timeupdate events is not accurate
+    // (doesn't correspond to the frame PTS). So we're trying to find
+    // best fit in order to pass those values to ffmpeg later.
     const sec = Math.floor(time);
     const secframes = this.framesBySec[sec] || [];
     for (let i = 0; i < secframes.length; i++) {

@@ -50,6 +50,9 @@ export default React.createClass({
   },
   isMarkEndAtEnd() {
     if (!this.checkMarks()) return;
+    // NOTE(Kagami): It's not possible to cut only single last frame
+    // this way. [last-N .. EOF] works perfectly however where N > 0 and
+    // there is very rare chance that last frame would be keyframe.
     return this.state.mend === (this.state.stats.frames.length - 1);
   },
   getStartTime() {
