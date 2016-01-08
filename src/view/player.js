@@ -296,6 +296,8 @@ export default React.createClass({
           <Seek
             value={this.state.framen}
             max={this.lastFramen}
+            mstart={this.props.mstart}
+            mend={this.props.mend}
             keyframes={this.keyframes}
             onMouseDown={this.handleSeekMouseDown}
             onChange={this.handleSeekChange}
@@ -423,8 +425,21 @@ const Seek = React.createClass({
     },
   },
   render() {
+    const mstartPercent = this.props.mstart / this.props.max * 100;
+    const mendPercent = this.props.mend / this.props.max * 100;
     return (
       <div style={this.styles.main}>
+        <style scoped>{`
+          input[type=range]::-webkit-slider-runnable-track {
+            background: -webkit-linear-gradient(
+              left,
+              #ccc ${mstartPercent}%,
+              #c90 ${mstartPercent}%,
+              #c90 ${mendPercent}%,
+              #ccc ${mendPercent}%
+            );
+          }
+        `}</style>
         <input
           type="range"
           list="keyframes"

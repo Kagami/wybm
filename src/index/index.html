@@ -4,13 +4,12 @@
   <meta charset="utf-8">
   <title>wybm | extract and cut youtube webms</title>
   <style>
-    html,body,#index{height:100%;margin:0}
-    body{background-color:#eee}
+    html,body,#wybm-index{height:100%;margin:0;background-color:#eee}
     select:focus{outline:none}
-    input[type=button]:focus{outline:none}
-    input[type=range]:focus{outline:none}
-    input[type=button]:disabled{cursor:auto!important}
     select:disabled{opacity:0.5;cursor:not-allowed}
+    input[type=range]:focus{outline:none}
+    input[type=button]:focus{outline:none}
+    input[type=button]:disabled{cursor:auto!important}
     progress::-webkit-progress-bar {
       background-color: #ddd;
       border-radius: 2px;
@@ -40,7 +39,6 @@
     }
     input[type=range]::-webkit-slider-runnable-track {
       height: 3px;
-      background-color: #ccc;
       border-radius: 3px;
     }
     /* FIXME(Kagami): Refactor this shit with Radium. */
@@ -74,7 +72,7 @@
   </style>
 </head>
 <body>
-  <div id="index"></div>
+  <div id="wybm-index"></div>
   <script src="index.js"></script>
 </body>
 </html>

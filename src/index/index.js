@@ -45,4 +45,4 @@ const Index = React.createClass({
 });
 
 tmp.setGracefulCleanup();
-ReactDOM.render(<Index/>, document.getElementById("index"));
+ReactDOM.render(<Index/>, document.getElementById("wybm-index"));
