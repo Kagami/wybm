@@ -182,7 +182,8 @@ export default React.createClass({
     const time = this.getVideoNode().currentTime;
     if (this.state.playing &&
         this.state.loopCut &&
-        time >= this.frames[this.props.mend].time) {
+        (time < this.frames[this.props.mstart].time ||
+         time >= this.frames[this.props.mend].time)) {
       this.seek(this.frames[this.props.mstart]);
       this.play();
       return;
