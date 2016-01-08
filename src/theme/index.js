@@ -124,13 +124,16 @@ export const Text = React.createClass({
 export const BigButton = React.createClass({
   styles: {
     main: {
-      fontSize: "30px",
-      width: 200,
       cursor: "pointer",
+      fontSize: "30px",
     },
   },
+  getStyles() {
+    const width = this.props.width || 200;
+    return Object.assign({width}, this.styles.main);
+  },
   render() {
-    return <input type="button" style={this.styles.main} {...this.props} />;
+    return <input type="button" style={this.getStyles()} {...this.props} />;
   },
 });
 
@@ -181,6 +184,9 @@ export const FileButton = React.createClass({
     }
   },
   styles: {
+    main: {
+      display: "inline-block",
+    },
     file: {
       display: "none",
     },
@@ -197,7 +203,7 @@ export const FileButton = React.createClass({
   },
   render() {
     return (
-      <div>
+      <div style={this.styles.main}>
         <BigButton
           onClick={this.handleFileButtonClick}
           {...this.props}

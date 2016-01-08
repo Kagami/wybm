@@ -36,6 +36,9 @@ export default React.createClass({
       overflow: "hidden",
       textOverflow: "ellipsis",
     },
+    ops: {
+      width: 350,
+    },
   },
   checkMarks() {
     // We need this because we get initial marks only after "stats" and
@@ -207,25 +210,46 @@ export default React.createClass({
                   </tr>
                   </Table>
                 </Text>
-                <div>
+                <div style={this.styles.ops}>
                   <FileButton
-                    value="Image prev."
+                    value="Image pr."
                     title="Load image preview"
                     accept="image/*"
                     onChange={this.handleImagePreview}
+                    width={150}
+                  />
+                  <span> </span>
+                  <BigButton
+                    value="Frame pr."
+                    title="Use current video frame as a preview"
+                    onClick={this.handleFramePreview}
+                    width={150}
                   />
                   <Br height={10} />
                   <BigButton
-                    value="Frame prev."
-                    title="Use current video frame as a preview"
-                    onClick={this.handleFramePreview}
+                    value="File info"
+                    title="Show file stats"
+                    width={150}
+                  />
+                  <span> </span>
+                  <BigButton
+                    value="Help"
+                    title="Show program's help"
+                    width={150}
                   />
                   <Br height={10} />
+                  <BigButton
+                    value="Autofit"
+                    title="Fit to limit from start position"
+                    width={150}
+                  />
+                  <span> </span>
                   <FileButton
                     value="Save"
                     title="Save selected fragment to disk"
                     saveAs={this.getDefaultName()}
                     onChange={this.handleSaveClick}
+                    width={150}
                   />
                 </div>
               </HPaned>
