@@ -28,11 +28,13 @@ export default React.createClass({
       padding: 0,
       color: "#999",
     },
-    preview: {
+    clickable: {
+      cursor: "pointer",
+    },
+    longText: {
       width: 250,
       overflow: "hidden",
       textOverflow: "ellipsis",
-      cursor: "pointer",
     },
   },
   checkMarks() {
@@ -73,6 +75,7 @@ export default React.createClass({
       name += "-";
       name += showTime(this.getEndTime(), ".");
     }
+    name += ".webm";
     return name;
   },
   getPreviewText() {
@@ -86,13 +89,21 @@ export default React.createClass({
     }
   },
   handleStatsLoad(stats) {
-    this.setState({stats});
+    const mstart = 0;
+    const mend = stats.frames.length - 1;
+    this.setState({stats, mstart, mend});
   },
   handleMarkStart(mstart) {
     this.setState({mstart});
   },
+  handleMarkStartClear() {
+    this.setState({mstart: 0});
+  },
   handleMarkEnd(mend) {
     this.setState({mend});
+  },
+  handleMarkEndClear() {
+    this.setState({mend: this.state.stats.frames.length - 1});
   },
   handleImagePreview(file) {
     this.setState({preview: file.path});
@@ -127,6 +138,8 @@ export default React.createClass({
                 ref="player"
                 source={this.props.source}
                 stats={this.state.stats}
+                mstart={this.state.mstart}
+                mend={this.state.mend}
                 onMarkStart={this.handleMarkStart}
                 onMarkEnd={this.handleMarkEnd}
                 onClear={this.props.onClear}
@@ -137,31 +150,45 @@ export default React.createClass({
                   <tr>
                     <td style={this.styles.left}>Start position:</td>
                     <td style={this.styles.right}>
-                      {showTime(this.getStartTime())}
+                      <span
+                        title="Clear"
+                        style={this.styles.clickable}
+                        onClick={this.handleMarkStartClear}
+                      >
+                        {showTime(this.getStartTime())}
+                      </span>
                     </td>
                   </tr>
                   <tr>
                     <td style={this.styles.left}>End position:</td>
                     <td style={this.styles.right}>
-                      {showTime(this.getEndTime())}
+                      <span
+                        title="Clear"
+                        style={this.styles.clickable}
+                        onClick={this.handleMarkEndClear}
+                      >
+                        {showTime(this.getEndTime())}
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={this.styles.left}>Preview:</td>
+                    <td style={this.styles.right}>
+                      <div style={this.styles.longText}>
+                        <span
+                          title="Clear"
+                          style={this.styles.clickable}
+                          onClick={this.handlePreviewClear}
+                        >
+                          {this.getPreviewText()}
+                        </span>
+                      </div>
                     </td>
                   </tr>
                   <tr>
                     <td style={this.styles.left}>Estimated size:</td>
                     <td style={this.styles.right}>
                       {showSize(this.getEstimatedSize())}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style={this.styles.left}>Preview:</td>
-                    <td style={this.styles.right}>
-                      <div
-                        style={this.styles.preview}
-                        title="Clear"
-                        onClick={this.handlePreviewClear}
-                      >
-                        {this.getPreviewText()}
-                      </div>
                     </td>
                   </tr>
                   </Table>

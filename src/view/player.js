@@ -34,11 +34,9 @@ export default React.createClass({
       prev = sec;
     });
 
-    return {framen: 0, mstart: 0, mend: this.lastFramen};
+    return {framen: 0};
   },
   componentWillMount() {
-    this.props.onMarkStart(this.state.mstart);
-    this.props.onMarkEnd(this.state.mend);
     this.setTimeOf(this.state.framen);
   },
   componentDidMount() {
@@ -73,15 +71,15 @@ export default React.createClass({
   },
   isMarkStartDisabled() {
     return (
-      this.state.framen === this.state.mstart ||
-      this.state.framen >= this.state.mend ||
+      this.state.framen === this.props.mstart ||
+      this.state.framen >= this.props.mend ||
       !this.frames[this.state.framen].key
     );
   },
   isMarkEndDisabled() {
     return (
-      this.state.framen === this.state.mend ||
-      this.state.framen <= this.state.mstart
+      this.state.framen === this.props.mend ||
+      this.state.framen <= this.props.mstart
     );
   },
   setTimeOf(framen) {
@@ -193,11 +191,9 @@ export default React.createClass({
     this.setState({fullscreen: !this.state.fullscreen});
   },
   handleMarkStart() {
-    this.setState({mstart: this.state.framen});
     this.props.onMarkStart(this.state.framen);
   },
   handleMarkEnd() {
-    this.setState({mend: this.state.framen});
     this.props.onMarkEnd(this.state.framen);
   },
   handleTimeKey(e) {
