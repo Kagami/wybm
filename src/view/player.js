@@ -271,6 +271,7 @@ export default React.createClass({
           />
           <Time
             value={this.state.prettyTime}
+            invalid={!this.state.validTime}
             onChange={this.handleTimeChange}
             onKeyDown={this.handleTimeKey}
           />
@@ -379,9 +380,16 @@ const Time = React.createClass({
       fontSize: "22px",
       float: "left",
       marginRight: 5,
-      border: "1px solid #ccc",
       color: "#444",
     },
+  },
+  cid: "wybm-view-player-time",
+  getClassname() {
+    let name = this.cid;
+    if (this.props.invalid) {
+      name += ` ${this.cid}_invalid`;
+    }
+    return name;
   },
   render() {
     return (
@@ -389,7 +397,7 @@ const Time = React.createClass({
         type="text"
         maxLength={9}
         style={this.styles.main}
-        className="wybm-view-player-time"
+        className={this.getClassname()}
         {...this.props}
       />
     );
