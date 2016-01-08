@@ -73,7 +73,6 @@ export default React.createClass({
       name += "-";
       name += showTime(this.getEndTime(), ".");
     }
-    name += "_cut.webm";
     return name;
   },
   getPreviewText() {
