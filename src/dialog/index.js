@@ -23,21 +23,27 @@ import {popkeys} from "../util";
 export function alert(opts) {
   opts = Object.assign({
     width: 640,
-    height: 260,
+    height: 280,
     position: "center",
     always_on_top: true,
     focusOK: true,
   }, opts);
   const winOpts = popkeys(opts, ["content", "focusOK"]);
   return new Promise((resolve/*, reject*/) => {
-    global.nw.Window.open(ALERT_PATH, winOpts, win => {
+    window.nw.Window.open(ALERT_PATH, winOpts, win => {
+      // Window is no longer inherited from EventEmitter so we need
+      // custom one. See <https://github.com/nwjs/nw.js/issues/4120>.
       let wybm = win.wybm = new EventEmitter();
       wybm.opts = opts;
       wybm.on("ok", () => {
+        win.close(true);
         resolve();
-        win.close();
       });
-      win.on("closed", () => {
+      // NOTE(Kagami): We have to setup close event on child windows if
+      // "close" handler on parent window was defined. Otherwise child
+      // won't close.
+      win.on("close", () => {
+        win.close(true);
         resolve();
       });
     });
@@ -53,21 +59,19 @@ export function confirm(opts) {
   }, opts);
   const winOpts = opts;
   return new Promise((resolve, reject) => {
-    global.nw.Window.open(CONFIRM_PATH, winOpts, win => {
-      // Window is no longer inherited from EventEmitter so we need
-      // custom one. See <https://github.com/nwjs/nw.js/issues/4120>.
+    window.nw.Window.open(CONFIRM_PATH, winOpts, win => {
       let wybm = win.wybm = new EventEmitter();
       wybm.opts = opts;
       wybm.on("ok", () => {
+        win.close(true);
         resolve();
-        win.close();
       });
       wybm.on("cancel", () => {
+        win.close(true);
         reject(new Error("Cancel"));
-        win.close();
       });
-      // Will fire after "ok" as well but Promise will just ignore it.
-      win.on("closed", () => {
+      win.on("close", () => {
+        win.close(true);
         reject(new Error("Cancel"));
       });
     });
@@ -83,18 +87,19 @@ export function prompt(opts) {
   }, opts);
   const winOpts = popkeys(opts, ["default"]);
   return new Promise((resolve, reject) => {
-    global.nw.Window.open(PROMPT_PATH, winOpts, win => {
+    window.nw.Window.open(PROMPT_PATH, winOpts, win => {
       let wybm = win.wybm = new EventEmitter();
       wybm.opts = opts;
       wybm.on("ok", value => {
+        win.close(true);
         resolve(value);
-        win.close();
       });
       wybm.on("cancel", () => {
+        win.close(true);
         reject(new Error("Cancel"));
-        win.close();
       });
-      win.on("closed", () => {
+      win.on("close", () => {
+        win.close(true);
         reject(new Error("Cancel"));
       });
     });

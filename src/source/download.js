@@ -9,10 +9,9 @@ import http from "http";
 import https from "https";
 import assert from "assert";
 import {parse as parseUrl} from "url";
-import tmp from "tmp";
 import React from "react";
 import FFmpeg from "../ffmpeg";
-import {ShowHide, showSize, showErr} from "../util";
+import {ShowHide, showSize, showErr, tmp} from "../util";
 
 export default React.createClass({
   getInitialState() {

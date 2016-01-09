@@ -3,7 +3,6 @@
  * @module wybm/index
  */
 
-import tmp from "tmp";
 import React from "react";
 import ReactDOM from "react-dom";
 import Source from "../source";
@@ -44,5 +43,4 @@ const Index = React.createClass({
   },
 });
 
-tmp.setGracefulCleanup();
 ReactDOM.render(<Index/>, document.getElementById("wybm-index"));

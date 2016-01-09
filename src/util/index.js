@@ -4,6 +4,7 @@
  */
 
 import assert from "assert";
+import _tmp from "tmp";
 
 export {default as ShowHide} from "./show-hide";
 
@@ -83,3 +84,53 @@ export function popkeys(obj, keys) {
   keys.forEach(key => delete copy[key]);
   return copy;
 }
+
+// XXX(Kagami): We got process "exit" event on child window close so
+// "tmp" library cleanup will delete all current temporary files which
+// is unacceptable. So we need to wrap tmp calls and clean everything on
+// main window close by ourself. Defining "close" event also affects
+// child windows (see dialog module).
+// This way we should actually always remove all temp objects though,
+// even on Ctrl+C (see <https://github.com/raszi/node-tmp/issues/18>).
+export const tmp = (function() {
+  let removes = [];
+  function cleanup() {
+    while (removes.length) {
+      try {
+        removes.shift()();
+      } catch(e) {
+        /* skip */
+      }
+    }
+  }
+
+  let win = window.nw.Window.get();
+  win.on("close", function() {
+    win.hide();
+    cleanup();
+    win.close(true);
+  });
+
+  // TODO(Kagami): This won't work on Windows (see
+  // <https://stackoverflow.com/q/10021373>).
+  process.on("SIGINT", function() {
+    cleanup();
+  });
+
+  // Tiny subset of API which we actually use but fully compatible with
+  // tmp module.
+  return {
+    fileSync(opts) {
+      opts = Object.assign({}, opts, {keep: true});
+      const tmpObj = _tmp.fileSync(opts);
+      removes.push(tmpObj.removeCallback);
+      return tmpObj;
+    },
+    dirSync(opts) {
+      opts = Object.assign({}, opts, {keep: true});
+      const tmpObj = _tmp.dirSync(opts);
+      removes.push(tmpObj.removeCallback);
+      return tmpObj;
+    },
+  };
+})();

@@ -4,7 +4,7 @@
  */
 
 import {spawn} from "child_process";
-import tmp from "tmp";
+import {tmp} from "../util";
 if (WIN_BUILD) {
   // TODO(Kagami): Allow to use system ffmpeg.
   require("file?name=[name].[ext]!../../bin/ffmpeg.exe");
