@@ -134,6 +134,7 @@ export default React.createClass({
   toggleLoopCut() {
     this.setState({loopCut: !this.state.loopCut});
   },
+  /* eslint-disable space-infix-ops */
   handleDocumentKey(e) {
     switch (e.keyCode) {
     case this.KEY_SPACE:
@@ -175,6 +176,7 @@ export default React.createClass({
       break;
     }
   },
+  /* eslint-enable space-infix-ops */
   handlePlayEvent() {
     this.setState({playing: true});
   },

@@ -68,7 +68,7 @@ export default React.createClass({
     // * "(?(1).+)?$" at the end is removed (not supported by JS)
     //
     // It will have few false-positives but it's not that bad.
-    const yre = XRegExp(String.raw`(?x)^
+    const yre = new XRegExp(String.raw`(?x)^
       (
           (?:https?://|//)
           (?:(?:(?:(?:\w+\.)?[yY][oO][uU][tT][uU][bB][eE](?:-nocookie)?\.com/|

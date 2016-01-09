@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body{background:#ccc}
+    h3{margin:0}
+    button{font-size:20px}
+  </style>
+</head>
+<body>
+  <center>
+    <h3 id="title"></h3>
+    <br>
+    <button id="ok">OK</button>
+    <button id="cancel">Cancel</button>
+  </center>
+  <script>
+    var wybm = nw.Window.get().wybm;
+    document.getElementById("title").innerText = wybm.opts.title;
+    document.getElementById("ok").onclick = function() {
+      wybm.emit("ok");
+    }
+    document.getElementById("cancel").onclick = function() {
+      wybm.emit("cancel");
+    }
+  </script>
+</body>
+</html>

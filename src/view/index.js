@@ -8,6 +8,7 @@ import React from "react";
 import Stats from "./stats";
 import Player from "./player";
 import Save from "./save";
+import dialog from "../dialog";
 import {VPaned, HPaned, Table, Text, Br, BigButton, FileButton} from "../theme";
 import {ShowHide, showSize, showTime} from "../util";
 
@@ -51,8 +52,9 @@ export default React.createClass({
   isMarkEndAtEnd() {
     if (!this.checkMarks()) return;
     // NOTE(Kagami): It's not possible to cut only single last frame
-    // this way. [last-N .. EOF] works perfectly however where N > 0 and
-    // there is very rare chance that last frame would be keyframe.
+    // this way (both [last .. EOF] and [START .. last-1] variants).
+    // We hope this operation shouldn't be needed often because allowing
+    // this special cases will make code more complicated.
     return this.state.mend === (this.state.stats.frames.length - 1);
   },
   getStartTime() {
@@ -141,6 +143,11 @@ export default React.createClass({
   handleViewAgain() {
     this.setState({target: null});
   },
+  handlePlayerClear() {
+    dialog
+      .confirm({title: "Are you sure want to cancel editing?"})
+      .then(this.props.onClear);
+  },
   render() {
     return (
       <div style={this.styles.expand}>
@@ -162,7 +169,7 @@ export default React.createClass({
                 mend={this.state.mend}
                 onMarkStart={this.handleMarkStart}
                 onMarkEnd={this.handleMarkEnd}
-                onClear={this.props.onClear}
+                onClear={this.handlePlayerClear}
               />
               <HPaned>
                 <Text>
