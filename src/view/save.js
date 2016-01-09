@@ -54,6 +54,9 @@ export default React.createClass({
   handleOpen() {
     global.nw.Shell.openItem(this.props.target.path);
   },
+  handleOpenFolder() {
+    global.nw.Shell.showItemInFolder(this.props.target.path);
+  },
   render() {
     return (
       <Center>
@@ -78,9 +81,11 @@ export default React.createClass({
           <Br/>
           <BigButton value="Open" onClick={this.handleOpen} />
           <Br/>
-          <BigButton value="Cut again" onClick={this.props.onAgain} />
+          <BigButton value="Open folder" onClick={this.handleOpenFolder} />
           <Br/>
-          <BigButton value="New file" onClick={this.props.onClear} />
+          <BigButton value="Back" onClick={this.props.onAgain} />
+          <Br/>
+          <BigButton value="Cancel" onClick={this.props.onClear} />
         </ShowHide>
       </Center>
     );

@@ -116,7 +116,7 @@ export default React.createClass({
     const mend = stats.frames.length - 1;
     this.setState({stats, mstart, mend});
   },
-  handlePlayerClear() {
+  handleClear() {
     dialog
       .confirm({title: "Are you sure want to cancel editing?"})
       .then(this.props.onClear);
@@ -207,7 +207,7 @@ export default React.createClass({
                 mend={this.state.mend}
                 onMarkStart={this.handleMarkStart}
                 onMarkEnd={this.handleMarkEnd}
-                onClear={this.handlePlayerClear}
+                onClear={this.handleClear}
               />
               <HPaned>
                 <Text>
@@ -316,7 +316,7 @@ export default React.createClass({
             end={this.isMarkEndAtEnd() ? null : this.getEndTime()}
             preview={this.state.preview}
             onAgain={this.handleViewAgain}
-            onClear={this.props.onClear}
+            onClear={this.handleClear}
           />
         </ShowHide>
       </div>
