@@ -15,10 +15,35 @@
 // (e.g. transparent absolute div).
 
 import EventEmitter from "events";
+import ALERT_PATH from "file?name=[name].[ext]!./alert.html";
 import CONFIRM_PATH from "file?name=[name].[ext]!./confirm.html";
+import {popkey} from "../util";
+
+export function alert(opts) {
+  let winOpts = Object.assign({
+    width: 640,
+    height: 260,
+    position: "center",
+    always_on_top: true,
+  }, opts);
+  popkey(winOpts, "content");
+  return new Promise((resolve/*, reject*/) => {
+    global.nw.Window.open(ALERT_PATH, winOpts, win => {
+      let wybm = win.wybm = new EventEmitter();
+      wybm.opts = opts;
+      wybm.on("ok", () => {
+        resolve();
+        win.close();
+      });
+      win.on("closed", () => {
+        resolve();
+      });
+    });
+  });
+}
 
 export function confirm(opts) {
-  const winOpts = Object.assign({
+  let winOpts = Object.assign({
     width: 300,
     height: 120,
     position: "center",
@@ -26,10 +51,10 @@ export function confirm(opts) {
   }, opts);
   return new Promise((resolve, reject) => {
     global.nw.Window.open(CONFIRM_PATH, winOpts, win => {
-      // Window is no longer inherited from EventEmitter so we need this
-      // bikeshed. See <https://github.com/nwjs/nw.js/issues/4120>.
+      // Window is no longer inherited from EventEmitter so we need
+      // custom one. See <https://github.com/nwjs/nw.js/issues/4120>.
       let wybm = win.wybm = new EventEmitter();
-      wybm.opts = winOpts;
+      wybm.opts = opts;
       wybm.on("ok", () => {
         resolve();
         win.close();
@@ -46,4 +71,4 @@ export function confirm(opts) {
   });
 }
 
-export default {confirm};
+export default {alert, confirm};

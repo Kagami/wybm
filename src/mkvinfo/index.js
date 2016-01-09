@@ -3,8 +3,10 @@
  * @module wybm/mkvinfo
  */
 
+import fs from "fs";
 import assert from "assert";
 import {spawn} from "child_process";
+import XRegExp from "xregexp";
 if (WIN_BUILD) {
   // TODO(Kagami): Allow to use system mkvinfo.
   require("file?name=[name].[ext]!../../bin/mkvinfo.exe");
@@ -40,6 +42,9 @@ export default {
   },
   getStats(fpath) {
     return this._run(RUNPATH, ["-v", "-v", fpath]).then(out => {
+      // Collect some useful info.
+      const size = fs.statSync(fpath).size;
+      const duration = +out.match(/\+ Duration: (\d+(\.\d+)?)/)[1];
       // Track segment is at level 0.
       const trstart = out.indexOf("\n|+ Segment tracks at ");
       assert(trstart >= 0);
@@ -51,31 +56,33 @@ export default {
         .split("+ A track at ")
         // Skip first useless chunk.
         .slice(1);
-      let vid, width, height;
+      let vid, width, height, fps;
       for (let i = 0; i < tracks.length; i++) {
         const track = tracks[i];
         if (track.indexOf("+ Track type: video") >= 0) {
           vid = track.match(/\+ Track number: (\d+)/)[1];
           width = +track.match(/\+ Display width: (\d+)/)[1];
           height = +track.match(/\+ Display height: (\d+)/)[1];
+          fps = +track.match(/\+ Default duration:.*\((\d+(\.\d+)?) frames/)[1];
           // We need only first video track since it's what browsers
           // display in <video> tag.
           break;
         }
       }
-      assert(vid);
-      assert(width);
-      assert(height);
+      // This is the only required field, it's ok for other stuff to
+      // contain buggy values. (They should at least present in mkvinfo
+      // output though otherwise match()[1] will throw.)
+      assert(vid != null);
       // TODO(Kagami): This can't detect keyframes contained inside
       // BlockGroup. "mkvinfo -v -v -v" + "[I frame]" matching is needed
       // for that.
-      const framere = new RegExp([
-        "\\+ (?:Simple)?Block \\(",
-        "(key, )?",
-        `track number ${vid},`,
-        ".* timecode ([\\d.]+)s",
-        ".* at (\\d+)",
-      ].join(""));
+      const framere = new XRegExp(String.raw`(?x)
+        \+\ (?:Simple)?Block\ \(
+        (key,\ )?
+        track\ number\ ${vid},
+        .*\ timecode\ ([\d.]+)
+        .*\ at\ (\d+)
+      `);
       let frames = [];
       out.split(/\r?\n/).forEach(line => {
         const framem = line.match(framere);
@@ -110,7 +117,7 @@ export default {
       });
       frames.forEach((f, i) => f.index = i);
       assert(frames.length, "No frames");
-      return {width, height, frames};
+      return {size, duration, width, height, fps, frames};
     });
   },
 };

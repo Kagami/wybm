@@ -115,6 +115,11 @@ export default React.createClass({
     const mend = stats.frames.length - 1;
     this.setState({stats, mstart, mend});
   },
+  handlePlayerClear() {
+    dialog
+      .confirm({title: "Are you sure want to cancel editing?"})
+      .then(this.props.onClear);
+  },
   handleMarkStart(mstart) {
     this.setState({mstart});
   },
@@ -136,17 +141,50 @@ export default React.createClass({
   handlePreviewClear() {
     this.setState({preview: null});
   },
+  handleInfoClick() {
+    const source = this.props.source;
+    const stats = this.state.stats;
+    const content = `
+      <div>
+        <style scoped>
+          table{margin:0 auto}
+          td:nth-child(2){color:#999;word-break:break-word}
+        </style>
+        <center><h3>File info</h3></center>
+        <table>
+        <tbody>
+        <tr>
+          <td width="150">Path:</td>
+          <td>${source.path}</td>
+        </td>
+        <tr>
+          <td>Size:</td>
+          <td>${showSize(stats.size)}</td>
+        </td>
+        <tr>
+          <td>Duration:</td>
+          <td>${showTime(stats.duration)}</td>
+        </td>
+        <tr>
+          <td>Resolution:</td>
+          <td>${stats.width}x${stats.height}@${stats.fps}</td>
+        </td>
+        </tbody>
+        </table>
+      </div>
+    `;
+    dialog.alert({title: "File info", content});
+  },
+  handleHelpClick() {
+  },
+  handleAutofitClick() {
+  },
   handleSaveClick(file) {
     this.refs.player.pause();
     this.setState({target: file});
   },
   handleViewAgain() {
     this.setState({target: null});
-  },
-  handlePlayerClear() {
-    dialog
-      .confirm({title: "Are you sure want to cancel editing?"})
-      .then(this.props.onClear);
   },
   render() {
     return (
@@ -222,44 +260,47 @@ export default React.createClass({
                 </Text>
                 <div style={this.styles.ops}>
                   <FileButton
+                    width={150}
                     value="Image pr."
                     title="Load image preview"
                     accept="image/*"
                     onChange={this.handleImagePreview}
-                    width={150}
                   />
                   <span> </span>
                   <BigButton
+                    width={150}
                     value="Frame pr."
                     title="Use current video frame as a preview"
                     onClick={this.handleFramePreview}
-                    width={150}
                   />
                   <Br height={10} />
                   <BigButton
+                    width={150}
                     value="File info"
                     title="Show file stats"
-                    width={150}
+                    onClick={this.handleInfoClick}
                   />
                   <span> </span>
                   <BigButton
+                    width={150}
                     value="Help"
                     title="Show program's help"
-                    width={150}
+                    onClick={this.handleHelpClick}
                   />
                   <Br height={10} />
                   <BigButton
+                    width={150}
                     value="Autofit"
                     title="Fit to limit from start position"
-                    width={150}
+                    onClick={this.handleAutofitClick()}
                   />
                   <span> </span>
                   <FileButton
+                    width={150}
                     value="Save"
                     title="Save selected fragment to disk"
                     saveAs={this.getDefaultName()}
                     onChange={this.handleSaveClick}
-                    width={150}
                   />
                 </div>
               </HPaned>

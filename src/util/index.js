@@ -77,3 +77,9 @@ export function tryRun(fn, arg, def) {
     return def;
   }
 }
+
+export function popkey(obj, key) {
+  const value = obj[key];
+  delete obj[key];
+  return value;
+}

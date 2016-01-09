@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body{background:#eee;font-size:20px}
+    #ok{font-size:20px;cursor:pointer}
+  </style>
+</head>
+<body>
+  <div id="content"></div>
+  <br>
+  <center><button id="ok">OK</button></center>
+  <script>
+    var wybm = nw.Window.get().wybm;
+    document.getElementById("content").innerHTML = wybm.opts.content;
+    document.getElementById("ok").onclick = function() {
+      wybm.emit("ok");
+    }
+  </script>
+</body>
+</html>
