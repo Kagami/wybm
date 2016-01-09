@@ -81,7 +81,6 @@ export default React.createClass({
     return b.abr - a.abr;
   },
   getAudioFormats() {
-    // TODO(Kagami): Allow to skip audio?
     return this.props.info.formats
       .filter(f => f.acodec === "vorbis" || f.acodec === "opus")
       .sort(this.compareAudio)
@@ -89,7 +88,8 @@ export default React.createClass({
         key: f.format_id,
         text: `${toCapitalCase(f.acodec)} ${f.abr}kbits
                (${showSize(f.filesize)})`,
-      }));
+      }))
+      .concat({key: null, text: "none"});
   },
   getCurrentVideo() {
     const vid = this.refs.video.value;
@@ -107,9 +107,6 @@ export default React.createClass({
     // This normally shouldn't happen. At least "vp8.0" should be
     // available for all videos.
     return !this.getVideoFormats().length;
-  },
-  isAudioNotAvailable() {
-    return !this.getAudioFormats().length;
   },
   handleDownloadClick() {
     const video = this.getCurrentVideo();
@@ -140,11 +137,7 @@ export default React.createClass({
         </select>
         <div style={this.styles.br} />
         <div style={this.styles.text}>Audio format:</div>
-        <select
-          ref="audio"
-          style={this.styles.select}
-          disabled={this.isAudioNotAvailable()}
-        >
+        <select ref="audio" style={this.styles.select}>
           {this.getAudioFormats().map(f =>
             <option key={f.key} value={f.key}>{f.text}</option>
           )}
