@@ -50,6 +50,7 @@
     "eslint-plugin-react": "^3.14.0",
     "file-loader": "^0.8.5",
     "nw": "^0.13.0-beta2sdk",
+    "raw-loader": "^0.5.1",
     "webpack": "^1.12.9"
   }
 }

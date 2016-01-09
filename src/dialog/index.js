@@ -17,16 +17,17 @@
 import EventEmitter from "events";
 import ALERT_PATH from "file?name=[name].[ext]!./alert.html";
 import CONFIRM_PATH from "file?name=[name].[ext]!./confirm.html";
-import {popkey} from "../util";
+import {popkeys} from "../util";
 
 export function alert(opts) {
-  let winOpts = Object.assign({
+  opts = Object.assign({
     width: 640,
     height: 260,
     position: "center",
     always_on_top: true,
+    focusOK: true,
   }, opts);
-  popkey(winOpts, "content");
+  const winOpts = popkeys(opts, ["content", "focusOK"]);
   return new Promise((resolve/*, reject*/) => {
     global.nw.Window.open(ALERT_PATH, winOpts, win => {
       let wybm = win.wybm = new EventEmitter();
@@ -43,12 +44,13 @@ export function alert(opts) {
 }
 
 export function confirm(opts) {
-  let winOpts = Object.assign({
+  opts = Object.assign({
     width: 300,
     height: 120,
     position: "center",
     always_on_top: true,
   }, opts);
+  const winOpts = opts;
   return new Promise((resolve, reject) => {
     global.nw.Window.open(CONFIRM_PATH, winOpts, win => {
       // Window is no longer inherited from EventEmitter so we need
@@ -70,5 +72,3 @@ export function confirm(opts) {
     });
   });
 }
-
-export default {alert, confirm};

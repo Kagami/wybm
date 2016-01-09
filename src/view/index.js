@@ -8,7 +8,8 @@ import React from "react";
 import Stats from "./stats";
 import Player from "./player";
 import Save from "./save";
-import dialog from "../dialog";
+import HELP from "raw!./help.html";
+import * as dialog from "../dialog";
 import {VPaned, HPaned, Table, Text, Br, BigButton, FileButton} from "../theme";
 import {ShowHide, showSize, showTime} from "../util";
 
@@ -145,14 +146,13 @@ export default React.createClass({
     const source = this.props.source;
     const stats = this.state.stats;
     const content = `
-      <div>
+      <div id="inner">
         <style scoped>
-          table{margin:0 auto}
-          td:nth-child(2){color:#999;word-break:break-word}
+          #inner table{margin:0 auto}
+          #inner td:nth-child(2){color:#999;word-break:break-word}
         </style>
         <center><h3>File info</h3></center>
         <table>
-        <tbody>
         <tr>
           <td width="150">Path:</td>
           <td>${source.path}</td>
@@ -169,13 +169,13 @@ export default React.createClass({
           <td>Resolution:</td>
           <td>${stats.width}x${stats.height}@${stats.fps}</td>
         </td>
-        </tbody>
         </table>
       </div>
     `;
     dialog.alert({title: "File info", content});
   },
   handleHelpClick() {
+    dialog.alert({height: 500, title: "Help", content: HELP, focusOK: false});
   },
   handleAutofitClick() {
   },

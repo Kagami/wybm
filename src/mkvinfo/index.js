@@ -47,10 +47,10 @@ export default {
       const duration = +out.match(/\+ Duration: (\d+(\.\d+)?)/)[1];
       // Track segment is at level 0.
       const trstart = out.indexOf("\n|+ Segment tracks at ");
-      assert(trstart >= 0);
+      assert(trstart >= 0, "Can't find segment start");
       // Copy until next level 0 element.
       const trend = out.indexOf("\n|+ ", trstart + 1);
-      assert(trend >= 0);
+      assert(trend >= 0, "Can't find segment end");
       const tracks = out
         .slice(trstart, trend)
         .split("+ A track at ")
@@ -72,7 +72,7 @@ export default {
       // This is the only required field, it's ok for other stuff to
       // contain buggy values. (They should at least present in mkvinfo
       // output though otherwise match()[1] will throw.)
-      assert(vid != null);
+      assert(vid != null, "Bad video track ID");
       // TODO(Kagami): This can't detect keyframes contained inside
       // BlockGroup. "mkvinfo -v -v -v" + "[I frame]" matching is needed
       // for that.

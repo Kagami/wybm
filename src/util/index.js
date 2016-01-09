@@ -78,8 +78,8 @@ export function tryRun(fn, arg, def) {
   }
 }
 
-export function popkey(obj, key) {
-  const value = obj[key];
-  delete obj[key];
-  return value;
+export function popkeys(obj, keys) {
+  let copy = Object.assign({}, obj);
+  keys.forEach(key => delete copy[key]);
+  return copy;
 }

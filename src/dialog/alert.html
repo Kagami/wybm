@@ -17,6 +17,9 @@
     document.getElementById("ok").onclick = function() {
       wybm.emit("ok");
     }
+    if (wybm.opts.focusOK) {
+      document.getElementById("ok").focus();
+    }
   </script>
 </body>
 </html>

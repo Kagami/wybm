@@ -294,7 +294,7 @@ export default React.createClass({
           />
           <Control
             value="⟳"
-            title="Toggle cut fragment looping"
+            title="Toggle fragment looping"
             onClick={this.toggleLoopCut}
             pressed={this.state.loopCut}
           />
