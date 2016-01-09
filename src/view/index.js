@@ -178,6 +178,25 @@ export default React.createClass({
     dialog.alert({height: 500, title: "Help", content: HELP, focusOK: false});
   },
   handleAutofitClick() {
+    const def = this.lastDefault || 19.5;
+    dialog
+      .prompt({title: "Enter desired file size (MiB):", default: def})
+      .then(size => {
+        this.lastDefault = size;
+        size = +size * 1024 * 1024;
+        if (!Number.isFinite(size) || size <= 0) return;
+        const frames = this.state.stats.frames;
+        const startPos = frames[this.state.mstart].pos;
+        for (let i = this.state.mstart + 2; i < frames.length; i++) {
+          // Mode "find fragment _not_ greater than X" is more useful
+          // for us.
+          if (frames[i].pos - startPos > size) {
+            return this.setState({mend: i - 1});
+          }
+        }
+        // Ok to fit up to the end.
+        this.setState({mend: frames.length - 1});
+      });
   },
   handleSaveClick(file) {
     this.refs.player.pause();
@@ -292,7 +311,7 @@ export default React.createClass({
                     width={150}
                     value="Autofit"
                     title="Fit to limit from start position"
-                    onClick={this.handleAutofitClick()}
+                    onClick={this.handleAutofitClick}
                   />
                   <span> </span>
                   <FileButton

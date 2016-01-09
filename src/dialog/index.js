@@ -17,6 +17,7 @@
 import EventEmitter from "events";
 import ALERT_PATH from "file?name=[name].[ext]!./alert.html";
 import CONFIRM_PATH from "file?name=[name].[ext]!./confirm.html";
+import PROMPT_PATH from "file?name=[name].[ext]!./prompt.html";
 import {popkeys} from "../util";
 
 export function alert(opts) {
@@ -66,6 +67,33 @@ export function confirm(opts) {
         win.close();
       });
       // Will fire after "ok" as well but Promise will just ignore it.
+      win.on("closed", () => {
+        reject(new Error("Cancel"));
+      });
+    });
+  });
+}
+
+export function prompt(opts) {
+  opts = Object.assign({
+    width: 350,
+    height: 120,
+    position: "center",
+    always_on_top: true,
+  }, opts);
+  const winOpts = popkeys(opts, ["default"]);
+  return new Promise((resolve, reject) => {
+    global.nw.Window.open(PROMPT_PATH, winOpts, win => {
+      let wybm = win.wybm = new EventEmitter();
+      wybm.opts = opts;
+      wybm.on("ok", value => {
+        resolve(value);
+        win.close();
+      });
+      wybm.on("cancel", () => {
+        reject(new Error("Cancel"));
+        win.close();
+      });
       win.on("closed", () => {
         reject(new Error("Cancel"));
       });

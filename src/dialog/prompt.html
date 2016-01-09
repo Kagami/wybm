@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body{background:#eee}
+    #title{margin:0 0 10px 0}
+    #input{display:block;width:80%;font-size:20px;margin-bottom:10px}
+    #ok,#cancel{font-size:20px;cursor:pointer}
+  </style>
+</head>
+<body>
+  <center>
+    <h3 id="title"></h3>
+    <form id="form">
+      <input id="input" type="text" autofocus autocomplete="off">
+      <button id="ok" type="submit">OK</button>
+      <button id="cancel">Cancel</button>
+    </form>
+  </center>
+  <script>
+    var wybm = nw.Window.get().wybm;
+    document.getElementById("title").innerText = wybm.opts.title;
+    var input = document.getElementById("input");
+    input.value = wybm.opts.default;
+    input.setSelectionRange(0, input.value.length);
+    document.getElementById("form").onsubmit = function() {
+      wybm.emit("ok", input.value);
+    }
+    document.getElementById("cancel").onclick = function() {
+      wybm.emit("cancel");
+    }
+  </script>
+</body>
+</html>
