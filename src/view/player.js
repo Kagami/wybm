@@ -6,6 +6,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import {parseTime, showTime, tryRun} from "../util";
+import "file?name=[name].[ext]!./volume-up.svg";
+import "file?name=[name].[ext]!./volume-off.svg";
 
 export default React.createClass({
   getInitialState() {
@@ -44,6 +46,7 @@ export default React.createClass({
     this.getVideoNode().addEventListener(
       "webkitfullscreenchange", this.handleFullscreenEvent, false
     );
+    this.handleVolumeEvent();
   },
   componentWillUnmount() {
     this.getVideoNode().removeEventListener(
@@ -215,6 +218,10 @@ export default React.createClass({
     this.setTimeOf(this.lastFramen);
     this.setState({framen: this.lastFramen});
   },
+  handleVolumeEvent() {
+    const video = this.getVideoNode();
+    this.setState({volume: video.volume, muted: video.muted});
+  },
   handleFullscreenEvent() {
     this.setState({fullscreen: !this.state.fullscreen});
   },
@@ -255,6 +262,14 @@ export default React.createClass({
   handleSeekKey(e) {
     e.preventDefault();
   },
+  handleControlVolumeChange(volume) {
+    // State will be updated in <video> event handlers in order to
+    // synchronize fullscreen volume changes as well.
+    this.getVideoNode().volume = volume;
+  },
+  handleControlMutedChange(muted) {
+    this.getVideoNode().muted = muted;
+  },
   render() {
     // TODO(Kagami): Confirmation for cancel.
     return (
@@ -266,6 +281,7 @@ export default React.createClass({
           onPlaying={this.handlePlayEvent}
           onPause={this.handlePauseEvent}
           onTimeUpdate={this.handleSeekEvent}
+          onVolumeChange={this.handleVolumeEvent}
           onDoubleClick={this.toggleFullscreen}
         />
         <Controls>
@@ -303,6 +319,12 @@ export default React.createClass({
             value="⏏"
             title="Cancel editing"
             onClick={this.props.onClear}
+          />
+          <Volume
+            volume={this.state.volume}
+            muted={this.state.muted}
+            onVolumeChange={this.handleControlVolumeChange}
+            onMutedChange={this.handleControlMutedChange}
           />
           <Seek
             value={this.state.framen}
@@ -366,6 +388,7 @@ const Control = React.createClass({
     let name = this.cid;
     if (this.props.right) name += ` ${this.cid}_right`;
     if (this.props.pressed) name += ` ${this.cid}_pressed`;
+    if (this.props.mod) name += ` ${this.cid}_${this.props.mod}`;
     return name;
   },
   handleKey(e) {
@@ -380,6 +403,73 @@ const Control = React.createClass({
         onKeyDown={this.handleKey}
         {...this.props}
       />
+    );
+  },
+});
+
+const Volume = React.createClass({
+  getInitialState() {
+    return {};
+  },
+  styles: {
+    main: {
+      float: "right",
+      position: "relative",
+    },
+    slider: {
+      position: "absolute",
+      bottom: 36,
+      width: 50,
+      height: 80,
+      margin: 0,
+      cursor: "pointer",
+      // NOTE(Kagami): It's not possible to style vertical slider, but
+      // we might try transform:rotate, see
+      // <https://stackoverflow.com/a/24370140>.
+      WebkitAppearance: "slider-vertical",
+    },
+  },
+  getSliderStyles() {
+    const display = this.state.shown ? "block" : "none";
+    return Object.assign({display}, this.styles.slider);
+  },
+  handleMouseOver() {
+    this.setState({shown: true});
+  },
+  handleMouseOut() {
+    this.setState({shown: false});
+  },
+  handleVolumeChange(e) {
+    // Emulate browser behavior.
+    this.props.onMutedChange(false);
+    this.props.onVolumeChange(e.target.value / 100);
+  },
+  handleMuteChange() {
+    this.props.onMutedChange(!this.props.muted);
+  },
+  render() {
+    const mod = (this.props.muted || this.props.volume < 0.01)
+      ? "mute"
+      : "volume";
+    return (
+      <div
+        style={this.styles.main}
+        onMouseOver={this.handleMouseOver}
+        onMouseOut={this.handleMouseOut}
+      >
+        <input
+          type="range"
+          title="Change volume"
+          style={this.getSliderStyles()}
+          value={this.props.muted ? 0 : this.props.volume * 100}
+          onChange={this.handleVolumeChange}
+        />
+        <Control
+          mod={mod}
+          title="Toggle mute"
+          onClick={this.handleMuteChange}
+        />
+      </div>
     );
   },
 });
@@ -441,7 +531,7 @@ const Seek = React.createClass({
     return (
       <div style={this.styles.main}>
         <style scoped>{`
-          input[type=range]::-webkit-slider-runnable-track {
+          .wybm-view-player-seek::-webkit-slider-runnable-track {
             background: -webkit-linear-gradient(
               left,
               #ccc ${mstartPercent}%,
@@ -455,6 +545,7 @@ const Seek = React.createClass({
           type="range"
           list="keyframes"
           style={this.styles.range}
+          className="wybm-view-player-seek"
           {...this.props}
         />
         <datalist id="keyframes">
