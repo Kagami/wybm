@@ -36,14 +36,10 @@ export function alert(opts) {
       let wybm = win.wybm = new EventEmitter();
       wybm.opts = opts;
       wybm.on("ok", () => {
-        win.close(true);
+        win.close();
         resolve();
       });
-      // NOTE(Kagami): We have to setup close event on child windows if
-      // "close" handler on parent window was defined. Otherwise child
-      // won't close.
-      win.on("close", () => {
-        win.close(true);
+      win.on("closed", () => {
         resolve();
       });
     });
@@ -63,15 +59,15 @@ export function confirm(opts) {
       let wybm = win.wybm = new EventEmitter();
       wybm.opts = opts;
       wybm.on("ok", () => {
-        win.close(true);
+        win.close();
         resolve();
       });
       wybm.on("cancel", () => {
-        win.close(true);
+        win.close();
         reject(new Error("Cancel"));
       });
-      win.on("close", () => {
-        win.close(true);
+      win.on("closed", () => {
+        // Will fire even after ok&resolve but won't harm.
         reject(new Error("Cancel"));
       });
     });
@@ -91,15 +87,14 @@ export function prompt(opts) {
       let wybm = win.wybm = new EventEmitter();
       wybm.opts = opts;
       wybm.on("ok", value => {
-        win.close(true);
+        win.close();
         resolve(value);
       });
       wybm.on("cancel", () => {
-        win.close(true);
+        win.close();
         reject(new Error("Cancel"));
       });
-      win.on("close", () => {
-        win.close(true);
+      win.on("closed", () => {
         reject(new Error("Cancel"));
       });
     });

@@ -4,10 +4,11 @@
  */
 
 import fs from "fs";
+import tmp from "tmp";
 import React from "react";
 import FFmpeg from "../ffmpeg";
 import {Center, Header, Text, Br, BigButton} from "../theme";
-import {ShowHide, showErr, showSize, tmp} from "../util";
+import {ShowHide, showErr, showSize} from "../util";
 
 export default React.createClass({
   getInitialState() {

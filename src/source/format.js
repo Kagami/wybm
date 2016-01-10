@@ -6,6 +6,7 @@
 import assert from "assert";
 import React from "react";
 import {showSize, toCapitalCase} from "../util";
+import * as dialog from "../dialog";
 
 export default React.createClass({
   componentDidMount() {
@@ -120,9 +121,6 @@ export default React.createClass({
       audio: audio ? Object.assign({}, audio) : null,
     });
   },
-  handleCancelClick() {
-    this.props.onCancel();
-  },
   render() {
     return (
       <div>
@@ -158,7 +156,7 @@ export default React.createClass({
           value="Cancel"
           type="button"
           style={this.styles.bigButton}
-          onClick={this.handleCancelClick}
+          onClick={this.props.onCancel}
         />
       </div>
     );

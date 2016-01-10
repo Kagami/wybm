@@ -3,12 +3,12 @@
 NAME = wybm
 VERSION := $(shell npm -j version | awk -F '"' '/"wybm"/{print $$4}')
 DIST_DIR = dist
-LIN64_NW_DIR = bin/nwjs-v0.13.0-beta2-linux-x64
+LIN64_NW_DIR = bin/nwjs-v0.13.0-beta3-linux-x64
 LIN64_APP = app-v$(VERSION)-linux-x64.nw
 LIN64_RELEASE = $(NAME)-v$(VERSION)-linux-x64
 LIN64_RELEASE_DIR = $(DIST_DIR)/$(LIN64_RELEASE)
 LIN64_ZIP = $(LIN64_RELEASE).7z
-WIN32_NW_DIR = bin/nwjs-v0.13.0-beta2-win-ia32
+WIN32_NW_DIR = bin/nwjs-v0.13.0-beta3-win-ia32
 WIN32_APP = app-v$(VERSION)-win-x86.nw
 WIN32_RELEASE = $(NAME)-v$(VERSION)-win-x86
 WIN32_RELEASE_DIR = $(DIST_DIR)/$(WIN32_RELEASE)

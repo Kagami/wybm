@@ -5,10 +5,11 @@
 
 import fs from "fs";
 import path from "path";
+import tmp from "tmp";
 import request from "request";
 import React from "react";
 import FFmpeg from "../ffmpeg";
-import {ShowHide, showSize, showErr, tmp} from "../util";
+import {ShowHide, showSize, showErr} from "../util";
 
 export default React.createClass({
   getInitialState() {
