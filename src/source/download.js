@@ -83,10 +83,16 @@ export default React.createClass({
             `Got ${res.statusCode} error while downloading video`
           ));
         }
+        // NOTE(Kagami): This won't work with keep-alive/chunked but
+        // seems like youtube storage backends don't use it?
+        const reslen = +res.headers["content-length"];
+        if (!reslen) {
+          return reject(new Error("Got wrong Content-Length"));
+        }
         // vp8.0 format lacks file size info.
         if (!format.video.filesize) {
           // DOM will be updated on next "data" event.
-          format.video.filesize = +res.headers["content-length"];
+          format.video.filesize = reslen;
         }
         res.on("data", chunk => {
           this.setState({vdata: this.state.vdata + chunk.length});
