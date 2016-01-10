@@ -77,7 +77,6 @@ export default React.createClass({
     if (!this.checkMarks()) return;
     let name = this.props.source.saveAs || this.props.source.path;
     name = basename(name, extname(name));
-    name = name.slice(0, 40);
     if (!this.isMarkStartAtStart() || !this.isMarkEndAtEnd()) {
       name += "_";
       name += showTime(this.getStartTime(), ".");
