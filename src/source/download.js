@@ -54,6 +54,8 @@ export default React.createClass({
   download() {
     this.setState({vdata: 0, adata: 0, downloadingError: null});
     const format = this.props.format;
+    // vp8.0 format lacks file size info.
+    const videoHasSize = !!format.video.filesize;
 
     // TODO(Kagami): How to handle file write errors?
     let vpromise = new Promise((resolve, reject) => {
@@ -66,10 +68,10 @@ export default React.createClass({
             `Got ${res.statusCode} error while downloading video`
           ));
         }
-        // vp8.0 format lacks file size info.
-        if (!format.video.filesize) {
+        if (!videoHasSize) {
           // DOM will be updated on next "data" event.
-          format.video.filesize = +res.headers["content-length"];
+          const reslen = +res.headers["content-length"];
+          if (reslen) format.video.filesize = reslen;
         }
         res.on("error", err => {
           reject(err);
@@ -79,7 +81,9 @@ export default React.createClass({
           // requests's abort() fires "end" event which we obviously
           // don't want.
           if (!this.vreq) return;
-          if (this.state.vdata !== format.video.filesize) {
+          // Don't check against "Content-Length" in case of
+          // keep-alive/chunked response.
+          if (videoHasSize && this.state.vdata !== format.video.filesize) {
             return reject(new Error("Got wrong video data"));
           }
           resolve();
