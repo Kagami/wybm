@@ -45,8 +45,11 @@ export default React.createClass({
   },
   getVideoText(f) {
     if (f.vcodec === "vp8" || f.vcodec === "vp9") {
+      // A lot of youtube videos contain fps=1 in metadata which is
+      // obviously wrong.
+      const fps = f.fps <= 1 ? "" : `${f.fps}fps`;
       return `${f.vcodec.toUpperCase()}
-              ${f.width}x${f.height} ${f.fps}fps
+              ${f.width}x${f.height} ${fps}
               (${showSize(f.filesize)})`;
     } else if (f.acodec === "vp8.0") {
       return `VP8+Vorbis ${f.width}x${f.height}`;
