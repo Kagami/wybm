@@ -37,6 +37,7 @@
   "dependencies": {
     "react": "^0.14.5",
     "react-dom": "^0.14.5",
+    "request": "^2.67.0",
     "tmp": "0.0.28",
     "xregexp": "^3.0.0"
   },
@@ -49,6 +50,7 @@
     "eslint": "^1.10.3",
     "eslint-plugin-react": "^3.14.0",
     "file-loader": "^0.8.5",
+    "json-loader": "^0.5.4",
     "nw": "^0.13.0-beta2sdk",
     "raw-loader": "^0.5.1",
     "webpack": "^1.12.9"

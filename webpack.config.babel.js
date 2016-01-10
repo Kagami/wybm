@@ -16,6 +16,9 @@ const PLUGINS = DEBUG ? COMMON_PLUGINS : COMMON_PLUGINS.concat([
   }),
 ]);
 
+function inmodules(...parts) {
+  return new RegExp("^" + path.join(__dirname, "node_modules", ...parts) + "$");
+}
 function insrc(...parts) {
   return new RegExp("^" + path.join(__dirname, "src", ...parts) + "$");
 }
@@ -28,7 +31,11 @@ export default {
     filename: "index.js",
   },
   module: {
+    // See <https://github.com/webpack/webpack/issues/138>.
+    noParse: inmodules(".*json-schema", "lib", "validate\\.js"),
     loaders: [
+      // See <https://github.com/webpack/webpack/issues/184>.
+      {test: inmodules(".+\\.json"), loader: "json"},
       {test: insrc(".+\\.js"), loader: "babel"},
     ],
   },

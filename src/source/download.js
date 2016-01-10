@@ -5,10 +5,7 @@
 
 import fs from "fs";
 import path from "path";
-import http from "http";
-import https from "https";
-import assert from "assert";
-import {parse as parseUrl} from "url";
+import request from "request";
 import React from "react";
 import FFmpeg from "../ffmpeg";
 import {ShowHide, showSize, showErr, tmp} from "../util";
@@ -54,57 +51,39 @@ export default React.createClass({
       cursor: "pointer",
     },
   },
-  get({url, http_headers}, cb) {
-    // Seems like headers are not requried but it's better to be safe.
-    const reqOpts = Object.assign(parseUrl(url), {headers: http_headers});
-    // NOTE(Kagami): This is kinda vulnerable to SSRF attacks but
-    // seems like emitting GET requests to local URLs is not that
-    // dangerous.
-    if (url.startsWith("https://")) {
-      return https.get(reqOpts, cb);
-    } else if (url.startsWith("http://")) {
-      return http.get(reqOpts, cb);
-    } else {
-      assert(false, "Bad protocol");
-    }
-  },
   download() {
     this.setState({vdata: 0, adata: 0, downloadingError: null});
     const format = this.props.format;
 
     // TODO(Kagami): How to handle file write errors?
-    let vstream = fs.createWriteStream(this.vpath);
     let vpromise = new Promise((resolve, reject) => {
-      // NOTE(Kagami): Standard http module is rather dumb and won't
-      // follow redirects for example.
-      this.vreq = this.get(format.video, res => {
+      this.vreq = request({
+        url: format.video.url,
+        headers: format.video.http_headers,
+      }).on("response", res => {
         if (res.statusCode >= 400) {
           return reject(new Error(
             `Got ${res.statusCode} error while downloading video`
           ));
         }
-        // NOTE(Kagami): This won't work with keep-alive/chunked but
-        // seems like youtube storage backends don't use it?
-        const reslen = +res.headers["content-length"];
-        if (!reslen) {
-          return reject(new Error("Got wrong Content-Length"));
-        }
         // vp8.0 format lacks file size info.
         if (!format.video.filesize) {
           // DOM will be updated on next "data" event.
-          format.video.filesize = reslen;
+          format.video.filesize = +res.headers["content-length"];
         }
-        res.on("data", chunk => {
+        res.on("error", err => {
+          reject(err);
+        }).on("data", chunk => {
           this.setState({vdata: this.state.vdata + chunk.length});
         }).on("end", () => {
+          // requests's abort() fires "end" event which we obviously
+          // don't want.
+          if (!this.vreq) return;
           if (this.state.vdata !== format.video.filesize) {
             return reject(new Error("Got wrong video data"));
           }
           resolve();
-        }).on("error", err => {
-          reject(err);
-        });
-        res.pipe(vstream);
+        }).pipe(fs.createWriteStream(this.vpath));
       }).on("error", err => {
         reject(err);
       });
@@ -112,25 +91,27 @@ export default React.createClass({
 
     let apromise;
     if (this.apath) {
-      let astream = fs.createWriteStream(this.apath);
       apromise = new Promise((resolve, reject) => {
-        this.areq = this.get(format.audio, res => {
+        this.areq = request({
+          url: format.audio.url,
+          headers: format.audio.http_headers,
+        }).on("response", res => {
           if (res.statusCode >= 400) {
             return reject(new Error(
               `Got ${res.statusCode} error while downloading audio`
             ));
           }
-          res.on("data", chunk => {
+          res.on("error", err => {
+            reject(err);
+          }).on("data", chunk => {
             this.setState({adata: this.state.adata + chunk.length});
           }).on("end", () => {
+            if (!this.areq) return;
             if (this.state.adata !== format.audio.filesize) {
               return reject(new Error("Got wrong audio data"));
             }
             resolve();
-          }).on("error", err => {
-            reject(err);
-          });
-          res.pipe(astream);
+          }).pipe(fs.createWriteStream(this.apath));
         }).on("error", err => {
           reject(err);
         });
@@ -162,8 +143,16 @@ export default React.createClass({
     });
   },
   abort() {
-    if (this.vreq) this.vreq.abort();
-    if (this.areq) this.areq.abort();
+    if (this.vreq) {
+      // Seems like request's abort() causes exceptions sometimes, see:
+      // <https://github.com/request/request/issues/1457>.
+      try { this.vreq.abort(); } catch(e) { /* skip */ }
+      delete this.vreq;
+    }
+    if (this.areq) {
+      try { this.areq.abort(); } catch(e) { /* skip */ }
+      delete this.areq;
+    }
   },
   getVideoSize() {
     const format = this.props.format;
