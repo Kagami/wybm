@@ -4,7 +4,6 @@
  */
 
 import React from "react";
-import ReactDOM from "react-dom";
 import {parseTime, showTime, tryRun} from "../util";
 import "file?name=[name].[ext]!./volume-up.svg";
 import "file?name=[name].[ext]!./volume-off.svg";
@@ -69,7 +68,7 @@ export default React.createClass({
     },
   },
   getVideoNode() {
-    return ReactDOM.findDOMNode(this.refs.video);
+    return this.refs.video.getNode();
   },
   getVideoURL() {
     return "file://" + this.props.source.path;
@@ -362,10 +361,13 @@ const Video = React.createClass({
       height: "100%",
     },
   },
+  getNode() {
+    return this.refs.video;
+  },
   render() {
     return (
       <div style={this.styles.outer}>
-        <video style={this.styles.video} {...this.props} />
+        <video ref="video" style={this.styles.video} {...this.props} />
       </div>
     );
   },
