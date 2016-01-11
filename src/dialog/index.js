@@ -36,10 +36,14 @@ export function alert(opts) {
       let wybm = win.wybm = new EventEmitter();
       wybm.opts = opts;
       wybm.on("ok", () => {
-        win.close();
+        win.close(true);
         resolve();
       });
-      win.on("closed", () => {
+      // NOTE(Kagami): We need to define "close" handler on sub-windows
+      // if main window's "close" handler was attached, otherwise they
+      // won't close.
+      win.on("close", () => {
+        win.close(true);
         resolve();
       });
     });
@@ -52,22 +56,23 @@ export function confirm(opts) {
     height: 120,
     position: "center",
     always_on_top: true,
+    focusOK: false,
   }, opts);
-  const winOpts = opts;
+  const winOpts = popkeys(opts, ["focusOK"]);
   return new Promise((resolve, reject) => {
     window.nw.Window.open(CONFIRM_PATH, winOpts, win => {
       let wybm = win.wybm = new EventEmitter();
       wybm.opts = opts;
       wybm.on("ok", () => {
-        win.close();
+        win.close(true);
         resolve();
       });
       wybm.on("cancel", () => {
-        win.close();
+        win.close(true);
         reject(new Error("Cancel"));
       });
-      win.on("closed", () => {
-        // Will fire even after ok&resolve but won't harm.
+      win.on("close", () => {
+        win.close(true);
         reject(new Error("Cancel"));
       });
     });
@@ -87,14 +92,15 @@ export function prompt(opts) {
       let wybm = win.wybm = new EventEmitter();
       wybm.opts = opts;
       wybm.on("ok", value => {
-        win.close();
+        win.close(true);
         resolve(value);
       });
       wybm.on("cancel", () => {
-        win.close();
+        win.close(true);
         reject(new Error("Cancel"));
       });
-      win.on("closed", () => {
+      win.on("close", () => {
+        win.close(true);
         reject(new Error("Cancel"));
       });
     });

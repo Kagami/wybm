@@ -13,11 +13,16 @@
     <h3 id="title"></h3>
     <br>
     <button id="ok">Yes</button>
-    <button id="cancel" autofocus>No</button>
+    <button id="cancel">No</button>
   </center>
   <script>
     var wybm = nw.Window.get().wybm;
     document.getElementById("title").innerText = wybm.opts.title;
+    if (wybm.opts.focusOK) {
+      document.getElementById("ok").focus();
+    } else {
+      document.getElementById("cancel").focus();
+    }
     document.getElementById("ok").onclick = function() {
       wybm.emit("ok");
     }

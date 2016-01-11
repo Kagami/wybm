@@ -8,6 +8,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Source from "../source";
 import View from "../view";
+import * as dialog from "../dialog";
 import {ShowHide, setTitle} from "../util";
 import "file?name=[name].[ext]!./package.json";
 import "file?name=[name].[ext]!./index.html";
@@ -45,4 +46,12 @@ const Index = React.createClass({
 });
 
 tmp.setGracefulCleanup();
+
+let mainWindow = window.nw.Window.get();
+mainWindow.on("close", () => {
+  dialog
+    .confirm({title: "Are you sure want to exit?", focusOK: true})
+    .then(() => { mainWindow.close(true); });
+});
+
 ReactDOM.render(<Index/>, document.getElementById("wybm-index"));
