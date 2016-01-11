@@ -1,0 +1,10 @@
+{
+  "name": "wybm",
+  "main": "index.html",
+  "window": {
+    "icon": "icon.png",
+    "width": 960,
+    "height": 768
+  },
+  "chromium-args": "--user-data-dir=WybmAppData"
+}

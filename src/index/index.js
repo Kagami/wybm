@@ -10,9 +10,9 @@ import Source from "../source";
 import View from "../view";
 import * as dialog from "../dialog";
 import {ShowHide, setTitle} from "../util";
-import "file?name=[name].[ext]!./package.json";
 import "file?name=[name].[ext]!./index.html";
 import "file?name=[name].[ext]!./icon.png";
+require("file?name=[name]!./package.json." + (WIN_BUILD ? "win" : "linux"));
 
 const Index = React.createClass({
   getInitialState() {
@@ -50,7 +50,7 @@ tmp.setGracefulCleanup();
 const mainWindow = window.nw.Window.get();
 mainWindow.on("close", () => {
   dialog
-    .confirm({title: "Are you sure want to exit?", focusOK: true})
+    .confirm({title: "Are you sure you want to exit?", focusOK: true})
     .then(() => { mainWindow.close(true); });
 });
 
