@@ -15,7 +15,7 @@
     <form id="form">
       <input id="input" type="text" autofocus autocomplete="off">
       <button id="ok" type="submit">OK</button>
-      <button id="cancel">Cancel</button>
+      <button id="cancel" type="button">Cancel</button>
     </form>
   </center>
   <script>
@@ -26,9 +26,11 @@
     input.setSelectionRange(0, input.value.length);
     document.getElementById("form").onsubmit = function() {
       wybm.emit("ok", input.value);
+      return false;
     }
     document.getElementById("cancel").onclick = function() {
       wybm.emit("cancel");
+      return false;
     }
   </script>
 </body>
