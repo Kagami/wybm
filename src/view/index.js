@@ -22,9 +22,7 @@ export default React.createClass({
       height: "100%",
     },
     left: {
-      boxSizing: "border-box",
-      width: 350,
-      paddingLeft: 100,
+      paddingRight: 30,
     },
     right: {
       padding: 0,
@@ -34,12 +32,9 @@ export default React.createClass({
       cursor: "pointer",
     },
     longText: {
-      width: 250,
+      maxWidth: 300,
       overflow: "hidden",
       textOverflow: "ellipsis",
-    },
-    ops: {
-      width: 350,
     },
   },
   checkMarks() {
@@ -219,6 +214,7 @@ export default React.createClass({
             <VPaned>
               <Player
                 ref="player"
+                height={this.state.videoHeight}
                 source={this.props.source}
                 stats={this.state.stats}
                 mstart={this.state.mstart}
@@ -227,7 +223,7 @@ export default React.createClass({
                 onMarkEnd={this.handleMarkEnd}
                 onClear={this.handleClear}
               />
-              <HPaned>
+              <HPaned padding={20}>
                 <Text>
                   <Table>
                   <tr>
@@ -276,7 +272,7 @@ export default React.createClass({
                   </tr>
                   </Table>
                 </Text>
-                <div style={this.styles.ops}>
+                <div>
                   <FileButton
                     width={150}
                     value="Image pr."

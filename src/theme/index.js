@@ -50,10 +50,7 @@ export const VPaned = React.createClass({
     },
   },
   getInnerStyle(i) {
-    // XXX(Kagami): This widget is used only in one place so it's ok to
-    // have such hacks. Currently we need to vertically center all
-    // columns except the first one so we make it as small as possible.
-    const style = i === 0 ? {height: 1} : {};
+    const style = i > 0 ? {height: 1} : {};
     return Object.assign(style, this.styles.inner);
   },
   render() {
@@ -81,13 +78,20 @@ export const HPaned = React.createClass({
       padding: 0,
     },
   },
+  getInnerStyle(i) {
+    // FIXME(Kagami): Better layout.
+    const style = i > 0 ? {width: 320} : {};
+    return Object.assign(style, this.styles.inner);
+  },
   render() {
+    const padding = this.props.padding || 0;
+    const outer = Object.assign({padding}, this.styles.outer);
     return (
-      <table style={this.styles.outer}>
+      <table style={outer}>
         <tbody>
           <tr>
-          {React.Children.map(this.props.children, row =>
-            <td style={this.styles.inner}>{row}</td>
+          {React.Children.map(this.props.children, (row, i) =>
+            <td style={this.getInnerStyle(i)}>{row}</td>
           )}
           </tr>
         </tbody>
@@ -101,6 +105,30 @@ export const Br = React.createClass({
   render() {
     const style = {height: this.props.height || 20};
     return <div style={style} />;
+  },
+});
+
+/** Simple helper. */
+export const Full = React.createClass({
+  render() {
+    return <div style={{height: "100%"}}>{this.props.children}</div>;
+  },
+});
+
+/** Common helper. */
+export const ClearFix = React.createClass({
+  styles: {
+    clearfix: {
+      clear: "both",
+    },
+  },
+  render() {
+    return (
+      <div style={this.props.style}>
+        {this.props.children}
+        <div style={this.styles.clearfix}></div>
+      </div>
+    );
   },
 });
 

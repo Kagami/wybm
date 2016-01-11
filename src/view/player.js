@@ -62,6 +62,12 @@ export default React.createClass({
   KEY_COMMA: 188,
   KEY_DOT: 190,
   KEY_F: 70,
+  styles: {
+    main: {
+      position: "relative",
+      height: "100%",
+    },
+  },
   getVideoNode() {
     return ReactDOM.findDOMNode(this.refs.video);
   },
@@ -271,7 +277,7 @@ export default React.createClass({
   render() {
     // TODO(Kagami): Confirmation for cancel.
     return (
-      <div>
+      <div style={this.styles.main}>
         <Video
           ref="video"
           src={this.getVideoURL()}
@@ -343,19 +349,35 @@ export default React.createClass({
 
 const Video = React.createClass({
   styles: {
-    main: {
+    outer: {
+      position: "absolute",
+      width: "100%",
+      top: 0,
+      bottom: 48,
+      background: "#000",
+    },
+    video: {
       display: "block",
       width: "100%",
+      height: "100%",
     },
   },
   render() {
-    return <video style={this.styles.main} {...this.props} />;
+    return (
+      <div style={this.styles.outer}>
+        <video style={this.styles.video} {...this.props} />
+      </div>
+    );
   },
 });
 
 const Controls = React.createClass({
   styles: {
     main: {
+      position: "absolute",
+      left: 0,
+      right: 0,
+      bottom: 0,
       padding: "5px 0 5px 5px",
       backgroundColor: "#fff",
       border: "solid #ccc",
@@ -519,7 +541,6 @@ const Time = React.createClass({
 
 const Seek = React.createClass({
   styles: {
-    // TODO(Kagami): Use flex instead of block/float hack.
     main: {
       display: "block",
       overflow: "hidden",
