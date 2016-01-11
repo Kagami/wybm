@@ -119,10 +119,10 @@ export default React.createClass({
          time >= this.frames[this.props.mend].time)) {
       this.seek(this.frames[this.props.mstart]);
     } else if (action === "play" && time >= this.frames[this.lastFramen].time) {
-      // If we have video with duration = 3s which consists of 3 frames
-      // with timestamps [0s, 1s, 2s] then if currentTime is at 2s and
-      // playing is false, play() call will set currentTime to 3s and
-      // playing to false again. This is not what we probably want.
+      // If we have e.g. video with duration = 3s which consists of
+      // frames with timestamps [0s, 1s, 2s] then if currentTime is at
+      // 2s and playing is false, play() call will set currentTime to 3s
+      // and playing to false again. This is not what we probably want.
       this.seek(this.frames[0]);
     }
     this[action]();
@@ -204,23 +204,24 @@ export default React.createClass({
     const sec = Math.floor(time);
     const secframes = this.framesBySec[sec] || [];
     for (let i = 0; i < secframes.length; i++) {
-      const secframe = secframes[i];
-      if (secframe.time >= time) {
-        this.setTimeOf(secframe.index);
-        this.setState({framen: secframe.index});
+      const frame = secframes[i];
+      if (frame.time >= time) {
+        this.setTimeOf(frame.index);
+        this.setState({framen: frame.index});
         return;
       }
     }
-    // This place is only reached at the very end of file - browser
-    // emits timeupdate event with currentTime = video duration, but
-    // last frame has non-zero duration so it's not matched by the loop
+    // This place is only reached at the very end of file: browser emits
+    // timeupdate event with currentTime = video duration, but last
+    // frame has non-zero duration so it's not matched by the loop
     // above. This is safe to set current pos to last frame though.
     this.setTimeOf(this.lastFramen);
     this.setState({framen: this.lastFramen});
   },
   handleVolumeEvent() {
-    const video = this.getVideoNode();
-    this.setState({volume: video.volume, muted: video.muted});
+    const {volume, muted} = this.getVideoNode();
+    // Pass-through to sub-component.
+    this.refs.volume.handleVolumeEvent({volume, muted});
   },
   handleFullscreenEvent() {
     this.setState({fullscreen: !this.state.fullscreen});
@@ -262,13 +263,10 @@ export default React.createClass({
   handleSeekKey(e) {
     e.preventDefault();
   },
-  handleControlVolumeChange(volume) {
-    // State will be updated in <video> event handlers in order to
-    // synchronize fullscreen volume changes as well.
-    this.getVideoNode().volume = volume;
-  },
-  handleControlMutedChange(muted) {
-    this.getVideoNode().muted = muted;
+  handleControlVolumeChange({volume, muted}) {
+    const video = this.getVideoNode();
+    video.volume = volume;
+    video.muted = muted;
   },
   render() {
     // TODO(Kagami): Confirmation for cancel.
@@ -321,10 +319,8 @@ export default React.createClass({
             onClick={this.props.onClear}
           />
           <Volume
-            volume={this.state.volume}
-            muted={this.state.muted}
-            onVolumeChange={this.handleControlVolumeChange}
-            onMutedChange={this.handleControlMutedChange}
+            ref="volume"
+            onChange={this.handleControlVolumeChange}
           />
           <Seek
             value={this.state.framen}
@@ -433,22 +429,34 @@ const Volume = React.createClass({
     const display = this.state.shown ? "block" : "none";
     return Object.assign({display}, this.styles.slider);
   },
+  toggleMuted() {
+    const opts = {volume: this.state.volume, muted: !this.state.muted};
+    this.setState(opts);
+    this.props.onChange(opts);
+  },
+  handleVolumeEvent({volume, muted}) {
+    if (this.volumeDrag) return;
+    this.setState({volume, muted});
+  },
   handleMouseOver() {
     this.setState({shown: true});
   },
   handleMouseOut() {
     this.setState({shown: false});
   },
-  handleVolumeChange(e) {
-    // Emulate browser behavior.
-    this.props.onMutedChange(false);
-    this.props.onVolumeChange(e.target.value / 100);
+  handleVolumeMouseDown() {
+    this.volumeDrag = true;
   },
-  handleMuteChange() {
-    this.props.onMutedChange(!this.props.muted);
+  handleVolumeChange(e) {
+    const opts = {volume: e.target.value / 100, muted: false};
+    this.setState(opts);
+    this.props.onChange(opts);
+  },
+  handleVolumeMouseUp() {
+    this.volumeDrag = false;
   },
   render() {
-    const mod = (this.props.muted || this.props.volume < 0.01)
+    const mod = (this.state.muted || this.state.volume < 0.01)
       ? "mute"
       : "volume";
     return (
@@ -461,13 +469,15 @@ const Volume = React.createClass({
           type="range"
           title="Change volume"
           style={this.getSliderStyles()}
-          value={this.props.muted ? 0 : this.props.volume * 100}
+          value={this.state.muted ? 0 : this.state.volume * 100}
+          onMouseDown={this.handleVolumeMouseDown}
           onChange={this.handleVolumeChange}
+          onMouseUp={this.handleVolumeMouseUp}
         />
         <Control
           mod={mod}
           title="Toggle mute"
-          onClick={this.handleMuteChange}
+          onClick={this.toggleMuted}
         />
       </div>
     );

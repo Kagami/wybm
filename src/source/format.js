@@ -6,7 +6,6 @@
 import assert from "assert";
 import React from "react";
 import {showSize, toCapitalCase} from "../util";
-import * as dialog from "../dialog";
 
 export default React.createClass({
   componentDidMount() {
