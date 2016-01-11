@@ -39,9 +39,10 @@ export function alert(opts) {
         win.close(true);
         resolve();
       });
-      // NOTE(Kagami): We need to define "close" handler on sub-windows
+      // TODO(Kagami): We need to define "close" handler on sub-windows
       // if main window's "close" handler was attached, otherwise they
-      // won't close.
+      // won't close. UPD: This is a known issue:
+      // <https://github.com/nwjs/nw.js/issues/4138>.
       win.on("close", () => {
         win.close(true);
         resolve();

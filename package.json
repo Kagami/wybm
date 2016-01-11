@@ -4,7 +4,7 @@
   "description": "Extract and cut youtube webms",
   "scripts": {
     "start": "webpack --watch",
-    "dev": "nw dist/app",
+    "dev": "bin/nwjs-sdk-v0.13.0-beta3-linux-x64/nw dist/app",
     "lint": "eslint .",
     "clean": "rm -rf dist",
     "clean-app": "rm -rf dist/app",
@@ -51,7 +51,6 @@
     "eslint-plugin-react": "^3.14.0",
     "file-loader": "^0.8.5",
     "json-loader": "^0.5.4",
-    "nw": "^0.13.0-beta2sdk",
     "raw-loader": "^0.5.1",
     "webpack": "^1.12.9"
   }

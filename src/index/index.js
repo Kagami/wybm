@@ -47,7 +47,7 @@ const Index = React.createClass({
 
 tmp.setGracefulCleanup();
 
-let mainWindow = window.nw.Window.get();
+const mainWindow = window.nw.Window.get();
 mainWindow.on("close", () => {
   dialog
     .confirm({title: "Are you sure want to exit?", focusOK: true})
