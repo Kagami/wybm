@@ -12,7 +12,8 @@
     "jsx": true
   },
   globals: {
-    "WIN_BUILD": false
+    "WIN_BUILD": false,
+    "WYBM_VERSION": false
   },
   "extends": "eslint:recommended",
   "rules": {

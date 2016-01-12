@@ -4,6 +4,7 @@
  */
 
 import {basename, extname} from "path";
+import {format} from "util";
 import React from "react";
 import Stats from "./stats";
 import Player from "./player";
@@ -169,7 +170,13 @@ export default React.createClass({
     dialog.alert({title: "File info", content});
   },
   handleHelpClick() {
-    dialog.alert({height: 500, title: "Help", content: HELP, focusOK: false});
+    const title = "Help on " + WYBM_VERSION;
+    dialog.alert({
+      title,
+      height: 500,
+      focusOK: false,
+      content: format(HELP, title),
+    });
   },
   handleAutofitClick() {
     const def = this.lastDefault || 19.5;
