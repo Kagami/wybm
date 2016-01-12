@@ -12,6 +12,8 @@ import * as dialog from "../dialog";
 import {ShowHide, setTitle} from "../util";
 import "file?name=[name].[ext]!./index.html";
 import "file?name=[name].[ext]!./icon.png";
+import "file?name=[name].[ext]!./opensans-regular.woff2";
+import "file?name=[name].[ext]!./opensans-bold.woff2";
 require("file?name=[name]!./package.json." + (WIN_BUILD ? "win" : "linux"));
 
 const Index = React.createClass({

@@ -54,7 +54,7 @@ export function alert(opts) {
 export function confirm(opts) {
   opts = Object.assign({
     width: 300,
-    height: 120,
+    height: 130,
     position: "center",
     always_on_top: true,
     focusOK: false,
@@ -83,7 +83,7 @@ export function confirm(opts) {
 export function prompt(opts) {
   opts = Object.assign({
     width: 350,
-    height: 120,
+    height: 130,
     position: "center",
     always_on_top: true,
   }, opts);

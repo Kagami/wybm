@@ -30,6 +30,7 @@ wybm own code, documentation and icon licensed under CC0, but the resulting buil
 
 * Libraries in `dependencies` section of [package.json](package.json) (BSD-like)
 * [NW.js binaries](https://github.com/nwjs/nw.js), see also `credits.html` in release archives
+* [OpenSans font](https://www.google.com/fonts/specimen/Open+Sans), see `LICENSE.OPENSANS`
 * [libpython](https://www.python.org/) (as part of `youtube-dl.exe`, only in Windows build, see `LICENSE.PYTHON`)
 * [MKVToolNix binaries](https://mkvtoolnix.download/) (only in Windows build, see `LICENSE.MKVTOOLNIX`)
 * [Zeranoe FFmpeg binaries](http://ffmpeg.zeranoe.com/builds/) (only in Windows build, see `LICENSE.FFMPEG`)

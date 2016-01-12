@@ -4,7 +4,9 @@
   <meta charset="utf-8">
   <title>wybm | extract and cut youtube webms</title>
   <style>
-    /* FIXME(Kagami): Refactor this shit with Radium. */
+    @font-face{font-family:"Open Sans";font-weight:400;src:url(opensans-regular.woff2) format("woff2")}
+    @font-face{font-family:"Open Sans";font-weight:700;src:url(opensans-bold.woff2) format("woff2")}
+    *{font-family:"Open Sans",sans-serif!important}
     html,body,#wybm-index{height:100%;margin:0;background-color:#eee}
     select:focus{outline:none}
     select:disabled{opacity:0.5;cursor:not-allowed}
@@ -31,6 +33,7 @@
       border-radius: 50%;
       border: 2px solid #999;
     }
+    /* FIXME(Kagami): Refactor this shit with Radium. */
     .wybm-view-player-seek:hover::-webkit-slider-thumb {
       background-color: #ccc;
     }
