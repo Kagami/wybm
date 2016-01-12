@@ -28,6 +28,7 @@ export default React.createClass({
     right: {
       padding: 0,
       color: "#999",
+      minWidth: 150,
     },
     clickable: {
       cursor: "pointer",

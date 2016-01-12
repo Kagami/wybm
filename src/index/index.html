@@ -46,11 +46,7 @@
       border-radius: 3px;
     }
     .wybm-view-player-control {
-      float: left;
       background-color: #fff;
-    }
-    .wybm-view-player-control_right {
-      float: right;
     }
     .wybm-view-player-control:hover:not(.wybm-view-player-control_pressed) {
       background-color: #ddd;
@@ -61,28 +57,18 @@
     }
     .wybm-view-player-control:disabled {
       background-color: #fff !important;
-    }
-    .wybm-view-player-control_volume {
-      background-image: url(volume-up.svg);
-      background-repeat: no-repeat;
-      background-size: 18px;
-      background-position: 16px 9px;
-    }
-    .wybm-view-player-control_mute {
-      background-image: url(volume-off.svg);
-      background-repeat: no-repeat;
-      background-size: 18px;
-      background-position: 16px 9px;
+      opacity: 0.5;
     }
     .wybm-view-player-time {
       border: 1px solid #ccc;
     }
     .wybm-view-player-time:focus {
       outline: none;
-      border-color: #999;
+      border-color: #000;
     }
     .wybm-view-player-time_invalid {
       border-color: #f00 !important;
+      color: #f00;
     }
   </style>
 </head>

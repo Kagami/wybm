@@ -5,8 +5,13 @@
 
 import React from "react";
 import {parseTime, showTime, tryRun} from "../util";
-import "file?name=[name].[ext]!./volume-up.svg";
-import "file?name=[name].[ext]!./volume-off.svg";
+import PLAY from "file?name=[name].[ext]!./play.svg";
+import PAUSE from "file?name=[name].[ext]!./pause.svg";
+import SCISSORS from "file?name=[name].[ext]!./scissors.svg";
+import REPEAT from "file?name=[name].[ext]!./repeat.svg";
+import VOLUME_UP from "file?name=[name].[ext]!./volume-up.svg";
+import VOLUME_OFF from "file?name=[name].[ext]!./volume-off.svg";
+import EJECT from "file?name=[name].[ext]!./eject.svg";
 
 export default React.createClass({
   getInitialState() {
@@ -289,12 +294,13 @@ export default React.createClass({
         />
         <Controls>
           <Control
-            value={this.state.playing ? "▮▮" : "▶"}
+            icon={this.state.playing ? "pause" : "play"}
             title="Play/pause"
             onClick={this.togglePlay}
           />
           <Control
-            value="⧏"
+            flip
+            icon="scissors"
             title="Mark fragment start"
             disabled={this.isMarkStartDisabled()}
             onClick={this.handleMarkStart}
@@ -306,20 +312,20 @@ export default React.createClass({
             onKeyDown={this.handleTimeKey}
           />
           <Control
-            value="⧐"
+            icon="scissors"
             title="Mark fragment end"
             disabled={this.isMarkEndDisabled()}
             onClick={this.handleMarkEnd}
           />
           <Control
-            value="⟳"
+            icon="repeat"
             title="Toggle fragment looping"
             onClick={this.toggleLoopCut}
             pressed={this.state.loopCut}
           />
           <Control
             right
-            value="⏏"
+            icon="eject"
             title="Cancel editing"
             onClick={this.props.onClear}
           />
@@ -393,6 +399,15 @@ const Controls = React.createClass({
 
 const Control = React.createClass({
   cid: "wybm-view-player-control",
+  ICON_PATH: {
+    play: PLAY,
+    pause: PAUSE,
+    scissors: SCISSORS,
+    repeat: REPEAT,
+    volume_up: VOLUME_UP,
+    volume_off: VOLUME_OFF,
+    eject: EJECT,
+  },
   styles: {
     main: {
       cursor: "pointer",
@@ -402,13 +417,20 @@ const Control = React.createClass({
       fontSize: "18px",
       verticalAlign: "top",
       border: 0,
+      backgroundRepeat: "no-repeat",
+      backgroundSize: 18,
+      backgroundPosition: "16px 9px",
     },
+  },
+  getStyles() {
+    const float = this.props.right ? "right" : "left";
+    const transform = this.props.flip ? "scaleX(-1)" : "none";
+    const backgroundImage = `url(${this.ICON_PATH[this.props.icon]})`;
+    return Object.assign({float, transform, backgroundImage}, this.styles.main);
   },
   getClassName() {
     let name = this.cid;
-    if (this.props.right) name += ` ${this.cid}_right`;
     if (this.props.pressed) name += ` ${this.cid}_pressed`;
-    if (this.props.mod) name += ` ${this.cid}_${this.props.mod}`;
     return name;
   },
   handleKey(e) {
@@ -418,7 +440,7 @@ const Control = React.createClass({
     return (
       <input
         type="button"
-        style={this.styles.main}
+        style={this.getStyles()}
         className={this.getClassName()}
         onKeyDown={this.handleKey}
         {...this.props}
@@ -480,9 +502,9 @@ const Volume = React.createClass({
     this.volumeDrag = false;
   },
   render() {
-    const mod = (this.state.muted || this.state.volume < 0.01)
-      ? "mute"
-      : "volume";
+    const icon = (this.state.muted || this.state.volume < 0.01)
+      ? "volume_off"
+      : "volume_up";
     return (
       <div
         style={this.styles.main}
@@ -499,7 +521,7 @@ const Volume = React.createClass({
           onMouseUp={this.handleVolumeMouseUp}
         />
         <Control
-          mod={mod}
+          icon={icon}
           title="Toggle mute"
           onClick={this.toggleMuted}
         />
@@ -520,7 +542,6 @@ const Time = React.createClass({
       fontSize: "22px",
       float: "left",
       marginRight: 5,
-      color: "#444",
     },
   },
   getClassName() {
