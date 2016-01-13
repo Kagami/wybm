@@ -233,6 +233,11 @@ export default React.createClass({
     // Pass-through to sub-component.
     this.refs.volume.handleVolumeEvent({volume, muted});
   },
+  handleWheelEvent(e) {
+    let video = this.getVideoNode();
+    const delta = e.deltaY > 0 ? -0.05 : 0.05;
+    video.volume = Math.min(Math.max(0, video.volume + delta), 1)
+  },
   handleFullscreenEvent() {
     this.setState({fullscreen: !this.state.fullscreen});
   },
@@ -274,14 +279,14 @@ export default React.createClass({
     e.preventDefault();
   },
   handleControlVolumeChange({volume, muted}) {
-    const video = this.getVideoNode();
+    let video = this.getVideoNode();
     video.volume = volume;
     video.muted = muted;
   },
   render() {
     // TODO(Kagami): Confirmation for cancel.
     return (
-      <div style={this.styles.main}>
+      <div style={this.styles.main} onWheel={this.handleWheelEvent}>
         <Video
           ref="video"
           src={this.getVideoURL()}
