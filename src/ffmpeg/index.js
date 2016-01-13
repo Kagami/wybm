@@ -5,14 +5,14 @@
 
 import {spawn} from "child_process";
 import tmp from "tmp";
+import {getRunPath} from "../util";
 if (WIN_BUILD) {
-  // TODO(Kagami): Allow to use system ffmpeg.
   require("file?name=[name].[ext]!../../bin/ffmpeg.exe");
 }
-const RUNPATH = WIN_BUILD ? "ffmpeg.exe" : "ffmpeg";
 
 export default {
-  _run(runpath, args) {
+  _run(args) {
+    const runpath = getRunPath("ffmpeg");
     let stdout = "";
     let stderr = "";
     args = ["-v", "error", "-y"].concat(args);
@@ -55,7 +55,7 @@ export default {
       "-f", "webm",
       opts.output
     );
-    return this._run(RUNPATH, args);
+    return this._run(args);
   },
   cut(opts) {
     // TODO(Kagami): Do we want to save input's basename in metadata?
@@ -91,7 +91,7 @@ export default {
         ? tmp.fileSync({prefix: "wybm-", postfix: ".webm"}).name
         : opts.output;
       args.push("-f", "webm", fragment);
-      return this._run(RUNPATH, args).then(() => fragment);
+      return this._run(args).then(() => fragment);
     }).then(fragment => {
       // Then add preview if needed.
       // NOTE(Kagami): ffmpeg can't seek exactly only single file when
@@ -99,7 +99,7 @@ export default {
       // <https://ffmpeg.org/pipermail/ffmpeg-user/2013-June/015687.html>
       // for details) so we need one extra step.
       if (opts.preview) {
-        return this._run(RUNPATH, [
+        return this._run([
           "-i", fragment,
           "-i", opts.preview,
           "-map", "0:v:0",
@@ -135,6 +135,6 @@ export default {
       "-f", "webm",
       opts.output
     );
-    return this._run(RUNPATH, args);
+    return this._run(args);
   },
 };

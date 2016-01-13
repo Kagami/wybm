@@ -4,6 +4,7 @@
  */
 
 import assert from "assert";
+import which from "which";
 
 export {default as ShowHide} from "./show-hide";
 
@@ -82,4 +83,12 @@ export function popkeys(obj, keys) {
   let copy = Object.assign({}, obj);
   keys.forEach(key => delete copy[key]);
   return copy;
+}
+
+export function getRunPath(cmd) {
+  try {
+    return which.sync(cmd);
+  } catch(e) {
+    return cmd;
+  }
 }

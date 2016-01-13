@@ -4,14 +4,18 @@
  */
 
 import {spawn} from "child_process";
-// TODO(Kagami): Allow to use system youtube-dl.
-const YTDL_BASENAME = require(
+import {getRunPath} from "../util";
+const YTDL = require(
   "file?name=[name].[ext]!../../bin/youtube-dl." + (WIN_BUILD ? "exe" : "zip")
 );
-const RUNPATH = WIN_BUILD ? YTDL_BASENAME : "python";
 
 export default {
-  _run(runpath, args) {
+  _run(args) {
+    let runpath = getRunPath("youtube-dl");
+    if (!WIN_BUILD && !runpath.startsWith("/")) {
+      runpath = "python";
+      args = [YTDL].concat(args);
+    }
     let stdout = "";
     let stderr = "";
     return new Promise((resolve, reject) => {
@@ -36,10 +40,6 @@ export default {
     });
   },
   getInfo(url) {
-    let args = ["--no-playlist", "-j", url];
-    if (!WIN_BUILD) {
-      args = [YTDL_BASENAME].concat(args);
-    }
-    return this._run(RUNPATH, args).then(JSON.parse);
+    return this._run(["--no-playlist", "-j", url]).then(JSON.parse);
   },
 };

@@ -7,14 +7,14 @@ import fs from "fs";
 import assert from "assert";
 import {spawn} from "child_process";
 import XRegExp from "xregexp";
+import {getRunPath} from "../util";
 if (WIN_BUILD) {
-  // TODO(Kagami): Allow to use system mkvinfo.
   require("file?name=[name].[ext]!../../bin/mkvinfo.exe");
 }
-const RUNPATH = WIN_BUILD ? "mkvinfo.exe" : "mkvinfo";
 
 export default {
-  _run(runpath, args) {
+  _run(args) {
+    const runpath = getRunPath("mkvinfo");
     let stdout = "";
     let stderr = "";
     return new Promise((resolve, reject) => {
@@ -41,7 +41,7 @@ export default {
     });
   },
   getStats(fpath) {
-    return this._run(RUNPATH, ["-v", "-v", fpath]).then(out => {
+    return this._run(["-v", "-v", fpath]).then(out => {
       // Collect some useful info.
       const size = fs.statSync(fpath).size;
       const duration = +out.match(/\+ Duration: (\d+(\.\d+)?)/)[1];
