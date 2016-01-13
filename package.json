@@ -1,6 +1,6 @@
 {
   "name": "wybm",
-  "version": "0.2.0-dev",
+  "version": "0.2.0",
   "codename": "Co-Ed School",
   "description": "Extract and cut youtube webms",
   "scripts": {
