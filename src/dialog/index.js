@@ -4,11 +4,12 @@
  * synchronous one.
  * @module wybm/dialog
  */
-// NOTE(Kagami): These dialogs doesn't have "blocking effect" unlike
+// TODO(Kagami): These dialogs doesn't have "blocking effect" unlike
 // standard ones but:
 //
 // * We can't really use default dialogs (because of "prevent this"
-//   checkbox and other clumsy stuff)
+//   checkbox and other clumsy stuff (GH-4190) and because we need to
+//   style contents)
 // * This may be actually better from the design point of view
 //
 // We may however consider blocking opener window via some other way
@@ -39,10 +40,6 @@ export function alert(opts) {
         win.close(true);
         resolve();
       });
-      // TODO(Kagami): We need to define "close" handler on sub-windows
-      // if main window's "close" handler was attached, otherwise they
-      // won't close. UPD: This is a known issue:
-      // <https://github.com/nwjs/nw.js/issues/4138>.
       win.on("close", () => {
         win.close(true);
         resolve();
