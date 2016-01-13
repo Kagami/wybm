@@ -165,6 +165,10 @@ export default React.createClass({
           <td>Resolution:</td>
           <td>${stats.width}x${stats.height}@${stats.fps}</td>
         </td>
+        <tr>
+          <td>Codecs:</td>
+          <td>${stats.vcodec}+${stats.acodec || "none"}</td>
+        </td>
         </table>
       </div>
     `;

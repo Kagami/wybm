@@ -56,23 +56,26 @@ export default {
         .split("+ A track at ")
         // Skip first useless chunk.
         .slice(1);
-      let vid, width, height, fps;
+      let vid, vcodec, width, height, fps, aid, acodec;
       for (let i = 0; i < tracks.length; i++) {
         const track = tracks[i];
-        if (track.indexOf("+ Track type: video") >= 0) {
+        // We need only first video/audio track since it's what browsers
+        // use for <video> tag.
+        if (!vid && track.indexOf("+ Track type: video") >= 0) {
           vid = track.match(/\+ Track number: (\d+)/)[1];
+          vcodec = track.match(/\+ Codec ID: V_(\w+)/)[1];
           width = +track.match(/\+ Display width: (\d+)/)[1];
           height = +track.match(/\+ Display height: (\d+)/)[1];
           fps = +track.match(/\+ Default duration:.*\((\d+(\.\d+)?) frames/)[1];
-          // We need only first video track since it's what browsers
-          // display in <video> tag.
-          break;
+        } else if (!aid && track.indexOf("+ Track type: audio") >= 0) {
+          aid = track.match(/\+ Track number: (\d+)/)[1];
+          acodec = track.match(/\+ Codec ID: A_(\w+)/)[1];
         }
       }
       // This is the only required field, it's ok for other stuff to
       // contain buggy values. (They should at least present in mkvinfo
       // output though otherwise match()[1] will throw.)
-      assert(vid != null, "Bad video track ID");
+      assert(vid, "Bad video track ID");
       // TODO(Kagami): This can't detect keyframes contained inside
       // BlockGroup. "mkvinfo -v -v -v" + "[I frame]" matching is needed
       // for that.
@@ -117,7 +120,7 @@ export default {
       });
       frames.forEach((f, i) => f.index = i);
       assert(frames.length, "No frames");
-      return {size, duration, width, height, fps, frames};
+      return {size, duration, width, height, fps, frames, vcodec, acodec};
     });
   },
 };

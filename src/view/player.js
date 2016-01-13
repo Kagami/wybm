@@ -236,7 +236,7 @@ export default React.createClass({
   handleWheelEvent(e) {
     let video = this.getVideoNode();
     const delta = e.deltaY > 0 ? -0.05 : 0.05;
-    video.volume = Math.min(Math.max(0, video.volume + delta), 1)
+    video.volume = Math.min(Math.max(0, video.volume + delta), 1);
   },
   handleFullscreenEvent() {
     this.setState({fullscreen: !this.state.fullscreen});
