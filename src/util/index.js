@@ -18,7 +18,7 @@ export function setTitle(title) {
 }
 
 export function toCapitalCase(s) {
-  return s[0].toUpperCase() + s.slice(1);
+  return s[0].toUpperCase() + s.slice(1).toLowerCase();
 }
 
 export function showSize(size) {

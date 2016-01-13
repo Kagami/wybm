@@ -12,7 +12,7 @@ import Save from "./save";
 import HELP from "raw!./help.html";
 import * as dialog from "../dialog";
 import {VPaned, HPaned, Table, Text, Br, BigButton, FileButton} from "../theme";
-import {ShowHide, showSize, showTime} from "../util";
+import {ShowHide, showSize, showTime, toCapitalCase} from "../util";
 
 export default React.createClass({
   getInitialState() {
@@ -141,6 +141,7 @@ export default React.createClass({
   handleInfoClick() {
     const source = this.props.source;
     const stats = this.state.stats;
+    const acodec = stats.acodec ? ("+" + toCapitalCase(stats.acodec)) : "";
     const content = `
       <div id="inner">
         <style scoped>
@@ -167,7 +168,7 @@ export default React.createClass({
         </td>
         <tr>
           <td>Codecs:</td>
-          <td>${stats.vcodec}+${stats.acodec || "none"}</td>
+          <td>${stats.vcodec}${acodec}</td>
         </td>
         </table>
       </div>

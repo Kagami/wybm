@@ -507,6 +507,13 @@ const Volume = React.createClass({
     this.volumeDrag = false;
   },
   render() {
+    let volPercent = this.state.volume * 100;
+    // Fix for different scale resolutions.
+    volPercent = volPercent < 15
+      ? volPercent * 2
+      : volPercent < 50
+        ? volPercent * 1.1
+        : volPercent / 1.1;
     const icon = (this.state.muted || this.state.volume < 0.01)
       ? "volume_off"
       : "volume_up";
@@ -516,6 +523,16 @@ const Volume = React.createClass({
         onMouseOver={this.handleMouseOver}
         onMouseOut={this.handleMouseOut}
       >
+        <style scoped>{`
+          .wybm-view-player-volume::-webkit-slider-runnable-track {
+            background: -webkit-linear-gradient(
+              left,
+              #ddd ${volPercent}%,
+              #ddd ${volPercent}%,
+              #fff ${volPercent}%
+            );
+          }
+        `}</style>
         <input
           type="range"
           title="Change volume"
