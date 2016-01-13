@@ -237,6 +237,7 @@ export default React.createClass({
     let video = this.getVideoNode();
     const delta = e.deltaY > 0 ? -0.05 : 0.05;
     video.volume = Math.min(Math.max(0, video.volume + delta), 1);
+    video.muted = false;
   },
   handleFullscreenEvent() {
     this.setState({fullscreen: !this.state.fullscreen});
@@ -509,11 +510,13 @@ const Volume = React.createClass({
   render() {
     let volPercent = this.state.volume * 100;
     // Fix for different scale resolutions.
-    volPercent = volPercent < 15
-      ? volPercent * 2
-      : volPercent < 50
-        ? volPercent * 1.1
-        : volPercent / 1.1;
+    volPercent = this.state.muted
+      ? 0
+      : volPercent < 15
+        ? volPercent * 2
+        : volPercent < 50
+          ? volPercent * 1.1
+          : volPercent / 1.1;
     const icon = (this.state.muted || this.state.volume < 0.01)
       ? "volume_off"
       : "volume_up";
