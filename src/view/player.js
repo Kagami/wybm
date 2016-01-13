@@ -460,15 +460,15 @@ const Volume = React.createClass({
     },
     slider: {
       position: "absolute",
-      bottom: 36,
-      width: 50,
-      height: 80,
+      width: 80,
+      height: 20,
+      left: -16,
+      bottom: 66,
       margin: 0,
       cursor: "pointer",
-      // NOTE(Kagami): It's not possible to style vertical slider, but
-      // we might try transform:rotate, see
-      // <https://stackoverflow.com/a/24370140>.
-      WebkitAppearance: "slider-vertical",
+      WebkitAppearance: "none",
+      transform: "rotate(270deg)",
+      background: "none",
     },
   },
   getSliderStyles() {
@@ -515,6 +515,7 @@ const Volume = React.createClass({
           type="range"
           title="Change volume"
           style={this.getSliderStyles()}
+          className="wybm-view-player-volume"
           value={this.state.muted ? 0 : this.state.volume * 100}
           onMouseDown={this.handleVolumeMouseDown}
           onChange={this.handleVolumeChange}

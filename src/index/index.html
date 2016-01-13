@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <title>wybm | extract and cut youtube webms</title>
   <style>
+    /* Base. */
     @font-face{font-family:"Open Sans";font-weight:400;src:url(opensans-regular.woff2) format("woff2")}
     @font-face{font-family:"Open Sans";font-weight:700;src:url(opensans-bold.woff2) format("woff2")}
     *{font-family:"Open Sans",sans-serif!important}
@@ -13,6 +14,8 @@
     input[type=range]:focus{outline:none}
     input[type=button]:focus{outline:none}
     input[type=button]:disabled{cursor:auto!important}
+
+    /* Progress. */
     progress::-webkit-progress-bar {
       background-color: #ddd;
       border-radius: 2px;
@@ -23,6 +26,8 @@
       background-image: -webkit-linear-gradient(top,rgba(255,255,255,.25),rgba(0,0,0,.25));
       border-radius: 2px;
     }
+
+    /* Sliders. */
     .wybm-view-player-seek::-webkit-slider-thumb {
       -webkit-appearance: none;
       background-color: #eee;
@@ -33,7 +38,6 @@
       border-radius: 50%;
       border: 2px solid #999;
     }
-    /* FIXME(Kagami): Refactor this shit with Radium. */
     .wybm-view-player-seek:hover::-webkit-slider-thumb {
       background-color: #ccc;
     }
@@ -45,6 +49,23 @@
       height: 3px;
       border-radius: 3px;
     }
+    .wybm-view-player-volume::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      background-color: #eee;
+      cursor: pointer;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1px solid #999;
+    }
+    .wybm-view-player-volume::-webkit-slider-runnable-track {
+      height: 20px;
+      background-color: #eee;
+      border-radius: 9px;
+      border: 1px solid #999;
+    }
+
+    /* Dynamic. FIXME(Kagami): Refactor this shit with Radium. */
     .wybm-view-player-control {
       background-color: #fff;
     }
