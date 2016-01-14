@@ -1,7 +1,7 @@
 {
   "name": "wybm",
-  "version": "0.2.0",
-  "codename": "Co-Ed School",
+  "version": "1.0.0-dev",
+  "codename": "4L",
   "description": "Extract and cut youtube webms",
   "scripts": {
     "start": "webpack --watch",
