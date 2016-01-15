@@ -24,7 +24,7 @@ import {popkeys} from "../util";
 export function alert(opts) {
   opts = Object.assign({
     width: 640,
-    height: 320,
+    height: 340,
     position: "center",
     always_on_top: true,
     focusOK: true,
