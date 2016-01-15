@@ -30,7 +30,7 @@ export default {
         reject(new Error(`Failed to run ytdl: ${err.message}`));
       });
       p.on("close", (code/*, signal*/) => {
-        if (code || code == null || stderr) {
+        if (code || code == null) {
           return reject(new Error(
             `ytdl exited with code ${code} (${stderr})`
           ));
