@@ -140,14 +140,15 @@ export default React.createClass({
   },
   handleInfoClick() {
     const source = this.props.source;
-    // NOTE(Kagami): Beware that we work with raw HTML here so need to
-    // escape everything manually. Arbitrary strings might occur only in
-    // path though.
+    // FIXME(Kagami): Use proper templater.
     const path = source.path
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;");
-    const pathattr = path.replace(/"/g, "&quot;").replace(/'/g, "\\'");
+    const pathattr = path
+      .replace(/"/g, "&quot;")
+      .replace(/\\/g, "\\\\")
+      .replace(/'/g, "\\'");
     const stats = this.state.stats;
     const acodec = stats.acodec ? ("+" + toCapitalCase(stats.acodec)) : "";
     const content = `
