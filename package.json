@@ -1,6 +1,6 @@
 {
   "name": "wybm",
-  "version": "0.2.2-dev",
+  "version": "0.2.2",
   "codename": "Tahiti",
   "description": "Extract and cut youtube webms",
   "scripts": {
