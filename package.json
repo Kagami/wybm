@@ -1,7 +1,7 @@
 {
   "name": "wybm",
-  "version": "0.2.1",
-  "codename": "4L",
+  "version": "0.2.2",
+  "codename": "Tahiti",
   "description": "Extract and cut youtube webms",
   "scripts": {
     "start": "webpack --watch",
