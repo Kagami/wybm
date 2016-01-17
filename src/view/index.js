@@ -236,7 +236,7 @@ export default React.createClass({
                 onMarkEnd={this.handleMarkEnd}
                 onClear={this.handleClear}
               />
-              <HPaned padding={20}>
+              <HPaned padding="20px 20px 21px 20px">
                 <Text>
                   <Table>
                   <tr>
