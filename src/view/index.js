@@ -140,6 +140,14 @@ export default React.createClass({
   },
   handleInfoClick() {
     const source = this.props.source;
+    // NOTE(Kagami): Beware that we work with raw HTML here so need to
+    // escape everything manually. Arbitrary strings might occur only in
+    // path though.
+    const path = source.path
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+    const pathattr = path.replace(/"/g, "&quot;").replace(/'/g, "\\'");
     const stats = this.state.stats;
     const acodec = stats.acodec ? ("+" + toCapitalCase(stats.acodec)) : "";
     const content = `
@@ -152,7 +160,13 @@ export default React.createClass({
         <table>
         <tr>
           <td width="150">Path:</td>
-          <td>${source.path}</td>
+          <td>
+            <span
+              title="Open folder"
+              style="cursor:pointer"
+              onclick="nw.Shell.showItemInFolder('${pathattr}')"
+            >${path}</span>
+          </td>
         </td>
         <tr>
           <td>Size:</td>
