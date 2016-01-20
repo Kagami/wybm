@@ -51,7 +51,7 @@ export default React.createClass({
       return `${f.vcodec.toUpperCase()}
               ${f.width}x${f.height} ${fps}
               (${showSize(f.filesize)})`;
-    } else if (f.acodec === "vp8.0") {
+    } else if (f.vcodec === "vp8.0") {
       return `VP8+Vorbis ${f.width}x${f.height}`;
     }
   },
@@ -60,7 +60,7 @@ export default React.createClass({
       .filter(f =>
         f.vcodec === "vp8" ||
         f.vcodec === "vp9" ||
-        f.acodec === "vp8.0"
+        f.vcodec === "vp8.0"
       )
       .sort(this.compareVideo)
       .map(f => ({
