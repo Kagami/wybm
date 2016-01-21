@@ -42,6 +42,7 @@ export default React.createClass({
     },
   },
   fixURL(url) {
+    url = url.trim();
     // Hack to forbid long bare IDs (previously allowed by removing of
     // "$" in checkURL).
     if (/^[0-9A-Za-z_-]{12,}$/.test(url)) return "";

@@ -20,7 +20,7 @@
   </center>
   <script>
     var wybm = nw.Window.get().wybm;
-    document.getElementById("title").innerText = wybm.opts.title;
+    document.getElementById("title").textContent = wybm.opts.title;
     if (wybm.opts.focusOK) {
       document.getElementById("ok").focus();
     } else {
