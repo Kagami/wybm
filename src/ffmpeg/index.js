@@ -113,10 +113,21 @@ export default {
     });
   },
   preview(opts) {
+    // pad filter accepts only even resolutions. This is also better for
+    // compatibility reasons.
+    const width = opts.width + 2 - (opts.width % 2);
+    const height = opts.height + 2 - (opts.height % 2);
     const scale = [
-      opts.width,
-      opts.height,
-      "force_original_aspect_ratio=increase",
+      width,
+      height,
+      "force_original_aspect_ratio=decrease",
+    ].join(":");
+    const pad = [
+      width,
+      height,
+      "(ow-iw)/2",
+      "(oh-ih)/2",
+      "color=#DDDDDD",
     ].join(":");
     let args = [];
     if (opts.time != null) {
@@ -129,9 +140,9 @@ export default {
       // Not so high-quality but should be enough for thumbnail.
       "-c:v", "libvpx", "-b:v", "0", "-crf", "30",
       // Note that target video will have BT.601 colormatrix if input
-      // uses RGB color model. It's ok since most imageboard software
-      // use 601 when generating thumbnails.
-      "-vf", "scale=" + scale,
+      // uses RGB color model. It's ok since most imageboards use 601
+      // when generating thumbnails.
+      "-vf", "scale=" + scale + ",pad=" + pad,
       "-f", "webm",
       opts.output
     );

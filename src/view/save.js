@@ -55,8 +55,8 @@ export default React.createClass({
           time,
           input,
           output: previewVideo,
-          width: this.props.stats.width + 1,
-          height: this.props.stats.height + 1,
+          width: this.props.stats.width,
+          height: this.props.stats.height,
         });
       }
     }).then(() => {
