@@ -160,8 +160,18 @@ export const BigButton = React.createClass({
     const width = this.props.width || 200;
     return Object.assign({width}, this.styles.main);
   },
+  handleKey(e) {
+    e.preventDefault();
+  },
   render() {
-    return <input type="button" style={this.getStyles()} {...this.props} />;
+    return (
+      <input
+        type="button"
+        style={this.getStyles()}
+        onKeyDown={this.handleKey}
+        {...this.props}
+      />
+    );
   },
 });
 
