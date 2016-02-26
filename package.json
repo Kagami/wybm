@@ -1,7 +1,7 @@
 {
   "name": "wybm",
-  "version": "0.3.0",
-  "codename": "Bestie",
+  "version": "0.3.1-dev",
+  "codename": "Apink",
   "description": "Extract and cut youtube webms",
   "scripts": {
     "start": "webpack --watch",
