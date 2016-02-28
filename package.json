@@ -1,6 +1,6 @@
 {
   "name": "wybm",
-  "version": "0.3.2-dev",
+  "version": "0.3.2",
   "codename": "Dal Shabet",
   "description": "Extract and cut youtube webms",
   "scripts": {
