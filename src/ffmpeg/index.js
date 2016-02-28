@@ -17,7 +17,12 @@ export default {
     let stderr = "";
     args = ["-v", "error", "-y"].concat(args);
     return new Promise((resolve, reject) => {
-      const p = spawn(runpath, args, {stdio: ["ignore", "pipe", "pipe"]});
+      let p;
+      try {
+        p = spawn(runpath, args, {stdio: ["ignore", "pipe", "pipe"]});
+      } catch(err) {
+        throw new Error(`Failed to run ffmpeg: ${err.message}`);
+      }
       p.stdout.on("data", data => {
         stdout += data;
       });

@@ -87,8 +87,18 @@ export function popkeys(obj, keys) {
 
 export function getRunPath(cmd) {
   try {
-    return which.sync(cmd);
+    if (WIN_BUILD) {
+      var paths = which.sync(cmd, {all: true});
+      // Windows has CWD in PATH at top so we need this little kludge.
+      if (paths.length > 1) {
+        return paths[1];
+      } else {
+        return paths[0];
+      }
+    } else {
+      return which.sync(cmd);
+    }
   } catch(e) {
-    return cmd;
+    return null;
   }
 }
