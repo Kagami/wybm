@@ -1,7 +1,7 @@
 {
   "name": "wybm",
-  "version": "0.3.1",
-  "codename": "Apink",
+  "version": "0.3.2-dev",
+  "codename": "Dal Shabet",
   "description": "Extract and cut youtube webms",
   "scripts": {
     "start": "webpack --watch",
