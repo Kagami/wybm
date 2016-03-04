@@ -1,6 +1,6 @@
 {
   "name": "wybm",
-  "version": "0.3.3-dev",
+  "version": "0.3.3",
   "codename": "Fiestar",
   "description": "Extract and cut youtube webms",
   "scripts": {
