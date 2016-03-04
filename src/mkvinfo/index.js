@@ -62,21 +62,35 @@ export default {
         // Skip first useless chunk.
         .slice(1);
       let vid, vcodec, width, height, fps, aid, acodec;
-      for (let i = 0; i < tracks.length; i++) {
-        const track = tracks[i];
+      tracks.forEach(track => {
         // We need only first video/audio track since it's what browsers
         // use for <video> tag.
         if (!vid && track.indexOf("+ Track type: video") >= 0) {
           vid = track.match(/\+ Track number: (\d+)/)[1];
           vcodec = track.match(/\+ Codec ID: V_(\w+)/)[1];
-          width = +track.match(/\+ Display width: (\d+)/)[1];
-          height = +track.match(/\+ Display height: (\d+)/)[1];
-          fps = +track.match(/\+ Default duration:.*\((\d+(\.\d+)?) frames/)[1];
+          try {
+            width = track.match(/\+ Display width: (\d+)/)[1];
+            height = track.match(/\+ Display height: (\d+)/)[1];
+          } catch(e) {
+            width = +track.match(/\+ Pixel width: (\d+)/)[1];
+            height = +track.match(/\+ Pixel height: (\d+)/)[1];
+          }
+          fps = track.match(/\+ Default duration:.*\((\d+(\.\d+)?) frames/);
+          if (fps != null) {
+            fps = +fps[1];
+          } else {
+            fps = track.match(/\+ Frame rate: (\d+(\.\d+)?)/);
+            if (fps != null) {
+              fps = +fps[1];
+            } else {
+              fps = 0;
+            }
+          }
         } else if (!aid && track.indexOf("+ Track type: audio") >= 0) {
           aid = track.match(/\+ Track number: (\d+)/)[1];
           acodec = track.match(/\+ Codec ID: A_(\w+)/)[1];
         }
-      }
+      });
       // This is the only required field, it's ok for other stuff to
       // contain buggy values. (They should at least present in mkvinfo
       // output though otherwise match()[1] will throw.)
