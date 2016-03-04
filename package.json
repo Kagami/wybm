@@ -1,7 +1,7 @@
 {
   "name": "wybm",
-  "version": "0.3.2",
-  "codename": "Dal Shabet",
+  "version": "0.3.3-dev",
+  "codename": "Fiestar",
   "description": "Extract and cut youtube webms",
   "scripts": {
     "start": "webpack --watch",
