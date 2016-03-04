@@ -69,8 +69,8 @@ export default {
           vid = track.match(/\+ Track number: (\d+)/)[1];
           vcodec = track.match(/\+ Codec ID: V_(\w+)/)[1];
           try {
-            width = track.match(/\+ Display width: (\d+)/)[1];
-            height = track.match(/\+ Display height: (\d+)/)[1];
+            width = +track.match(/\+ Display width: (\d+)/)[1];
+            height = +track.match(/\+ Display height: (\d+)/)[1];
           } catch(e) {
             width = +track.match(/\+ Pixel width: (\d+)/)[1];
             height = +track.match(/\+ Pixel height: (\d+)/)[1];
