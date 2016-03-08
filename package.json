@@ -55,6 +55,7 @@
     "json-loader": "^0.5.4",
     "nw": "^0.13.0-rc1sdk",
     "raw-loader": "^0.5.1",
+    "string-replace-loader": "^1.0.0",
     "webpack": "^1.12.9"
   }
 }

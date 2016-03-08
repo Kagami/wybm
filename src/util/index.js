@@ -8,7 +8,7 @@ import which from "which";
 
 export {default as ShowHide} from "./show-hide";
 
-const DEFAULT_TITLE = "wybm | extract and cut youtube webms";
+const DEFAULT_TITLE = WYBM_VERSION;
 export function setTitle(title) {
   if (title) {
     document.title = "wybm | " + title;
