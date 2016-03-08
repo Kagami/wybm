@@ -233,8 +233,6 @@ export const FileButton = React.createClass({
     this.refs.file.click();
   },
   handleFileChange() {
-    // TODO(Kagami): For some reason there is noticeable delay between
-    // "save" click inside file dialog and "onchange" event. NW issue?
     const file = this.refs.file.files[0];
     this.refs.file.value = null;
     this.props.onChange(file);

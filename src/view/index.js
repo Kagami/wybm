@@ -222,7 +222,9 @@ export default React.createClass({
   },
   handleSaveClick(file) {
     this.refs.player.pause();
-    this.setState({target: file});
+    let path = file.path;
+    if (!path.endsWith(".webm")) path += ".webm";
+    this.setState({target: {path}});
   },
   handleViewAgain() {
     this.setState({target: null});
