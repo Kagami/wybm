@@ -223,6 +223,9 @@ export default React.createClass({
   handleSaveClick(file) {
     this.refs.player.pause();
     let path = file.path;
+    // TODO(Kagami): This breaks "file already exists" prompt. See
+    // <https://github.com/nwjs/nw.js/issues/2208> for details.
+    // We still won't allow user override the input though.
     if (!path.endsWith(".webm")) path += ".webm";
     this.setState({target: {path}});
   },
@@ -342,6 +345,7 @@ export default React.createClass({
                   <FileButton
                     width={150}
                     value="Save"
+                    accept=".webm"
                     title="Save selected fragment to disk"
                     saveAs={this.getDefaultName()}
                     onChange={this.handleSaveClick}
