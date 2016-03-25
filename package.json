@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack --watch",
     "dev": "nw dist/app",
-    "lint": "eslint .",
+    "test": "eslint .",
     "clean": "rm -rf dist",
     "clean-app": "rm -rf dist/app",
     "build-app": "npm run clean-app && NODE_ENV=production webpack",
