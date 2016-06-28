@@ -1,6 +1,6 @@
 {
   "name": "wybm",
-  "version": "0.3.4-dev",
+  "version": "0.3.4",
   "codename": "After School",
   "description": "Extract and cut youtube webms",
   "scripts": {
