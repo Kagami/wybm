@@ -12,7 +12,7 @@ Download [latest release](https://github.com/Kagami/wybm/releases), unpack and r
 
 ### Linux
 
-You need Python, FFmpeg and MKVToolNix installed. Download [latest release](https://github.com/Kagami/wybm/releases), unpack and run `./wybm`.
+You need FFmpeg and MKVToolNix installed. Download [latest release](https://github.com/Kagami/wybm/releases), unpack and run `./wybm`.
 
 ### Mac OS (experimental)
 
