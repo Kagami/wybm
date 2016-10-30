@@ -149,6 +149,10 @@ export default React.createClass({
   },
   /* eslint-disable space-infix-ops */
   handleDocumentKey(e) {
+    // We hide player component via CSS to allow to resume editing so
+    // event handlers set up on `componentDidMount` still works.
+    if (!this.props.active) return;
+
     switch (e.keyCode) {
     case this.KEY_SPACE:
       this.togglePlay();

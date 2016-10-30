@@ -255,6 +255,7 @@ export default React.createClass({
                 onMarkStart={this.handleMarkStart}
                 onMarkEnd={this.handleMarkEnd}
                 onClear={this.handleClear}
+                active={!this.state.target}
               />
               <HPaned padding="20px 20px 21px 20px">
                 <Text>
