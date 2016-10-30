@@ -130,7 +130,7 @@ export default React.createClass({
         video: this.vpath,
         audio: this.apath,
         output: this.fpath,
-        title: this.props.info.title,
+        title: `${this.props.info.title} <youtu.be/${this.props.info.id}>`,
       });
     }).then(() => {
       // Finally provide source to the main component.
