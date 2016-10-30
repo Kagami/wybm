@@ -20,6 +20,13 @@ const Index = React.createClass({
   getInitialState() {
     return {};
   },
+  componentDidMount() {
+    // Prevent default behavior from changing page on dropped file.
+    window.ondragover = function(e) { e.preventDefault(); };
+    // NOTE: ondrop events WILL NOT WORK if you do not "preventDefault"
+    // in the ondragover event!
+    window.ondrop = function(e) { e.preventDefault(); };
+  },
   styles: {
     main: {
       height: "100%",

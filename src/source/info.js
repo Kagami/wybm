@@ -12,6 +12,12 @@ export default React.createClass({
   getInitialState() {
     return {url: ""};
   },
+  componentDidMount() {
+    document.addEventListener("drop", this.handleDrop, false);
+  },
+  componentWillUnmount() {
+    document.removeEventListener("drop", this.handleDrop, false);
+  },
   NBSP: "\u00a0",
   styles: {
     input: {
@@ -109,6 +115,12 @@ export default React.createClass({
   handleFileLoad() {
     const file = this.refs.file.files[0];
     this.props.onSource({path: file.path});
+  },
+  handleDrop(e) {
+    e.preventDefault();
+    const files = e.dataTransfer.files;
+    if (!files.length) return;
+    this.props.onSource({path: files[0].path});
   },
   handleURLChange(e) {
     this.setState({url: e.target.value});
