@@ -11,7 +11,7 @@ import View from "../view";
 import * as dialog from "../dialog";
 import {ShowHide, setTitle} from "../util";
 import "./package.json.ejs";
-import "./index.html.ejs";
+import "file?name=[name].[ext]!./index.html";
 import "file?name=[name].[ext]!./icon.png";
 import "file?name=[name].[ext]!./opensans-regular.woff2";
 import "file?name=[name].[ext]!./opensans-bold.woff2";

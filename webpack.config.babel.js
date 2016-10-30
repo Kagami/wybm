@@ -17,23 +17,19 @@ function q(loader, query) {
 const DIST_DIR = path.join("dist", "app");
 const DEBUG = process.env.NODE_ENV !== "production";
 const WIN_BUILD = process.env.PLATFORM === "win32";
-const WYBM_VERSION = `${pkg.name} v${pkg.version} “${pkg.codename}”`;
+const WYBM_VERSION = `"${pkg.name} v${pkg.version} “${pkg.codename}”"`;
 const NAMEQ = {name: "[name]"};
 const MANIFEST_OPTS = WIN_BUILD
   /* eslint-disable quotes */
   ? ',"chromium-args": "--user-data-dir=WybmAppData"'
   /* eslint-enable quotes */
   : "";
-const INDEX_LOADERS = [
-  q("file", NAMEQ),
-  q("ejs-html", {title: WYBM_VERSION}),
-];
 const PACKAGE_LOADERS = [
   q("file", NAMEQ),
-  q("ejs-html", {opts: MANIFEST_OPTS}),
+  q("ejs-html", {opts: MANIFEST_OPTS, title: WYBM_VERSION}),
 ];
 const COMMON_PLUGINS = [
-  new webpack.DefinePlugin({WIN_BUILD}),
+  new webpack.DefinePlugin({WIN_BUILD, WYBM_VERSION}),
 ];
 const PLUGINS = DEBUG ? COMMON_PLUGINS : COMMON_PLUGINS.concat([
   new webpack.optimize.OccurenceOrderPlugin(),
@@ -56,7 +52,6 @@ export default {
     loaders: [
       {test: inmodules(".+\\.json"), loader: "json"},
       {test: insrc(".+\\.js"), loader: "babel"},
-      {test: insrc("index", "index\\.html\\.ejs"), loaders: INDEX_LOADERS},
       {test: insrc("index", "package\\.json\\.ejs"), loaders: PACKAGE_LOADERS},
     ],
   },
