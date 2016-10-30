@@ -9,6 +9,8 @@ wget http://dl.nwjs.io/v0.18.3/nwjs-v0.18.3-linux-x64.tar.gz
 tar xvf nwjs-v0.18.3-linux-x64.tar.gz
 wget http://dl.nwjs.io/v0.18.3/nwjs-v0.18.3-win-ia32.zip
 unzip nwjs-v0.18.3-win-ia32.zip
+wget https://dl.nwjs.io/v0.18.3/nwjs-v0.18.3-osx-x64.zip
+unzip nwjs-v0.18.3-osx-x64.zip
 ```
 
 And also download manually (not automated yet):

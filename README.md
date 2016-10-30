@@ -12,11 +12,11 @@ Download [latest release](https://github.com/Kagami/wybm/releases), unpack and r
 
 ### Linux
 
-You will need Python, FFmpeg and MKVToolNix installed. Download [latest release](https://github.com/Kagami/wybm/releases), unpack and run `./wybm`.
+You need Python, FFmpeg and MKVToolNix installed. Download [latest release](https://github.com/Kagami/wybm/releases), unpack and run `./wybm`.
 
-### Mac OS
+### Mac OS (experimental)
 
-*TODO*
+You need FFmpeg and MKVToolNix installed (use HomeBrew). Download [latest release](https://github.com/Kagami/wybm/releases), unpack and launch `nwjs.app`. **NOTE:** Gatekeeper should be turned off.
 
 ## License
 

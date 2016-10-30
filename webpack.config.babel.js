@@ -2,13 +2,38 @@ import path from "path";
 import webpack from "webpack";
 import pkg from "./package.json";
 
-// TODO(Kagami): Support more platforms.
-const WIN_BUILD = process.env.PLATFORM === "win32";
-const WYBM_VERSION = `"${pkg.name} v${pkg.version} “${pkg.codename}”"`;
+function inmodules(...parts) {
+  return new RegExp("^" + path.join(__dirname, "node_modules", ...parts) + "$");
+}
+
+function insrc(...parts) {
+  return new RegExp("^" + path.join(__dirname, "src", ...parts) + "$");
+}
+
+function q(loader, query) {
+  return loader + "?" + JSON.stringify(query);
+}
+
 const DIST_DIR = path.join("dist", "app");
 const DEBUG = process.env.NODE_ENV !== "production";
+const WIN_BUILD = process.env.PLATFORM === "win32";
+const WYBM_VERSION = `${pkg.name} v${pkg.version} “${pkg.codename}”`;
+const NAMEQ = {name: "[name]"};
+const MANIFEST_OPTS = WIN_BUILD
+  /* eslint-disable quotes */
+  ? ',"chromium-args": "--user-data-dir=WybmAppData"'
+  /* eslint-enable quotes */
+  : "";
+const INDEX_LOADERS = [
+  q("file", NAMEQ),
+  q("ejs-html", {title: WYBM_VERSION}),
+];
+const PACKAGE_LOADERS = [
+  q("file", NAMEQ),
+  q("ejs-html", {opts: MANIFEST_OPTS}),
+];
 const COMMON_PLUGINS = [
-  new webpack.DefinePlugin({WIN_BUILD, WYBM_VERSION}),
+  new webpack.DefinePlugin({WIN_BUILD}),
 ];
 const PLUGINS = DEBUG ? COMMON_PLUGINS : COMMON_PLUGINS.concat([
   new webpack.optimize.OccurenceOrderPlugin(),
@@ -17,13 +42,6 @@ const PLUGINS = DEBUG ? COMMON_PLUGINS : COMMON_PLUGINS.concat([
     compress: {warnings: false},
   }),
 ]);
-
-function inmodules(...parts) {
-  return new RegExp("^" + path.join(__dirname, "node_modules", ...parts) + "$");
-}
-function insrc(...parts) {
-  return new RegExp("^" + path.join(__dirname, "src", ...parts) + "$");
-}
 
 export default {
   target: "node",
@@ -36,9 +54,10 @@ export default {
     // See <https://github.com/webpack/webpack/issues/138>.
     noParse: inmodules(".*json-schema", "lib", "validate\\.js"),
     loaders: [
-      // See <https://github.com/webpack/webpack/issues/184>.
       {test: inmodules(".+\\.json"), loader: "json"},
       {test: insrc(".+\\.js"), loader: "babel"},
+      {test: insrc("index", "index\\.html\\.ejs"), loaders: INDEX_LOADERS},
+      {test: insrc("index", "package\\.json\\.ejs"), loaders: PACKAGE_LOADERS},
     ],
   },
   plugins: PLUGINS,

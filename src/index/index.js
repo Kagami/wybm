@@ -10,15 +10,11 @@ import Source from "../source";
 import View from "../view";
 import * as dialog from "../dialog";
 import {ShowHide, setTitle} from "../util";
+import "./package.json.ejs";
+import "./index.html.ejs";
 import "file?name=[name].[ext]!./icon.png";
 import "file?name=[name].[ext]!./opensans-regular.woff2";
 import "file?name=[name].[ext]!./opensans-bold.woff2";
-require("file?name=[name]!./package.json." + (WIN_BUILD ? "win" : "linux"));
-require(
-  "file?name=[name].[ext]!" +
-  "string-replace?search=${TITLE}&replace=" + WYBM_VERSION + "!" +
-  "./index.html"
-);
 
 const Index = React.createClass({
   getInitialState() {
