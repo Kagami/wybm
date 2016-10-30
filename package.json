@@ -53,7 +53,7 @@
     "eslint-plugin-react": "^3.14.0",
     "file-loader": "^0.8.5",
     "json-loader": "^0.5.4",
-    "nw": "^0.13.0-rc1sdk",
+    "nw": "^0.18.3",
     "raw-loader": "^0.5.1",
     "string-replace-loader": "^1.0.0",
     "webpack": "^1.12.9"
