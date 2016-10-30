@@ -28,7 +28,7 @@ lin64:
 	cp -a "$(DIST_DIR)/$(LIN64_APP)" "$(LIN64_RELEASE_DIR)/app.nw"
 	cp -a "$(LINUX_RUNNER)" "$(LIN64_RELEASE_DIR)/$(NAME)"
 	chmod +x "$(LIN64_RELEASE_DIR)/$(NAME)"
-	cp -a LICENSE.* "$(LIN64_RELEASE_DIR)"
+	cp -a legal "$(LIN64_RELEASE_DIR)"
 	cd "$(DIST_DIR)" && 7z a $(7Z_OPTS) "$(LIN64_7Z)" "$(LIN64_RELEASE)"
 
 win32:
@@ -38,5 +38,5 @@ win32:
 	cp -a "$(WIN32_NW_DIR)"/* "$(WIN32_RELEASE_DIR)"
 	cp -a "$(DIST_DIR)/$(WIN32_APP)" "$(WIN32_RELEASE_DIR)/app.nw"
 	cp -a "$(WINDOWS_RUNNER)" "$(WIN32_RELEASE_DIR)"
-	cp -a LICENSE.* "$(WIN32_RELEASE_DIR)"
+	cp -a legal "$(WIN32_RELEASE_DIR)"
 	cd "$(DIST_DIR)" && 7z a $(7Z_OPTS) "$(WIN32_7Z)" "$(WIN32_RELEASE)"
