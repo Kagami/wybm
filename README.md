@@ -18,6 +18,20 @@ You need FFmpeg and MKVToolNix installed. Download [latest release](https://gith
 
 You need FFmpeg and MKVToolNix installed (use HomeBrew). Download [latest release](https://github.com/Kagami/wybm/releases), unpack and launch `nwjs.app`. **NOTE:** Gatekeeper should be turned off.
 
+## Troubleshooting
+
+### ytdl exited with code 3221225781
+
+Install [Microsoft Visual C++ 2010 Redistributable Package (x86)](https://www.microsoft.com/en-US/download/details.aspx?id=5555).
+
+### ytdl exited with code 1
+
+Make sure you're using the latest version of wybm. File an issue if problem still persist, most probably YouTube changed something on the site and youtube-dl upgrade is needed. **NOTE:** wybm will use system (i.e. in the PATH) youtube-dl.exe and mkvinfo.exe if available.
+
+### No (VP9) formats available
+
+It takes a while before YouTube generates VP9 formats for a new video. Some old videos don't have VP9 or even VP8 version at all, but that's quite rare.
+
 ## License
 
 wybm own code, documentation and icon licensed under CC0, but the resulting build also includes the following libraries and assets:
