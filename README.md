@@ -26,7 +26,7 @@ Install [Microsoft Visual C++ 2010 Redistributable Package (x86)](https://www.mi
 
 ### ytdl exited with code 1
 
-Make sure you're using the latest version of wybm. File an issue if problem still persist, most probably YouTube changed something on the site and youtube-dl upgrade is needed. **NOTE:** wybm will use system (i.e. in the PATH) youtube-dl and mkvinfo if available.
+Make sure you're using the latest version of wybm. File an issue if problem still persists, most probably YouTube changed something on the site and youtube-dl upgrade is needed. **NOTE:** wybm will use system (i.e. in the `PATH`) youtube-dl and mkvinfo if available.
 
 ### No (VP9) formats available
 
