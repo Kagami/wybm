@@ -37,11 +37,15 @@ export default React.createClass({
       cursor: "pointer",
     },
   },
+  // Prefer high-quality.
   compareVideo(a, b) {
-    // Make it easier to access better quality formats.
-    return a.width !== b.width
-      ? b.width - a.width
-      : b.fps - a.fps;
+    // Higher resolution/FPS is always better.
+    if (a.height !== b.height) return b.height - a.height;
+    if (a.width !== b.width) return b.width - a.width;
+    if (a.fps !== b.fps) return b.fps - a.fps;
+    // Else prefer by bitrate.
+    if (a.tbr !== b.tbr) return b.tbr - a.tbr;
+    return 0;
   },
   getVideoText(f) {
     if (f.vcodec === "vp8" || f.vcodec === "vp9") {
@@ -65,15 +69,22 @@ export default React.createClass({
       .sort(this.compareVideo)
       .map(f => ({
         key: f.format_id,
+        fps: f.fps,
         width: f.width,
         height: f.height,
         text: this.getVideoText(f),
       }));
   },
   getDefaultVideoFormat() {
-    // >=1080p would weight too much, 720p is enough.
+    // Only starting with 1080p VP9 has decent quality, so try to select
+    // 1080p by default. 1440p+ would weight too much.
     const video = this.getVideoFormats().find(f =>
-      f.width === 1280 || f.height === 720
+      // 60fps weights too much.
+      (!f.fps || f.fps < 31) && (
+        (f.width >= f.height && (f.width <= 1920 || f.height <= 1080)) ||
+        // Account vertical videos.
+        (f.width < f.height && (f.width <= 810 || f.height <= 1440))
+      )
     );
     return video && video.key;
   },
