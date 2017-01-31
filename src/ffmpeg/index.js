@@ -118,36 +118,42 @@ export default {
     });
   },
   preview(opts) {
-    // pad filter accepts only even resolutions. This is also better for
-    // compatibility reasons.
     const width = opts.width + 2 - (opts.width % 2);
     const height = opts.height + 2 - (opts.height % 2);
+    const color = [
+      "color=#DDDDDD",
+      `size=${width}x${height}`,
+    ].join(":");
     const scale = [
-      width,
-      height,
+      width + 1,
+      height + 1,
       "force_original_aspect_ratio=decrease",
     ].join(":");
-    const pad = [
-      width,
-      height,
-      "(ow-iw)/2",
-      "(oh-ih)/2",
-      "color=#DDDDDD",
+    const overlay = [
+      "(W-w)/2",
+      "(H-h)/2",
     ].join(":");
-    let args = [];
+    const lavfi = [
+      `color=${color}[bg]`,
+      `[0:v:0]setpts=PTS-STARTPTS,scale=${scale}[s]`,
+      `[bg][s]overlay=${overlay}[outv]`,
+    ].join(";");
+
+    const args = [];
     if (opts.time != null) {
       args.push("-ss", opts.time.toString());
     }
     args.push(
       "-i", opts.input,
-      "-map", "0:v:0",
-      "-frames:v", "1",
       // Not so high-quality but should be enough for thumbnail.
       "-c:v", "libvpx", "-b:v", "0", "-crf", "30",
       // Note that target video will have BT.601 colormatrix if input
       // uses RGB color model. It's ok since most imageboards use 601
       // when generating thumbnails.
-      "-vf", "scale=" + scale + ",pad=" + pad,
+      "-lavfi", lavfi, "-map", "[outv]",
+      // We don't need yuva.
+      "-pix_fmt", "yuv420p",
+      "-frames:v", "1",
       "-f", "webm",
       opts.output
     );
