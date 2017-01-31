@@ -1,6 +1,6 @@
 {
   "name": "wybm",
-  "version": "1.0.0-dev",
+  "version": "1.0.0",
   "codename": "Rainbow Blaxx",
   "description": "Extract and cut youtube webms",
   "scripts": {
