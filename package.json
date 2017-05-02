@@ -1,7 +1,7 @@
 {
   "name": "wybm",
-  "version": "1.0.0",
-  "codename": "Rainbow Blaxx",
+  "version": "1.0.1-dev",
+  "codename": "Pristin",
   "description": "Extract and cut youtube webms",
   "scripts": {
     "start": "webpack --watch",
