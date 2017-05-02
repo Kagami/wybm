@@ -1,6 +1,6 @@
 {
   "name": "wybm",
-  "version": "1.0.1-dev",
+  "version": "1.0.1",
   "codename": "Pristin",
   "description": "Extract and cut youtube webms",
   "scripts": {
