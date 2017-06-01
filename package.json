@@ -1,6 +1,6 @@
 {
   "name": "wybm",
-  "version": "1.0.2-dev",
+  "version": "1.0.2",
   "codename": "Cosmic Girls",
   "description": "Extract and cut youtube webms",
   "scripts": {
