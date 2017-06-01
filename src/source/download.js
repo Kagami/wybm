@@ -55,9 +55,9 @@ export default React.createClass({
   download() {
     this.setState({vdata: 0, adata: 0, downloadingError: null});
     const format = this.props.format;
+
     // vp8.0 format lacks file size info.
     const videoHasSize = !!format.video.filesize;
-
     // TODO(Kagami): How to handle file write errors?
     let vpromise = new Promise((resolve, reject) => {
       this.vreq = request({
@@ -96,6 +96,7 @@ export default React.createClass({
 
     let apromise;
     if (this.apath) {
+      const audioHasSize = !!format.audio.filesize;
       apromise = new Promise((resolve, reject) => {
         this.areq = request({
           url: format.audio.url,
@@ -106,13 +107,17 @@ export default React.createClass({
               `Got ${res.statusCode} error while downloading audio`
             ));
           }
+          if (!audioHasSize) {
+            const reslen = +res.headers["content-length"];
+            if (reslen) format.audio.filesize = reslen;
+          }
           res.on("error", err => {
             reject(err);
           }).on("data", chunk => {
             this.setState({adata: this.state.adata + chunk.length});
           }).on("end", () => {
             if (!this.areq) return;
-            if (this.state.adata !== format.audio.filesize) {
+            if (audioHasSize && this.state.adata !== format.audio.filesize) {
               return reject(new Error("Got wrong audio data"));
             }
             resolve();
@@ -163,6 +168,10 @@ export default React.createClass({
     const format = this.props.format;
     return format.video.filesize ? showSize(format.video.filesize) : "unknown";
   },
+  getAudioSize() {
+    const format = this.props.format;
+    return format.audio.filesize ? showSize(format.audio.filesize) : "unknown";
+  },
   handleCancelClick() {
     this.abort();
     this.props.onCancel();
@@ -175,7 +184,7 @@ export default React.createClass({
         <div style={this.styles.text}>
           <span>Saving audio (</span>
           <span style={this.styles.size}>{showSize(this.state.adata)}</span>
-          <span> of {showSize(format.audio.filesize)}):</span>
+          <span> of {this.getAudioSize()}):</span>
         </div>
         <progress
           value={this.state.adata}

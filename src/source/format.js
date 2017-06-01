@@ -94,6 +94,9 @@ export default React.createClass({
     // much) so that doesn't matter.
     return b.abr - a.abr;
   },
+  getAudioSize(f) {
+    return f.filesize ? `(${showSize(f.filesize)})` : "";
+  },
   getAudioFormats() {
     return this.props.info.formats
       .filter(f => f.acodec === "vorbis" || f.acodec === "opus")
@@ -101,7 +104,7 @@ export default React.createClass({
       .map(f => ({
         key: f.format_id,
         text: `${toCapitalCase(f.acodec)} ${f.abr}kbits
-               (${showSize(f.filesize)})`,
+               ${this.getAudioSize(f)}`,
       }))
       .concat({key: null, text: "none"});
   },
