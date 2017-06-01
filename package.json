@@ -1,7 +1,7 @@
 {
   "name": "wybm",
-  "version": "1.0.1",
-  "codename": "Pristin",
+  "version": "1.0.2-dev",
+  "codename": "Cosmic Girls",
   "description": "Extract and cut youtube webms",
   "scripts": {
     "start": "webpack --watch",
