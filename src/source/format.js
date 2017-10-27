@@ -76,12 +76,10 @@ export default React.createClass({
       }));
   },
   getDefaultVideoFormat() {
-    // Only starting with 1080p VP9 has decent quality, so try to select
-    // 1080p by default. 1440p+ would weight too much.
+    // Only starting with 1440p 60fps VP9 at YT has decent quality.
     const video = this.getVideoFormats().find(f =>
-      // 60fps weights too much.
-      (!f.fps || f.fps < 31) && (
-        (f.width >= f.height && (f.width <= 1920 || f.height <= 1080)) ||
+      (!f.fps || f.fps < 61) && (
+        (f.width >= f.height && (f.width <= 2560 || f.height <= 1440)) ||
         // Account vertical videos.
         (f.width < f.height && (f.width <= 810 || f.height <= 1440))
       )
