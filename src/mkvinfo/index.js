@@ -102,7 +102,7 @@ export default {
         \+\ (?:Simple)?Block\ \(
         (key,\ )?
         track\ number\ ${vid},
-        .*\ timecode\ ([\d.]+)
+        .*\ time(?:code|stamp)\ ([\d.]+)
         .*\ at\ (\d+)
       `);
       let frames = [];
