@@ -11,9 +11,9 @@
     "clean-app": "rm -rf dist/app",
     "build-app": "npm run clean-app && NODE_ENV=production webpack",
     "release-win32": "PLATFORM=win32 npm run build-app && make win32",
-    "release-lin64": "PLATFORM=lin64 npm run build-app && make lin64",
     "release-mac64": "PLATFORM=mac64 npm run build-app && make mac64",
-    "release": "npm run clean && npm run release-win32 && npm run release-lin64 && npm run release-mac64"
+    "release-lin64": "PLATFORM=lin64 npm run build-app && make lin64",
+    "release": "npm run clean && npm run release-win32 && npm run release-mac64 && npm run release-lin64"
   },
   "babel": {
     "presets": [
