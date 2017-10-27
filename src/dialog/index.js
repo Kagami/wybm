@@ -50,8 +50,8 @@ export function alert(opts) {
 
 export function confirm(opts) {
   opts = Object.assign({
-    width: 300,
-    height: 130,
+    width: 355,
+    height: 80,
     position: "center",
     always_on_top: true,
     focusOK: false,
