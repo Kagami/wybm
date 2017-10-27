@@ -10,13 +10,13 @@ wybm is a GUI application which can download videos from YouTube in WebM format 
 
 Download [latest release](https://github.com/Kagami/wybm/releases), unpack and run `wybm.exe`. **NOTE:** download appropriate `wybm-vX.Y.Z-win-x86.7z` build, not the source code!
 
+### macOS
+
+You need to have ffmpeg and mkvtoolnix installed (use Homebrew). Download [latest release](https://github.com/Kagami/wybm/releases), unpack, righ-click `wybm` app in Finder, select Open and Open.
+
 ### Linux
 
-You need FFmpeg and MKVToolNix installed. Download [latest release](https://github.com/Kagami/wybm/releases), unpack and run `./wybm`.
-
-### Mac OS X
-
-You need FFmpeg and MKVToolNix installed (use HomeBrew). Download [latest release](https://github.com/Kagami/wybm/releases), unpack and launch `nwjs.app`. **NOTE:** Gatekeeper should be turned off.
+You need to have ffmpeg and mkvtoolnix installed. Download [latest release](https://github.com/Kagami/wybm/releases), unpack and run `./wybm`.
 
 ## Troubleshooting
 
