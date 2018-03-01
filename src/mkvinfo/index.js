@@ -7,7 +7,7 @@ import fs from "fs";
 import assert from "assert";
 import {spawn} from "child_process";
 import XRegExp from "xregexp";
-import {getRunPath} from "../util";
+import {getRunPath, parseTime} from "../util";
 if (WIN_BUILD) {
   require("file?name=[name].[ext]!../../bin/mkvinfo.exe");
 }
@@ -51,14 +51,14 @@ export default {
       const size = fs.statSync(fpath).size;
       const duration = +out.match(/\+ Duration: (\d+(\.\d+)?)/)[1];
       // Track segment is at level 0.
-      const trstart = out.indexOf("\n|+ Segment tracks at ");
+      const trstart = out.search(/\n\|\+ (Tracks|Segment tracks) at /);
       assert(trstart >= 0, "Can't find segment start");
       // Copy until next level 0 element.
       const trend = out.indexOf("\n|+ ", trstart + 1);
       assert(trend >= 0, "Can't find segment end");
       const tracks = out
         .slice(trstart, trend)
-        .split("+ A track at ")
+        .split(/\+ (A track|Track) at /g)
         // Skip first useless chunk.
         .slice(1);
       let vid, vcodec, width, height, fps, aid, acodec;
@@ -99,10 +99,10 @@ export default {
       // BlockGroup. "mkvinfo -v -v -v" + "[I frame]" matching is needed
       // for that.
       const framere = new XRegExp(String.raw`(?x)
-        \+\ (?:Simple)?Block\ \(
+        \+\ (?:Simple)?\ ?[Bb]lock(?:\ \(|:\ )
         (key,\ )?
         track\ number\ ${vid},
-        .*\ time(?:code|stamp)\ ([\d.]+)
+        .*\ time(?:code|stamp)\ ([\d:.]+)
         .*\ at\ (\d+)
       `);
       let frames = [];
@@ -111,7 +111,7 @@ export default {
         if (framem) {
           const frame = {
             key: !!framem[1],
-            time: +framem[2],
+            time: parseTime(framem[2]),
             pos: +framem[3],
           };
           if (!frames.length) return frames.push(frame);
