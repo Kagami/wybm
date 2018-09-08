@@ -39,7 +39,7 @@
   "dependencies": {
     "react": "^0.14.5",
     "react-dom": "^0.14.5",
-    "request": "^2.67.0",
+    "request": "^2.88.0",
     "tmp": "0.0.28",
     "which": "^1.2.1",
     "xregexp": "^3.0.0"
