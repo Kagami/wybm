@@ -8,11 +8,11 @@ wybm is a GUI application which can download videos from YouTube in WebM format 
 
 ### Windows
 
-Download [latest release](https://github.com/Kagami/wybm/releases), unpack and run `wybm.exe`. **NOTE:** download appropriate `wybm-vX.Y.Z-win-x86.7z` build, not the source code!
+Download [latest release](https://github.com/Kagami/wybm/releases), unpack and run `wybm.exe`.
 
 ### macOS
 
-You need to have ffmpeg and mkvtoolnix installed (use Homebrew). Download [latest release](https://github.com/Kagami/wybm/releases), unpack, righ-click `wybm` app in Finder, select Open and Open.
+You need to have ffmpeg and mkvtoolnix installed (use [Homebrew](https://brew.sh)). Download [latest release](https://github.com/Kagami/wybm/releases), unpack, righ-click `wybm` app in Finder, select Open and Open.
 
 ### Linux
 
@@ -34,7 +34,7 @@ It takes a while before YouTube generates VP9 formats for a new video. Some old 
 
 ## License
 
-wybm own code, documentation and icon licensed under CC0, but the resulting build also includes the following libraries and assets:
+wybm own code, documentation and icon is licensed under CC0, but the resulting build also includes the following libraries and assets:
 
 * Libraries in `dependencies` section of [package.json](package.json) (BSD-like)
 * [NW.js binaries](https://github.com/nwjs/nw.js), see also `credits.html` in release archives
