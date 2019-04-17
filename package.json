@@ -1,7 +1,7 @@
 {
   "name": "wybm",
-  "version": "1.1.1",
-  "codename": "Nine Muses",
+  "version": "1.2.0-dev",
+  "codename": "Itzy",
   "description": "Extract and cut youtube webms",
   "scripts": {
     "start": "webpack --watch",
