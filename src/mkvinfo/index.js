@@ -16,7 +16,7 @@ export default {
   _run(args) {
     const runpath = getRunPath("mkvinfo");
     let stdout = "";
-    let stderr = "";
+    // let stderr = "";
     return new Promise((resolve, reject) => {
       let p;
       try {
@@ -27,9 +27,9 @@ export default {
       p.stdout.on("data", data => {
         stdout += data;
       });
-      p.stderr.on("data", data => {
-        stderr += data;
-      });
+      // p.stderr.on("data", data => {
+      //   stderr += data;
+      // });
       p.on("error", err => {
         reject(new Error(`Failed to run mkvinfo: ${err.message}`));
       });
@@ -137,7 +137,7 @@ export default {
           }
         }
       });
-      frames.forEach((f, i) => f.index = i);
+      frames.forEach((f, i) => { f.index = i; });
       assert(frames.length, "No frames");
       return {size, duration, width, height, fps, frames, vcodec, acodec};
     });

@@ -57,9 +57,9 @@ export const VPaned = React.createClass({
     return (
       <table style={this.styles.outer}>
         <tbody>
-        {React.Children.map(this.props.children, (col, i) =>
-          <tr><td style={this.getInnerStyle(i)}>{col}</td></tr>
-        )}
+          {React.Children.map(this.props.children, (col, i) =>
+            <tr><td style={this.getInnerStyle(i)}>{col}</td></tr>
+          )}
         </tbody>
       </table>
     );
@@ -90,9 +90,9 @@ export const HPaned = React.createClass({
       <table style={outer}>
         <tbody>
           <tr>
-          {React.Children.map(this.props.children, (row, i) =>
-            <td style={this.getInnerStyle(i)}>{row}</td>
-          )}
+            {React.Children.map(this.props.children, (row, i) =>
+              <td style={this.getInnerStyle(i)}>{row}</td>
+            )}
           </tr>
         </tbody>
       </table>

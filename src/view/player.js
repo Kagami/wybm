@@ -372,6 +372,7 @@ const Video = React.createClass({
       background: "#000",
     },
     video: {
+      position: "absolute",
       display: "block",
       width: "100%",
       height: "100%",
@@ -633,7 +634,7 @@ const Seek = React.createClass({
           {...this.props}
         />
         <datalist id="keyframes">
-        {this.props.keyframes.map(i => <option key={i}>{i}</option>)}
+          {this.props.keyframes.map(i => <option key={i}>{i}</option>)}
         </datalist>
       </div>
     );

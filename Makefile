@@ -4,16 +4,16 @@ ZIP_OPTS = -tzip -mx=9
 7Z_OPTS = -t7z -m0=lzma2 -mx=9
 DIST_DIR = dist
 APP = package.nw
-WIN32_NW_DIR = bin/nwjs-v0.26.0-win-ia32
+WIN32_NW_DIR = bin/nwjs-v0.37.4-win-ia32
 WIN32_RELEASE = $(NAME)-v$(VERSION)-win-x86
 WIN32_RELEASE_DIR = $(DIST_DIR)/$(WIN32_RELEASE)
 WIN32_7Z = $(WIN32_RELEASE).7z
-MAC64_NW_DIR = bin/nwjs-v0.26.0-osx-x64
+MAC64_NW_DIR = bin/nwjs-v0.37.4-osx-x64
 MAC64_RELEASE = $(NAME)-v$(VERSION)-osx-x64
 MAC64_RELEASE_DIR = $(DIST_DIR)/$(MAC64_RELEASE)
 MAC64_RESOURCES_DIR = $(MAC64_RELEASE_DIR)/nwjs.app/Contents/Resources
 MAC64_7Z = $(MAC64_RELEASE).7z
-LIN64_NW_DIR = bin/nwjs-v0.26.0-linux-x64
+LIN64_NW_DIR = bin/nwjs-v0.37.4-linux-x64
 LIN64_RELEASE = $(NAME)-v$(VERSION)-linux-x64
 LIN64_RELEASE_DIR = $(DIST_DIR)/$(LIN64_RELEASE)
 LIN64_7Z = $(LIN64_RELEASE).7z

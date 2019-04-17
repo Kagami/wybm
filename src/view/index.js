@@ -260,50 +260,50 @@ export default React.createClass({
               <HPaned padding="20px 20px 21px 20px">
                 <Text>
                   <Table>
-                  <tr>
-                    <td style={this.styles.left}>Start position:</td>
-                    <td style={this.styles.right}>
-                      <span
-                        title="Clear"
-                        style={this.styles.clickable}
-                        onClick={this.handleMarkStartClear}
-                      >
-                        {this.getStartText()}
-                      </span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style={this.styles.left}>End position:</td>
-                    <td style={this.styles.right}>
-                      <span
-                        title="Clear"
-                        style={this.styles.clickable}
-                        onClick={this.handleMarkEndClear}
-                      >
-                        {this.getEndText()}
-                      </span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style={this.styles.left}>Preview:</td>
-                    <td style={this.styles.right}>
-                      <div style={this.styles.longText}>
+                    <tr>
+                      <td style={this.styles.left}>Start position:</td>
+                      <td style={this.styles.right}>
                         <span
                           title="Clear"
                           style={this.styles.clickable}
-                          onClick={this.handlePreviewClear}
+                          onClick={this.handleMarkStartClear}
                         >
-                          {this.getPreviewText()}
+                          {this.getStartText()}
                         </span>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style={this.styles.left}>Estimated size:</td>
-                    <td style={this.styles.right}>
-                      {showSize(this.getEstimatedSize())}
-                    </td>
-                  </tr>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style={this.styles.left}>End position:</td>
+                      <td style={this.styles.right}>
+                        <span
+                          title="Clear"
+                          style={this.styles.clickable}
+                          onClick={this.handleMarkEndClear}
+                        >
+                          {this.getEndText()}
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style={this.styles.left}>Preview:</td>
+                      <td style={this.styles.right}>
+                        <div style={this.styles.longText}>
+                          <span
+                            title="Clear"
+                            style={this.styles.clickable}
+                            onClick={this.handlePreviewClear}
+                          >
+                            {this.getPreviewText()}
+                          </span>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style={this.styles.left}>Estimated size:</td>
+                      <td style={this.styles.right}>
+                        {showSize(this.getEstimatedSize())}
+                      </td>
+                    </tr>
                   </Table>
                 </Text>
                 <div>
