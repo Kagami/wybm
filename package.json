@@ -1,7 +1,7 @@
 {
   "name": "wybm",
-  "version": "1.2.0",
-  "codename": "Itzy",
+  "version": "1.2.1-dev",
+  "codename": "Momoland",
   "description": "Extract and cut youtube webms",
   "scripts": {
     "start": "webpack --watch",
