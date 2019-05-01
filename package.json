@@ -56,7 +56,7 @@
     "eslint-plugin-react": "^3.14.0",
     "file-loader": "^0.8.5",
     "json-loader": "^0.5.4",
-    "nw": "0.37.4-sdk",
+    "nw": "0.38.1-sdk",
     "raw-loader": "^0.5.1",
     "string-replace-loader": "^2.1.1",
     "webpack": "^1.12.9"
