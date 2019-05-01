@@ -60,7 +60,10 @@ const mainWindow = window.nw.Window.get();
 mainWindow.on("close", () => {
   dialog
     .confirm({title: "Are you sure you want to exit?", focusOK: true})
-    .then(() => { mainWindow.close(true); });
+    .then(() => {
+      mainWindow.close(true);
+      process.emit("exit");
+    });
 });
 
 ReactDOM.render(<Index/>, document.getElementById("wybm-index"));
