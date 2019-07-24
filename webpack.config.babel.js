@@ -2,10 +2,6 @@ import path from "path";
 import webpack from "webpack";
 import pkg from "./package.json";
 
-function inmodules(...parts) {
-  return new RegExp("^" + path.join(__dirname, "node_modules", ...parts) + "$");
-}
-
 function insrc(...parts) {
   return new RegExp("^" + path.join(__dirname, "src", ...parts) + "$");
 }
@@ -25,21 +21,18 @@ const MANIFEST_OPTS = WIN_BUILD
   /* eslint-enable quotes */
   : "";
 const PACKAGE_LOADERS = [
-  q("file", NAMEQ),
-  q("ejs-html", {opts: MANIFEST_OPTS, title: WYBM_VERSION}),
+  q("file-loader", NAMEQ),
+  q("ejs-html-loader", {opts: MANIFEST_OPTS, title: WYBM_VERSION}),
 ];
-const COMMON_PLUGINS = [
-  new webpack.DefinePlugin({WIN_BUILD, WYBM_VERSION}),
-];
-const PLUGINS = DEBUG ? COMMON_PLUGINS : COMMON_PLUGINS.concat([
-  new webpack.optimize.OccurenceOrderPlugin(),
-  new webpack.optimize.UglifyJsPlugin({
-    output: {comments: false},
-    compress: {warnings: false},
-  }),
-]);
 
 export default {
+  mode: DEBUG ? "development" : "production",
+  stats: {
+    children: false,
+    entrypoints: false,
+    modules: false,
+  },
+  bail: !DEBUG,
   target: "node",
   entry: "./src/index/index",
   output: {
@@ -47,13 +40,12 @@ export default {
     filename: "index.js",
   },
   module: {
-    // See <https://github.com/webpack/webpack/issues/138>.
-    noParse: inmodules(".*json-schema", "lib", "validate\\.js"),
-    loaders: [
-      {test: inmodules(".+\\.json"), loader: "json"},
-      {test: insrc(".+\\.js"), loader: "babel"},
+    rules: [
+      {test: insrc(".+\\.js"), loader: "babel-loader"},
       {test: insrc("index", "package\\.json\\.ejs"), loaders: PACKAGE_LOADERS},
     ],
   },
-  plugins: PLUGINS,
+  plugins: [
+    new webpack.DefinePlugin({WIN_BUILD, WYBM_VERSION}),
+  ],
 };

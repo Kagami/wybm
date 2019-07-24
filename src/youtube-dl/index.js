@@ -6,7 +6,8 @@
 import {spawn} from "child_process";
 import {getRunPath} from "../util";
 const YTDL = require(
-  "file?name=[name].[ext]!../../bin/youtube-dl." + (WIN_BUILD ? "exe" : "zip")
+  "file-loader?name=[name].[ext]!../../bin/youtube-dl." +
+  (WIN_BUILD ? "exe" : "zip")
 );
 
 export default {

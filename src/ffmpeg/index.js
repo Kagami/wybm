@@ -7,7 +7,7 @@ import {spawn} from "child_process";
 import tmp from "tmp";
 import {getRunPath} from "../util";
 if (WIN_BUILD) {
-  require("file?name=[name].[ext]!../../bin/ffmpeg.exe");
+  require("file-loader?name=[name].[ext]!../../bin/ffmpeg.exe");
 }
 
 export default {

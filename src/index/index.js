@@ -11,10 +11,10 @@ import View from "../view";
 import * as dialog from "../dialog";
 import {ShowHide, setTitle} from "../util";
 import "./package.json.ejs";
-import "file?name=[name].[ext]!./index.html";
-import "file?name=[name].[ext]!./icon.png";
-import "file?name=[name].[ext]!./opensans-regular.woff2";
-import "file?name=[name].[ext]!./opensans-bold.woff2";
+import "file-loader?name=[name].[ext]!./index.html";
+import "file-loader?name=[name].[ext]!./icon.png";
+import "file-loader?name=[name].[ext]!./opensans-regular.woff2";
+import "file-loader?name=[name].[ext]!./opensans-bold.woff2";
 
 const Index = React.createClass({
   getInitialState() {

@@ -9,7 +9,7 @@ import {spawn} from "child_process";
 import XRegExp from "xregexp";
 import {getRunPath, parseTime} from "../util";
 if (WIN_BUILD) {
-  require("file?name=[name].[ext]!../../bin/mkvinfo.exe");
+  require("file-loader?name=[name].[ext]!../../bin/mkvinfo.exe");
 }
 
 export default {

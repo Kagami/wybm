@@ -16,9 +16,9 @@
 // (e.g. transparent absolute div).
 
 import EventEmitter from "events";
-import ALERT_PATH from "file?name=[name].[ext]!./alert.html";
-import CONFIRM_PATH from "file?name=[name].[ext]!./confirm.html";
-import PROMPT_PATH from "file?name=[name].[ext]!./prompt.html";
+import ALERT_PATH from "file-loader?name=[name].[ext]!./alert.html";
+import CONFIRM_PATH from "file-loader?name=[name].[ext]!./confirm.html";
+import PROMPT_PATH from "file-loader?name=[name].[ext]!./prompt.html";
 import {popkeys} from "../util";
 
 export function alert(opts) {

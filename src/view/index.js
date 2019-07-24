@@ -9,7 +9,7 @@ import React from "react";
 import Stats from "./stats";
 import Player from "./player";
 import Save from "./save";
-import HELP from "raw!./help.html";
+import HELP from "raw-loader!./help.html";
 import * as dialog from "../dialog";
 import {VPaned, HPaned, Table, Text, Br, BigButton, FileButton} from "../theme";
 import {ShowHide, showSize, showTime, toCapitalCase} from "../util";

@@ -5,13 +5,13 @@
 
 import React from "react";
 import {parseTime, showTime, tryRun} from "../util";
-import PLAY from "file?name=[name].[ext]!./play.svg";
-import PAUSE from "file?name=[name].[ext]!./pause.svg";
-import SCISSORS from "file?name=[name].[ext]!./scissors.svg";
-import REPEAT from "file?name=[name].[ext]!./repeat.svg";
-import VOLUME_UP from "file?name=[name].[ext]!./volume-up.svg";
-import VOLUME_OFF from "file?name=[name].[ext]!./volume-off.svg";
-import EJECT from "file?name=[name].[ext]!./eject.svg";
+import PLAY from "file-loader?name=[name].[ext]!./play.svg";
+import PAUSE from "file-loader?name=[name].[ext]!./pause.svg";
+import SCISSORS from "file-loader?name=[name].[ext]!./scissors.svg";
+import REPEAT from "file-loader?name=[name].[ext]!./repeat.svg";
+import VOLUME_UP from "file-loader?name=[name].[ext]!./volume-up.svg";
+import VOLUME_OFF from "file-loader?name=[name].[ext]!./volume-off.svg";
+import EJECT from "file-loader?name=[name].[ext]!./eject.svg";
 
 export default React.createClass({
   getInitialState() {
