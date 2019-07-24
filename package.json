@@ -59,6 +59,7 @@
     "nw": "0.38.1-sdk",
     "raw-loader": "^0.5.1",
     "string-replace-loader": "^2.1.1",
-    "webpack": "^1.12.9"
+    "webpack": "^4.37.0",
+    "webpack-cli": "^3.3.6"
   }
 }
