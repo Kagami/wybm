@@ -1,6 +1,6 @@
 {
   "name": "wybm",
-  "version": "1.2.2-dev",
+  "version": "1.2.2",
   "codename": "(G)I-DLE",
   "description": "Extract and cut youtube webms",
   "scripts": {
